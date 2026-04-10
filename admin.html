@@ -67,12 +67,10 @@ select { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,
     <div class="login-box">
       <div style="font-size:2rem;margin-bottom:1rem;">⚡</div>
       <h2>Admin Dashboard</h2>
-      <p>Enter your password and Anthropic API key</p>
+      <p>SK Sportz product management</p>
       <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
-      <input type="text" id="apikey" placeholder="Anthropic API key (sk-ant-...)" onkeydown="if(event.key==='Enter')login()">
       <button class="btn-yellow" style="width:100%;justify-content:center;" onclick="login()"><i class="fa fa-lock"></i> Login</button>
       <p id="lerr" style="color:#f87171;font-size:0.8rem;margin-top:0.75rem;display:none;"></p>
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:1rem;">API key stored in browser session only — never saved anywhere else.</p>
     </div>
   </div>
 
@@ -103,18 +101,15 @@ select { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,
 </div>
 
 <script>
-let apiKey = '';
 let products = [];
 let approved = [];
+let adminPw = '';
 
 function login() {
   const pw = document.getElementById('pw').value;
-  const key = document.getElementById('apikey').value.trim();
   const err = document.getElementById('lerr');
   if (!pw) { err.style.display='block'; err.textContent='Enter password'; return; }
-  if (!key.startsWith('sk-ant-')) { err.style.display='block'; err.textContent='Enter a valid Anthropic API key (starts with sk-ant-)'; return; }
-  apiKey = key;
-  localStorage.setItem('sk_key', key);
+  adminPw = pw;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
 }
@@ -132,26 +127,15 @@ async function scout() {
   document.getElementById('summary').style.display = 'none';
   approved = [];
 
-  const month = new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
-  const label = sport==='all'?'NFL, NBA, MLB and NHL':sport.toUpperCase();
-
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/netlify/functions/trending-scout', {
       method: 'POST',
-      headers: { 'Content-Type':'application/json', 'x-api-key':apiKey, 'anthropic-version':'2023-06-01' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        tools: [{ type:'web_search_20250305', name:'web_search' }],
-        messages: [{ role:'user', content:`Search Amazon bestsellers and sports news to find the top 6 trending ${label} fan merchandise and collectibles in ${month}. Focus on Funko Pops, jerseys, trading cards, memorabilia trending due to current events like playoffs or player news. Return ONLY a JSON array, no markdown: [{"name":"product name","category":"nfl","estimatedPrice":19.99,"reason":"why trending now","searchTerms":"amazon search terms"}]` }]
-      })
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ password: adminPw, sport })
     });
-    if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message || 'API error ' + r.status); }
     const data = await r.json();
-    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const m = text.match(/\[[\s\S]*?\]/);
-    if (!m) throw new Error('Could not parse product list — try again');
-    products = JSON.parse(m[0]).map((p,i) => ({...p, id:'p'+i, amazonUrl:'https://www.amazon.com/s?k='+encodeURIComponent(p.searchTerms)+'&tag=piekonlinesto-20'}));
+    if (!r.ok || !data.success) throw new Error(data.error || 'Error ' + r.status);
+    products = data.products.map((p,i) => ({...p, id:'p'+i, amazonUrl: p.amazonSearchUrl || 'https://www.amazon.com/s?k='+encodeURIComponent(p.searchTerms||p.name)+'&tag=piekonlinesto-20'}));
     st.className = 'status success';
     st.textContent = '✅ Found ' + products.length + ' trending products — approve or reject each one below';
     res.innerHTML = products.map(p => `
@@ -206,11 +190,6 @@ function updateSummary() {
     `<div class="summary-item"><strong>${p.name}</strong> (~$${Number(p.estimatedPrice).toFixed(2)}) &nbsp;·&nbsp; <a href="${p.amazonUrl}" target="_blank">Find on Amazon →</a></div>`
   ).join('');
 }
-
-window.addEventListener('load', () => {
-  const k = localStorage.getItem('sk_key');
-  if (k) document.getElementById('apikey').value = k;
-});
 </script>
 </body>
 </html>

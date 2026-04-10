@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKSportz Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --black: #0a0a0a; --black2: #111111; --white: #ffffff; --yellow: #f5c518; }
+body { font-family: Inter, sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+nav { position: sticky; top: 0; z-index: 200; background: #0d0d0d; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 62px; }
+.nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.nav-logo-icon { width: 32px; height: 32px; background: var(--yellow); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--black); }
+.sk { color: var(--yellow); font-weight: 800; font-size: 1.1rem; }
+.sportz { color: var(--white); font-weight: 800; font-size: 1.1rem; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+.login-box { background: var(--black2); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2.5rem; max-width: 420px; margin: 4rem auto; text-align: center; }
+.login-box h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.4rem; }
+.login-box p { color: rgba(255,255,255,0.45); font-size: 0.85rem; margin-bottom: 1.5rem; }
+input { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: var(--white); font-size: 1rem; margin-bottom: 0.75rem; }
+.btn-yellow { background: var(--yellow); color: var(--black); border: none; padding: 11px 24px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.btn-yellow:disabled { opacity: 0.5; cursor: not-allowed; }
+.admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.admin-title { font-size: 1.6rem; font-weight: 800; }
+.controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
+select { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; color: var(--white); font-size: 0.9rem; cursor: pointer; width: auto; margin-bottom: 0; }
+.status { padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; display: none; }
+.status.loading { background: rgba(255,197,24,0.1); color: var(--yellow); border: 1px solid rgba(255,197,24,0.2); display: block; }
+.status.success { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); display: block; }
+.status.error { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); display: block; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+.card { background: var(--black2); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 1.2rem; }
+.card.approved { border-color: rgba(34,197,94,0.5); background: rgba(34,197,94,0.04); }
+.card.rejected { opacity: 0.35; }
+.cat-badge { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; margin-bottom: 0.7rem; }
+.cat-nfl { background: rgba(26,58,110,0.6); color: #7ba7e8; }
+.cat-nba { background: rgba(85,37,131,0.6); color: #c4a0e8; }
+.cat-mlb { background: rgba(185,28,28,0.4); color: #f87171; }
+.cat-nhl { background: rgba(10,39,68,0.6); color: #7ba7e8; }
+.pname { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; line-height: 1.4; }
+.pprice { font-size: 1.1rem; font-weight: 800; color: var(--yellow); margin-bottom: 0.5rem; }
+.preason { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 1rem; line-height: 1.5; }
+.actions { display: flex; gap: 0.5rem; }
+.btn-approve { flex: 1; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.35); color: #4ade80; padding: 8px; border-radius: 7px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+.btn-approve.on { background: rgba(34,197,94,0.28); border-color: #4ade80; }
+.btn-reject { flex: 1; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #f87171; padding: 8px; border-radius: 7px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+.btn-amz { flex: 2; background: rgba(255,153,0,0.12); border: 1px solid rgba(255,153,0,0.25); color: #ffa500; padding: 8px; border-radius: 7px; font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.summary { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 10px; padding: 1.2rem 1.5rem; margin-top: 2rem; display: none; }
+.summary h3 { font-size: 0.9rem; font-weight: 700; color: #4ade80; margin-bottom: 0.75rem; }
+.summary-item { font-size: 0.82rem; color: rgba(255,255,255,0.6); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.summary-item:last-child { border: none; }
+.summary-item a { color: #ffa500; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+    <span><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+  </a>
+  <a href="/" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.85rem;"><i class="fa fa-arrow-left"></i> Back to Site</a>
+</nav>
+
+<div class="wrap">
+  <div id="login-screen">
+    <div class="login-box">
+      <div style="font-size:2rem;margin-bottom:1rem;">⚡</div>
+      <h2>Admin Dashboard</h2>
+      <p>Enter your password and Anthropic API key</p>
+      <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
+      <input type="text" id="apikey" placeholder="Anthropic API key (sk-ant-...)" onkeydown="if(event.key==='Enter')login()">
+      <button class="btn-yellow" style="width:100%;justify-content:center;" onclick="login()"><i class="fa fa-lock"></i> Login</button>
+      <p id="lerr" style="color:#f87171;font-size:0.8rem;margin-top:0.75rem;display:none;"></p>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:1rem;">API key stored in browser session only — never saved anywhere else.</p>
+    </div>
+  </div>
+
+  <div id="dashboard" style="display:none;">
+    <div class="admin-header">
+      <div class="admin-title"><span class="sk">SK</span><span class="sportz">SPORTZ</span> Admin</div>
+      <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);">AI Product Scout</div>
+    </div>
+    <div class="controls">
+      <button class="btn-yellow" id="scout-btn" onclick="scout()"><i class="fa fa-robot"></i> Scout Trending Products</button>
+      <select id="sport-sel">
+        <option value="all">All Sports</option>
+        <option value="nfl">NFL</option>
+        <option value="nba">NBA</option>
+        <option value="mlb">MLB</option>
+        <option value="nhl">NHL</option>
+      </select>
+      <span style="font-size:0.78rem;color:rgba(255,255,255,0.3);">AI searches Amazon & sports news for what's hot right now</span>
+    </div>
+    <div id="status" class="status"></div>
+    <div id="results" class="grid"></div>
+    <div id="summary" class="summary">
+      <h3>✅ Approved — Add These to Your Shop</h3>
+      <div id="summary-list"></div>
+      <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:1rem;">Find each product on Amazon, copy the image URL and affiliate link, then paste in chat to add to your shop.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+let apiKey = '';
+let products = [];
+let approved = [];
+
+function login() {
+  const pw = document.getElementById('pw').value;
+  const key = document.getElementById('apikey').value.trim();
+  const err = document.getElementById('lerr');
+  if (!pw) { err.style.display='block'; err.textContent='Enter password'; return; }
+  if (!key.startsWith('sk-ant-')) { err.style.display='block'; err.textContent='Enter a valid Anthropic API key (starts with sk-ant-)'; return; }
+  apiKey = key;
+  localStorage.setItem('sk_key', key);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+}
+
+async function scout() {
+  const btn = document.getElementById('scout-btn');
+  const sport = document.getElementById('sport-sel').value;
+  const st = document.getElementById('status');
+  const res = document.getElementById('results');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Scouting...';
+  st.className = 'status loading';
+  st.textContent = '🤖 AI is searching for trending ' + (sport==='all'?'sports':sport.toUpperCase()) + ' products...';
+  res.innerHTML = '';
+  document.getElementById('summary').style.display = 'none';
+  approved = [];
+
+  const month = new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const label = sport==='all'?'NFL, NBA, MLB and NHL':sport.toUpperCase();
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'x-api-key':apiKey, 'anthropic-version':'2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        tools: [{ type:'web_search_20250305', name:'web_search' }],
+        messages: [{ role:'user', content:`Search Amazon bestsellers and sports news to find the top 6 trending ${label} fan merchandise and collectibles in ${month}. Focus on Funko Pops, jerseys, trading cards, memorabilia trending due to current events like playoffs or player news. Return ONLY a JSON array, no markdown: [{"name":"product name","category":"nfl","estimatedPrice":19.99,"reason":"why trending now","searchTerms":"amazon search terms"}]` }]
+      })
+    });
+    if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message || 'API error ' + r.status); }
+    const data = await r.json();
+    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const m = text.match(/\[[\s\S]*?\]/);
+    if (!m) throw new Error('Could not parse product list — try again');
+    products = JSON.parse(m[0]).map((p,i) => ({...p, id:'p'+i, amazonUrl:'https://www.amazon.com/s?k='+encodeURIComponent(p.searchTerms)+'&tag=piekonlinesto-20'}));
+    st.className = 'status success';
+    st.textContent = '✅ Found ' + products.length + ' trending products — approve or reject each one below';
+    res.innerHTML = products.map(p => `
+      <div class="card" id="c${p.id}">
+        <span class="cat-badge cat-${p.category}">${p.category.toUpperCase()}</span>
+        <div class="pname">${p.name}</div>
+        <div class="pprice">~$${Number(p.estimatedPrice).toFixed(2)}</div>
+        <div class="preason">🔥 ${p.reason}</div>
+        <div class="actions">
+          <button class="btn-approve" id="a${p.id}" onclick="approve('${p.id}')">✅ Approve</button>
+          <button class="btn-reject" onclick="reject('${p.id}')">❌ Reject</button>
+          <a href="${p.amazonUrl}" target="_blank" class="btn-amz">🛒 Amazon</a>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    st.className = 'status error';
+    st.textContent = '❌ ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-robot"></i> Scout Trending Products';
+  }
+}
+
+function approve(id) {
+  const card = document.getElementById('c'+id);
+  const btn = document.getElementById('a'+id);
+  const p = products.find(x=>x.id===id);
+  if (btn.classList.contains('on')) {
+    btn.classList.remove('on'); btn.textContent='✅ Approve';
+    card.classList.remove('approved');
+    approved = approved.filter(x=>x.id!==id);
+  } else {
+    btn.classList.add('on'); btn.textContent='✅ Approved!';
+    card.classList.add('approved'); card.classList.remove('rejected');
+    if (!approved.find(x=>x.id===id)) approved.push(p);
+  }
+  updateSummary();
+}
+
+function reject(id) {
+  document.getElementById('c'+id).classList.add('rejected');
+  document.getElementById('a'+id).classList.remove('on');
+  approved = approved.filter(x=>x.id!==id);
+  updateSummary();
+}
+
+function updateSummary() {
+  const el = document.getElementById('summary');
+  if (!approved.length) { el.style.display='none'; return; }
+  el.style.display = 'block';
+  document.getElementById('summary-list').innerHTML = approved.map(p =>
+    `<div class="summary-item"><strong>${p.name}</strong> (~$${Number(p.estimatedPrice).toFixed(2)}) &nbsp;·&nbsp; <a href="${p.amazonUrl}" target="_blank">Find on Amazon →</a></div>`
+  ).join('');
+}
+
+window.addEventListener('load', () => {
+  const k = localStorage.getItem('sk_key');
+  if (k) document.getElementById('apikey').value = k;
+});
+</script>
+</body>
+</html>

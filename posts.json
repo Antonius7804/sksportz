@@ -1,1 +1,12 @@
-{ "posts": [] }
+{
+  "posts": [
+    {
+      "title": "NBA Playoffs 2026: Full First Round Predictions",
+      "sport": "nba",
+      "date": "Apr 11, 2026",
+      "readTime": "5",
+      "image": "https://images.unsplash.com/photo-1546519638405-a1a9e9a6c9c9?w=800&q=80",
+      "body": "<p>The 2026 NBA Playoffs are here and the first round is packed with fascinating matchups. Here are our full predictions for every series.</p><h2>Eastern Conference</h2><p>The Boston Celtics enter as heavy favourites in the East, but the Cleveland Cavaliers have been one of the best teams in the league all season and could cause problems.</p><h2>Western Conference</h2><p>Out West, the Oklahoma City Thunder look unstoppable. Shai Gilgeous-Alexander has been the best player in the league this season and the Thunder have the depth to go all the way.</p>"
+    }
+  ]
+}

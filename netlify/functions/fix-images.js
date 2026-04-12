@@ -1,77 +1,64 @@
 const https = require('https');
 
-// Map of article alt text / identifiers to working Pexels images
-const IMAGE_MAP = {
-  'super_bowl_lx_chaos': 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?w=600',
-  'nfl_draft_2026': 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?w=600',
-  'lakers_lebron_luka': 'https://images.pexels.com/photos/945471/pexels-photo-945471.jpeg?w=600',
-  'nba_65_game_rule': 'https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?w=600',
-  'nba_playoffs_2026': 'https://images.pexels.com/photos/2891884/pexels-photo-2891884.jpeg?w=600',
-  'justin_pippen_ohio_state': 'https://images.pexels.com/photos/945471/pexels-photo-945471.jpeg?w=600',
-  'mlb_robot_umpire': 'https://images.pexels.com/photos/1586296/pexels-photo-1586296.jpeg?w=600',
-  'wbc_venezuela_usa': 'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?w=600',
-  'dodgers_three_peat': 'https://images.pexels.com/photos/1152346/pexels-photo-1152346.jpeg?w=600',
-  'mlb_lockout': 'https://images.pexels.com/photos/1584389/pexels-photo-1584389.jpeg?w=600',
-  'shohei_ohtani_dodgers': 'https://images.pexels.com/photos/1586296/pexels-photo-1586296.jpeg?w=600',
-  'ilya_sorokin_goalie': 'https://images.pexels.com/photos/3764011/pexels-photo-3764011.jpeg?w=600',
-  'arch_manning_texas': 'https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?w=600',
-  'march_madness_arizona': 'https://images.pexels.com/photos/2346271/pexels-photo-2346271.jpeg?w=600',
-  'ufc_327_fight': 'https://images.pexels.com/photos/4804074/pexels-photo-4804074.jpeg?w=600',
-  'israel_adesanya_ufc': 'https://images.pexels.com/photos/8612383/pexels-photo-8612383.jpeg?w=600',
-  'mayweather_pacquiao_boxing': 'https://images.pexels.com/photos/4752861/pexels-photo-4752861.jpeg?w=600',
-  'golden_age_sports_2026': 'https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?w=600',
-  'sports_analytics': 'https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?w=600',
-  'sports_betting': 'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?w=600',
-};
-
-// Unsplash photo IDs to Pexels replacements
-const UNSPLASH_FIXES = [
-  ['photo-1516803411520-55b95f5b0c0a', 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg'],
-  ['photo-1546519638405-a1a9e9a6c9c9', 'https://images.pexels.com/photos/945471/pexels-photo-945471.jpeg'],
-  ['photo-1546519638-68e109498ffc', 'https://images.pexels.com/photos/945471/pexels-photo-945471.jpeg'],
-  ['photo-1471295253337-3ceaaedca402', 'https://images.pexels.com/photos/1586296/pexels-photo-1586296.jpeg'],
-  ['photo-1515703407324-5f753afd8be8', 'https://images.pexels.com/photos/3764011/pexels-photo-3764011.jpeg'],
-  ['photo-1549719386-74dfcbf7dbed', 'https://images.pexels.com/photos/4804074/pexels-photo-4804074.jpeg'],
-  ['photo-1593779291327-4e7a9f4da1d8', 'https://images.pexels.com/photos/4752861/pexels-photo-4752861.jpeg'],
-  ['photo-1495563381401-ecffb4a4b0d9', 'https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg'],
-  ['photo-1574629810360-7efbbe195018', 'https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg'],
-  ['photo-1525648199074-cee30ba79a4a', 'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg'],
+const FIXES = [
+  ['alt="Super Bowl"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/KMJvUFiPDfaVCyKl.jpg'],
+  ['alt="NFL Draft 2026"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/GBsEOGorByIoEvBu.jpg'],
+  ['alt="Lakers"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/BQrxeIoisXdTsGnh.jpg'],
+  ['alt="LeBron Luka"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/BQrxeIoisXdTsGnh.jpg'],
+  ['alt="MVP Race"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/abZizqPiquhsblwR.jpg'],
+  ['alt="NBA Playoffs 2026"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/iNgMeiaJatYKnyoE.jpg'],
+  ['alt="Robot Umpire"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/jSDtFmvttAmKlhpv.jpg'],
+  ['alt="WBC Venezuela"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/letyGgJuzOGXZxbK.jpg'],
+  ['alt="Dodgers"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/FUsnyuVtvzhGMlHw.jpg'],
+  ['alt="MLB Lockout"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/OEcjgGUkXusBeDTo.jpg'],
+  ['alt="Dodgers Three-Peat"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/gwBPIIghiRkCECUs.jpg'],
+  ['alt="NHL Sorokin"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/jxPvFIEwiPKfCtOO.jpg'],
+  ['alt="Arch Manning"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/UidNDbSCrdNKcONS.jpg'],
+  ['alt="March Madness"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/ykUMaJYydCGTxVrl.jpg'],
+  ['alt="UFC 327"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/ZybAOJKfmBGJOhsJ.jpg'],
+  ['alt="Adesanya"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/uMWnEEBdWxwuPAgF.jpg'],
+  ['alt="Mayweather Pacquiao"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/CwZcMxYzzbDbkVDj.jpg'],
+  ['alt="American Sports"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/hlDKCtfhoKyNwVAB.jpg'],
+  ['alt="Analytics"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/caAUeYpmFJzOKBzb.jpg'],
+  ['alt="Sports Betting"', 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/tilRJildyJMdpZKx.jpg'],
 ];
 
 exports.handler = async (event) => {
-  // Get the current posts.json from GitHub
   const token = process.env.GITHUB_TOKEN;
   const repo = 'Antonius7804/sksportz';
 
-  // Read the index.html from GitHub
-  const getFile = (path) => new Promise((resolve, reject) => {
-    const options = {
+  const file = await new Promise((resolve, reject) => {
+    https.get({
       hostname: 'api.github.com',
-      path: `/repos/${repo}/contents/${path}`,
+      path: `/repos/${repo}/contents/index.html`,
       headers: { 'Authorization': `token ${token}`, 'User-Agent': 'sksportz' }
-    };
-    https.get(options, res => {
+    }, res => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve(JSON.parse(data)));
     }).on('error', reject);
   });
 
-  const file = await getFile('index.html');
-  let content = Buffer.from(file.content, 'base64').toString('utf8');
-
-  // Apply all image fixes
-  for (const [oldId, newUrl] of UNSPLASH_FIXES) {
-    // Replace the full unsplash URL pattern
-    const regex = new RegExp(`https://images\\.unsplash\\.com/${oldId}[^"']*`, 'g');
-    content = content.replace(regex, newUrl + '?w=600&q=80');
+  if (!file.content || file.size < 1000) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'File too small or empty', size: file.size }) };
   }
 
-  // Write back to GitHub
-  const updated = Buffer.from(content).toString('base64');
+  let content = Buffer.from(file.content, 'base64').toString('utf8');
+  let changes = 0;
+
+  for (const [altText, newUrl] of FIXES) {
+    const regex = new RegExp(`(<img\\s+src=")[^"]*("\\s+${altText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'g');
+    const newContent = content.replace(regex, `$1${newUrl}$2`);
+    if (newContent !== content) { changes++; content = newContent; }
+  }
+
+  if (changes === 0) {
+    return { statusCode: 200, body: JSON.stringify({ message: 'No matches found', size: file.size }) };
+  }
+
   const putData = JSON.stringify({
-    message: 'Fix all article card images',
-    content: updated,
+    message: `Fix ${changes} article images with Manus CDN URLs`,
+    content: Buffer.from(content).toString('base64'),
     sha: file.sha
   });
 
@@ -92,5 +79,5 @@ exports.handler = async (event) => {
     req.end();
   });
 
-  return { statusCode: 200, body: JSON.stringify({ success: true, message: 'All images fixed!' }) };
+  return { statusCode: 200, body: JSON.stringify({ success: true, changes, message: `Fixed ${changes} images!` }) };
 };

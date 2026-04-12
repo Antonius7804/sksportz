@@ -26,7 +26,6 @@ const FIXES = [
 exports.handler = async (event) => {
   const token = process.env.GITHUB_TOKEN;
   const repo = 'Antonius7804/sksportz';
-
   const file = await new Promise((resolve, reject) => {
     https.get({
       hostname: 'api.github.com',
@@ -38,26 +37,28 @@ exports.handler = async (event) => {
       res.on('end', () => resolve(JSON.parse(data)));
     }).on('error', reject);
   });
-
   let content = Buffer.from(file.content, 'base64').toString('utf8');
   let changes = 0;
-
   for (const [altText, newUrl] of FIXES) {
     const regex = new RegExp(`(<img\\s+src=")[^"]*("\\s+${altText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'g');
     const newContent = content.replace(regex, `$1${newUrl}$2`);
     if (newContent !== content) { changes++; content = newContent; }
   }
-
   const putData = JSON.stringify({
     message: `Fix ${changes} article images`,
     content: Buffer.from(content).toString('base64'),
     sha: file.sha
   });
-
   await new Promise((resolve, reject) => {
     const req = https.request({
       hostname: 'api.github.com',
       path: `/repos/${repo}/contents/index.html`,
       method: 'PUT',
-      headers: {
-        'Authorization': `tok
+      headers: { 'Authorization': `token ${token}`, 'User-Agent': 'sksportz', 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(putData) }
+    }, res => { res.on('data', () => {}); res.on('end', resolve); });
+    req.on('error', reject);
+    req.write(putData);
+    req.end();
+  });
+  return { statusCode: 200, body: JSON.stringify({ success: true, changes }) };
+};

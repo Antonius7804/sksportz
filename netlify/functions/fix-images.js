@@ -39,10 +39,6 @@ exports.handler = async (event) => {
     }).on('error', reject);
   });
 
-  if (!file.content || file.size < 1000) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'File too small or empty', size: file.size }) };
-  }
-
   let content = Buffer.from(file.content, 'base64').toString('utf8');
   let changes = 0;
 
@@ -52,12 +48,8 @@ exports.handler = async (event) => {
     if (newContent !== content) { changes++; content = newContent; }
   }
 
-  if (changes === 0) {
-    return { statusCode: 200, body: JSON.stringify({ message: 'No matches found', size: file.size }) };
-  }
-
   const putData = JSON.stringify({
-    message: `Fix ${changes} article images with Manus CDN URLs`,
+    message: `Fix ${changes} article images`,
     content: Buffer.from(content).toString('base64'),
     sha: file.sha
   });
@@ -68,16 +60,4 @@ exports.handler = async (event) => {
       path: `/repos/${repo}/contents/index.html`,
       method: 'PUT',
       headers: {
-        'Authorization': `token ${token}`,
-        'User-Agent': 'sksportz',
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(putData)
-      }
-    }, res => { res.on('data', () => {}); res.on('end', resolve); });
-    req.on('error', reject);
-    req.write(putData);
-    req.end();
-  });
-
-  return { statusCode: 200, body: JSON.stringify({ success: true, changes, message: `Fixed ${changes} images!` }) };
-};
+        'Authorization': `tok

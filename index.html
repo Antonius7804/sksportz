@@ -41,15 +41,90 @@ body {
 nav {
   position: sticky;
   top: 0;
-  z-index: 200;
+  z-index: 500;
   background: #0d0d0d;
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+}
+.nav-top {
+  display: flex;
   align-items: center;
+  gap: 2rem;
   padding: 0 2rem;
   height: 62px;
 }
+.nav-links {
+  flex: 1;
+  justify-content: center;
+}
+
+/* ── SPORT TABS ROW ── */
+.nav-sports {
+  display: flex;
+  padding: 0 2rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: #0d0d0d;
+  position: relative;
+  z-index: 500;
+  overflow: visible;
+}
+.sktab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 18px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  position: relative;
+}
+.sktab i { font-size: 1.2rem; }
+.sktab:hover { color: rgba(255,255,255,0.8); }
+.sktab.on { color: var(--yellow); border-bottom-color: var(--yellow); }
+.sktab .skdrop {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-top: 2px solid var(--yellow);
+  z-index: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+}
+.sktab:hover .skdrop { display: block; }
+.skdrop-sec { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.skdrop-sec:last-child { border-bottom: none; }
+.skdrop-lbl {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  padding: 8px 16px 4px;
+  display: block;
+}
+.skdrop a {
+  display: block;
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.skdrop a:hover { color: white; background: rgba(255,255,255,0.05); padding-left: 20px; }
+.skdrop a.hot { color: var(--red); }
+.skdrop a.hot::after { content: ' 🔥'; font-size: 0.75rem; }
 
 .nav-logo {
   display: flex;
@@ -237,17 +312,31 @@ nav {
   background: #0e0e0e;
   border-top: 1px solid rgba(255,255,255,0.05);
   display: flex;
-  justify-content: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.stats-bar::-webkit-scrollbar { display: none; }
 .stat-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 0.9rem 1.8rem;
   border-right: 1px solid rgba(255,255,255,0.07);
-  flex: 1;
+  flex-shrink: 0;
 }
 .stat-item:last-child { border-right: none; }
+.live-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  margin-right: 4px;
+  animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
 .stat-icon {
   width: 32px; height: 32px;
   background: rgba(245,197,24,0.13);
@@ -482,13 +571,14 @@ section { padding: 5rem 4rem; }
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch;
 }
 .news-featured {
   border-radius: 14px;
   overflow: hidden;
   position: relative;
   min-height: 420px;
+  height: 100%;
   cursor: pointer;
   text-decoration: none;
   display: block;
@@ -1192,6 +1282,9 @@ footer {
 .admin-tab.active { color:var(--yellow);border-bottom-color:var(--yellow); }
 .admin-tab:hover { color:var(--white); }
 
+.nl-wrap.open .nl-drop { display:block !important; }
+.nl-drop input:focus { border-color:var(--yellow) !important; }
+
 </style>
 </head>
 <body>
@@ -1199,20 +1292,472 @@ footer {
 <div id="page-home">
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links" id="main-nav-links">
-    <li><a href="#" class="active">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <button id="hamburger" onclick="toggleMobileMenu()" style="display:none;background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer;padding:8px;"><i class="fa fa-bars"></i></button>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links" id="main-nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <button id="hamburger" onclick="toggleMobileMenu()" style="display:none;background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer;padding:8px;"><i class="fa fa-bars"></i></button>
+      <!-- Social icons -->
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;transition:color 0.2s;" title="Follow us on X"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;transition:color 0.2s;" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+      <!-- YouTube dropdown -->
+      <div style="position:relative;display:inline-block;" class="yt-nav-wrap">
+        <button style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);padding:7px 14px;border-radius:6px;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;" onclick="this.parentElement.classList.toggle('open')">
+          <i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube <i class="fa fa-chevron-down" style="font-size:0.65rem;"></i>
+        </button>
+        <div style="display:none;position:absolute;right:0;top:110%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:6px;min-width:200px;z-index:600;box-shadow:0 8px 24px rgba(0,0,0,0.6);" class="yt-nav-drop">
+          <a href="https://www.youtube.com/@sksportzNBA" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;border-bottom:1px solid rgba(255,255,255,0.07);"><i class="fab fa-youtube" style="color:#FF0000;"></i> SKSportzNBA</a>
+          <a href="https://youtube.com/@touchdownreel" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;"><i class="fab fa-youtube" style="color:#FF0000;"></i> Touchdown Reel</a>
+        </div>
+      </div>
+      <!-- Newsletter dropdown -->
+      <div style="position:relative;display:inline-block;" class="nl-wrap">
+        <button onclick="this.parentElement.classList.toggle('open')" style="background:var(--yellow);border:none;color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;">
+          <i class="fa fa-envelope"></i>Newsletter <i class="fa fa-chevron-down" style="font-size:0.65rem;"></i>
+        </button>
+        <div class="nl-drop" style="display:none;position:absolute;right:0;top:110%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;min-width:280px;z-index:600;box-shadow:0 8px 24px rgba(0,0,0,0.6);padding:1.2rem;">
+          <p style="font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:4px;">Get daily sports updates</p>
+          <p style="font-size:0.75rem;color:var(--gray);margin-bottom:12px;">No spam. Just the biggest stories every morning.</p>
+          <input type="email" placeholder="Your email address" id="nav-email-input" style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:9px 12px;color:var(--white);font-size:0.85rem;font-family:'Inter',sans-serif;margin-bottom:8px;outline:none;">
+          <button onclick="navNewsletterSubmit()" style="width:100%;background:var(--yellow);border:none;color:var(--black);padding:9px;border-radius:6px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Subscribe Free</button>
+          <p id="nav-nl-msg" style="font-size:0.75rem;color:#4ade80;margin-top:8px;display:none;text-align:center;">✓ You're in! Check your inbox.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPORT TABS -->
+  <div class="nav-sports">
+
+    <!-- NFL -->
+    <div class="sktab on"><i class="fa fa-football-ball"></i>NFL
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News & Rumours</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Draft News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Standings</span>
+          <div id="sk-stand-nfl" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">NFL Games Near You</a>
+          <a href="#" onclick="showPage('tickets');return false;">NFL Draft Experience</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop NFL</span>
+          <a href="https://www.amazon.com/s?k=nfl+jersey&tag=piekonlinesto-20" target="_blank">NFL Jerseys</a>
+          <a href="https://www.amazon.com/s?k=nfl+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+          <a href="https://www.amazon.com/s?k=nfl+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NBA -->
+    <div class="sktab"><i class="fa fa-basketball-ball"></i>NBA
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News & Rumours</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Standings & Playoffs</span>
+          <div id="sk-stand-nba" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">NBA Playoff Games</a>
+          <a href="#" onclick="showPage('tickets');return false;">Find NBA Seats</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop NBA</span>
+          <a href="https://www.amazon.com/s?k=nba+jersey&tag=piekonlinesto-20" target="_blank">NBA Jerseys</a>
+          <a href="https://www.amazon.com/s?k=nba+collectibles&tag=piekonlinesto-20" target="_blank">Collectibles</a>
+          <a href="https://www.amazon.com/s?k=nba+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MLB -->
+    <div class="sktab"><i class="fa fa-baseball-ball"></i>MLB
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News & Rumours</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Roster Moves</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Standings</span>
+          <div id="sk-stand-mlb" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">MLB Games Near You</a>
+          <a href="#" onclick="showPage('tickets');return false;">Opening Series Tickets</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop MLB</span>
+          <a href="https://www.amazon.com/s?k=mlb+jersey&tag=piekonlinesto-20" target="_blank">MLB Jerseys</a>
+          <a href="https://www.amazon.com/s?k=baseball+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+          <a href="https://www.amazon.com/s?k=mlb+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NHL -->
+    <div class="sktab"><i class="fa fa-hockey-puck"></i>NHL
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News & Rumours</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Waiver Wire</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Playoffs</span>
+          <div id="sk-stand-nhl" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">NHL Playoff Tickets</a>
+          <a href="#" onclick="showPage('tickets');return false;">Stanley Cup Finals</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop NHL</span>
+          <a href="https://www.amazon.com/s?k=nhl+jersey&tag=piekonlinesto-20" target="_blank">NHL Jerseys</a>
+          <a href="https://www.amazon.com/s?k=hockey+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+          <a href="https://www.amazon.com/s?k=nhl+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- UFC -->
+    <div class="sktab"><i class="fa fa-fist-raised"></i>UFC
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Fight Cards</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Weigh-Ins</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Current Champions</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Heavyweight: Jon Jones</a>
+          <a href="#" onclick="showPage('all-articles');return false;">LHW: Jiří Procházka</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Welterweight: Belal Muhammad</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Lightweight: Islam Makhachev</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">Upcoming UFC Events</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop UFC</span>
+          <a href="https://www.amazon.com/s?k=ufc+gear&tag=piekonlinesto-20" target="_blank">UFC Gear</a>
+          <a href="https://www.amazon.com/s?k=mma+gloves&tag=piekonlinesto-20" target="_blank">MMA Gloves</a>
+          <a href="https://www.amazon.com/s?k=ufc+collectibles&tag=piekonlinesto-20" target="_blank">Collectibles</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boxing -->
+    <div class="sktab"><i class="fa fa-hand-rock"></i>Boxing
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Upcoming Fights</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Weigh-Ins</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Current Champions</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Heavyweight: Oleksandr Usyk</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Light Heavyweight: Artur Beterbiev</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Super Welterweight: Canelo Alvarez</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">Upcoming Boxing Events</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop Boxing</span>
+          <a href="https://www.amazon.com/s?k=boxing+gloves&tag=piekonlinesto-20" target="_blank">Boxing Gloves</a>
+          <a href="https://www.amazon.com/s?k=boxing+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+          <a href="https://www.amazon.com/s?k=boxing+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- College FB -->
+    <div class="sktab"><i class="fa fa-football-ball"></i>College FB
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Portal</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Spring Game News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">NFL Draft Prospects</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Rankings</span>
+          <a href="#" onclick="showPage('scores');return false;">AP Top 25</a>
+          <a href="#" onclick="showPage('scores');return false;">CFP Rankings</a>
+          <a href="#" onclick="showPage('scores');return false;">Conference Standings</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Top Programs</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Alabama Crimson Tide</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Georgia Bulldogs</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Ohio State Buckeyes</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Texas Longhorns</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop College FB</span>
+          <a href="https://www.amazon.com/s?k=college+football+jersey&tag=piekonlinesto-20" target="_blank">College Jerseys</a>
+          <a href="https://www.amazon.com/s?k=college+football+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- College BB -->
+    <div class="sktab"><i class="fa fa-basketball-ball"></i>College BB
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Portal</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
+          <a href="#" onclick="showPage('all-articles');return false;">NBA Draft Prospects</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tournaments</span>
+          <a href="#" onclick="showPage('scores');return false;">March Madness Bracket</a>
+          <a href="#" onclick="showPage('scores');return false;">AP Top 25</a>
+          <a href="#" onclick="showPage('scores');return false;">Conference Standings</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Top Programs</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Kansas Jayhawks</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Duke Blue Devils</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Kentucky Wildcats</a>
+          <a href="#" onclick="showPage('all-articles');return false;">UConn Huskies</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop College BB</span>
+          <a href="https://www.amazon.com/s?k=college+basketball+jersey&tag=piekonlinesto-20" target="_blank">College Jerseys</a>
+          <a href="https://www.amazon.com/s?k=march+madness+gear&tag=piekonlinesto-20" target="_blank">March Madness Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Soccer -->
+    <div class="sktab"><i class="fa fa-futbol"></i>Soccer
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News & Rumours</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Rumours</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Manager News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Leagues</span>
+          <a href="#" onclick="showPage('scores');return false;">MLS Standings</a>
+          <a href="#" onclick="showPage('scores');return false;">Premier League</a>
+          <a href="#" onclick="showPage('scores');return false;">Champions League</a>
+          <a href="#" onclick="showPage('scores');return false;">La Liga</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Tickets</span>
+          <a href="#" onclick="showPage('tickets');return false;">MLS Tickets</a>
+          <a href="#" onclick="showPage('tickets');return false;">Soccer Events Near You</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop Soccer</span>
+          <a href="https://www.amazon.com/s?k=soccer+jersey&tag=piekonlinesto-20" target="_blank">Soccer Jerseys</a>
+          <a href="https://www.amazon.com/s?k=soccer+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="https://www.amazon.com/s?k=soccer+cleats&tag=piekonlinesto-20" target="_blank">Cleats & Boots</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- WWE -->
+    <div class="sktab"><i class="fa fa-fist-raised"></i>WWE
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Storylines</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Pay-Per-View</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Superstar News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Current Champions</span>
+          <a href="#" onclick="showPage('all-articles');return false;">WWE Champion: Cody Rhodes</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Universal: Roman Reigns</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Women's: Rhea Ripley</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Upcoming Events</span>
+          <a href="#" onclick="showPage('tickets');return false;">WWE Live Events</a>
+          <a href="#" onclick="showPage('tickets');return false;">WrestleMania Tickets</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop WWE</span>
+          <a href="https://www.amazon.com/s?k=wwe+championship+belt&tag=piekonlinesto-20" target="_blank">Championship Belts</a>
+          <a href="https://www.amazon.com/s?k=wwe+action+figures&tag=piekonlinesto-20" target="_blank">Action Figures</a>
+          <a href="https://www.amazon.com/s?k=wwe+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tennis -->
+    <div class="sktab"><i class="fa fa-table-tennis"></i>Tennis
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Grand Slam News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">ATP Tour</a>
+          <a href="#" onclick="showPage('all-articles');return false;">WTA Tour</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Player News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Rankings</span>
+          <a href="#" onclick="showPage('scores');return false;">ATP Top 10</a>
+          <a href="#" onclick="showPage('scores');return false;">WTA Top 10</a>
+          <a href="#" onclick="showPage('scores');return false;">Grand Slam Schedule</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Top Players</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Jannik Sinner</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Carlos Alcaraz</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Aryna Sabalenka</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Iga Swiatek</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop Tennis</span>
+          <a href="https://www.amazon.com/s?k=tennis+racket&tag=piekonlinesto-20" target="_blank">Tennis Rackets</a>
+          <a href="https://www.amazon.com/s?k=tennis+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Golf -->
+    <div class="sktab"><i class="fa fa-golf-ball"></i>Golf
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 PGA Tour</a>
+          <a href="#" onclick="showPage('all-articles');return false;">LIV Golf</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Major Championships</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Player News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Rankings & Schedule</span>
+          <a href="#" onclick="showPage('scores');return false;">World Golf Rankings</a>
+          <a href="#" onclick="showPage('scores');return false;">PGA Tour Schedule</a>
+          <a href="#" onclick="showPage('scores');return false;">Major Winners</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Top Players</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Scottie Scheffler</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Rory McIlroy</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Jon Rahm</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Tiger Woods</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop Golf</span>
+          <a href="https://www.amazon.com/s?k=golf+clubs&tag=piekonlinesto-20" target="_blank">Golf Clubs</a>
+          <a href="https://www.amazon.com/s?k=golf+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="https://www.amazon.com/s?k=golf+accessories&tag=piekonlinesto-20" target="_blank">Accessories</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NASCAR -->
+    <div class="sktab"><i class="fa fa-flag-checkered"></i>NASCAR
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Race Results</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Driver News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Race Schedule</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Team News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Standings</span>
+          <a href="#" onclick="showPage('scores');return false;">Cup Series Standings</a>
+          <a href="#" onclick="showPage('scores');return false;">Xfinity Series</a>
+          <a href="#" onclick="showPage('scores');return false;">Playoff Picture</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Top Drivers</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Kyle Larson</a>
+          <a href="#" onclick="showPage('all-articles');return false;">William Byron</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Denny Hamlin</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Chase Elliott</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop NASCAR</span>
+          <a href="https://www.amazon.com/s?k=nascar+fan+gear&tag=piekonlinesto-20" target="_blank">NASCAR Fan Gear</a>
+          <a href="https://www.amazon.com/s?k=nascar+diecast&tag=piekonlinesto-20" target="_blank">Diecast Cars</a>
+          <a href="https://www.amazon.com/s?k=nascar+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- F1 -->
+    <div class="sktab"><i class="fa fa-flag-checkered"></i>F1
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">News</span>
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Race Results</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Driver News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Race Schedule</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Team News</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Standings</span>
+          <a href="#" onclick="showPage('scores');return false;">Driver Championship</a>
+          <a href="#" onclick="showPage('scores');return false;">Constructor Championship</a>
+          <a href="#" onclick="showPage('scores');return false;">Race Calendar</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Top Drivers</span>
+          <a href="#" onclick="showPage('all-articles');return false;">Max Verstappen</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Lewis Hamilton</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Charles Leclerc</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Lando Norris</a>
+        </div>
+        <div class="skdrop-sec">
+          <span class="skdrop-lbl">Shop F1</span>
+          <a href="https://www.amazon.com/s?k=f1+fan+gear&tag=piekonlinesto-20" target="_blank">F1 Fan Gear</a>
+          <a href="https://www.amazon.com/s?k=formula+1+model+car&tag=piekonlinesto-20" target="_blank">Model Cars</a>
+          <a href="https://www.amazon.com/s?k=f1+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </nav>
 
@@ -1256,6 +1801,12 @@ footer {
   <div class="stat-item"><div class="stat-icon"><i class="fa fa-baseball-ball"></i></div><div><span class="stat-num" id="s-mlb-1-v">MLB</span><span class="stat-label" id="s-mlb-1-l">Loading...</span></div></div>
   <div class="stat-item"><div class="stat-icon"><i class="fa fa-hockey-puck"></i></div><div><span class="stat-num" id="s-nhl-0-v">NHL</span><span class="stat-label" id="s-nhl-0-l">Loading...</span></div></div>
   <div class="stat-item"><div class="stat-icon"><i class="fa fa-hockey-puck"></i></div><div><span class="stat-num" id="s-nhl-1-v">NHL</span><span class="stat-label" id="s-nhl-1-l">Loading...</span></div></div>
+  <div class="stat-item"><div class="stat-icon"><i class="fa fa-fist-raised"></i></div><div><span class="stat-num" id="s-ufc-0-v">UFC</span><span class="stat-label" id="s-ufc-0-l">Loading...</span></div></div>
+  <div class="stat-item"><div class="stat-icon"><i class="fa fa-football-ball"></i></div><div><span class="stat-num" id="s-cfb-0-v">CFB</span><span class="stat-label" id="s-cfb-0-l">Loading...</span></div></div>
+  <div class="stat-item"><div class="stat-icon"><i class="fa fa-basketball-ball"></i></div><div><span class="stat-num" id="s-cbb-0-v">CBB</span><span class="stat-label" id="s-cbb-0-l">Loading...</span></div></div>
+  <div class="stat-item"><div class="stat-icon"><i class="fa fa-futbol"></i></div><div><span class="stat-num" id="s-mls-0-v">MLS</span><span class="stat-label" id="s-mls-0-l">Loading...</span></div></div>
+  <div class="stat-item"><div class="stat-icon"><i class="fa fa-futbol"></i></div><div><span class="stat-num" id="s-epl-0-v">EPL</span><span class="stat-label" id="s-epl-0-l">Loading...</span></div></div>
+  <div class="stat-item"><div class="stat-icon"><i class="fa fa-table-tennis"></i></div><div><span class="stat-num" id="s-tennis-0-v">Tennis</span><span class="stat-label" id="s-tennis-0-l">Loading...</span></div></div>
 </div>
 <script>
 async function loadLiveScores() {
@@ -1263,7 +1814,13 @@ async function loadLiveScores() {
     { key: 'nfl', url: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard' },
     { key: 'nba', url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard' },
     { key: 'mlb', url: 'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard' },
-    { key: 'nhl', url: 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard' }
+    { key: 'nhl', url: 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard' },
+    { key: 'ufc', url: 'https://site.api.espn.com/apis/site/v2/sports/mma/ufc/scoreboard' },
+    { key: 'cfb', url: 'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard' },
+    { key: 'cbb', url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard' },
+    { key: 'mls', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard' },
+    { key: 'epl', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard' },
+    { key: 'tennis', url: 'https://site.api.espn.com/apis/site/v2/sports/tennis/scoreboard' }
   ];
   for (const sport of sports) {
     try {
@@ -1286,7 +1843,7 @@ async function loadLiveScores() {
         const state = game.status?.type?.state;
         if (state === 'in') {
           vEl.textContent = away.team.abbreviation+' '+away.score+' - '+home.score+' '+home.team.abbreviation;
-          lEl.innerHTML = '<span style="color:#4ade80;font-size:0.65rem;">&#9679; LIVE</span>';
+          lEl.innerHTML = '<span class="live-dot"></span><span style="color:var(--red);font-size:0.65rem;font-weight:700;">LIVE</span>';
         } else if (state === 'post') {
           vEl.textContent = away.team.abbreviation+' '+away.score+' - '+home.score+' '+home.team.abbreviation;
           lEl.textContent = 'Final';
@@ -1306,6 +1863,60 @@ async function loadLiveScores() {
     }
   }
 }
+
+// SK STANDINGS
+async function loadStandings(sport, url, elId, nameKey) {
+  try {
+    const r = await fetch(url);
+    const d = await r.json();
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const entries = d.children ? d.children.flatMap(c => c.standings?.entries || []) : (d.standings?.entries || []);
+    if (!entries.length) { el.innerHTML = '<a href="#" onclick="showPage(\'scores\');return false;" style="display:block;padding:4px 0;color:rgba(255,255,255,0.6);">View Full Standings →</a>'; return; }
+    const top5 = entries.slice(0, 5);
+    el.innerHTML = top5.map(e => {
+      const w = e.stats?.find(s => s.name === 'wins')?.value || 0;
+      const l = e.stats?.find(s => s.name === 'losses')?.value || 0;
+      return `<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span>${e.team?.shortDisplayName || e.team?.name}</span><span style="color:var(--yellow);font-weight:700;">${w}-${l}</span></div>`;
+    }).join('') + '<a href="#" onclick="showPage(\'scores\');return false;" style="display:block;padding:4px 0;margin-top:4px;color:rgba(255,255,255,0.4);font-size:0.75rem;">View all →</a>';
+  } catch(e) {
+    const el = document.getElementById(elId);
+    if (el) el.innerHTML = '<a href="#" onclick="showPage(\'scores\');return false;" style="display:block;padding:4px 0;color:rgba(255,255,255,0.5);">View Standings →</a>';
+  }
+}
+
+// Load all standings on hover
+document.querySelectorAll('.sktab').forEach(tab => {
+  tab.addEventListener('mouseenter', function() {
+    const s = this.dataset.s;
+    if (s === 'nfl' && document.getElementById('sk-stand-nfl')?.textContent === 'Loading...')
+      loadStandings('nfl','https://site.api.espn.com/apis/v2/sports/football/nfl/standings','sk-stand-nfl');
+    if (s === 'nba' && document.getElementById('sk-stand-nba')?.textContent === 'Loading...')
+      loadStandings('nba','https://site.api.espn.com/apis/v2/sports/basketball/nba/standings','sk-stand-nba');
+    if (s === 'mlb' && document.getElementById('sk-stand-mlb')?.textContent === 'Loading...')
+      loadStandings('mlb','https://site.api.espn.com/apis/v2/sports/baseball/mlb/standings','sk-stand-mlb');
+    if (s === 'nhl' && document.getElementById('sk-stand-nhl')?.textContent === 'Loading...')
+      loadStandings('nhl','https://site.api.espn.com/apis/v2/sports/hockey/nhl/standings','sk-stand-nhl');
+  });
+});
+
+// NAV NEWSLETTER
+function navNewsletterSubmit() {
+  const email = document.getElementById('nav-email-input').value;
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+  document.getElementById('nav-nl-msg').style.display = 'block';
+  document.getElementById('nav-email-input').value = '';
+}
+
+// SK POLLS
+function skVote(pollId, btn) {
+  document.querySelectorAll('#' + pollId + ' button').forEach(function(b) {
+    b.style.background = 'rgba(255,255,255,0.05)';
+    b.style.borderColor = 'rgba(255,255,255,0.1)';
+  });
+  btn.style.background = 'rgba(245,197,24,0.15)';
+  btn.style.borderColor = 'var(--yellow)';
+}
 loadLiveScores();
 setInterval(loadLiveScores, 60000);
 </script>
@@ -1323,7 +1934,7 @@ setInterval(loadLiveScores, 60000);
 
     <!-- NFL -->
     <a href="#" onclick="showPage('shop-page');setTimeout(()=>{document.querySelector('[data-filter=nfl]')?.click()},100);return false;" class="cat-card">
-      <img src="PLACEHOLDER_B64_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" alt="NFL Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/muyuan-ma--xHZBzv4Naw-unsplash.jpg" alt="NFL Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info">
         <span class="cat-title">NFL Gear</span>
@@ -1333,7 +1944,7 @@ setInterval(loadLiveScores, 60000);
 
     <!-- NBA -->
     <a href="#" onclick="showPage('shop-page');setTimeout(()=>{document.querySelector('[data-filter=nba]')?.click()},100);return false;" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="NBA Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="NBA Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info">
         <span class="cat-title">NBA Gear</span>
@@ -1343,7 +1954,7 @@ setInterval(loadLiveScores, 60000);
 
     <!-- MLB -->
     <a href="#" onclick="showPage('shop-page');setTimeout(()=>{document.querySelector('[data-filter=mlb]')?.click()},100);return false;" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?w=400&q=80" alt="MLB Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/josh-hemsley-e-f17L4EBBc-unsplash.jpg" alt="MLB Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info">
         <span class="cat-title">MLB Gear</span>
@@ -1353,7 +1964,7 @@ setInterval(loadLiveScores, 60000);
 
     <!-- NHL -->
     <a href="#" onclick="showPage('shop-page');setTimeout(()=>{document.querySelector('[data-filter=nhl]')?.click()},100);return false;" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80" alt="NHL Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/jerry-yu-HRo2pfbVulQ-unsplash.jpg" alt="NHL Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info">
         <span class="cat-title">NHL Gear</span>
@@ -1916,7 +2527,7 @@ const PRODUCTS = [
     id: 11,
     name: "NHL Fan Whiskey Decanter Gift Set",
     category: "nhl",
-    image: "https://images.unsplash.com/photo-1515703407324-5f753afd8be8?w=400&q=90",
+    image: "https://raw.githubusercontent.com/Antonius7804/sksportz/main/jerry-yu-HRo2pfbVulQ-unsplash.jpg",
     imgBg: "#f8f8f8",
     priceCurrent: 49.99,
     priceOriginal: 69.99,
@@ -2177,30 +2788,8 @@ document.querySelectorAll('.prod-filter').forEach(btn => {
         </div>
       </a>
 
-      <a href="#" class="news-card" data-article="article-college2">
-        <div class="news-card-thumb">
-          <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/ykUMaJYydCGTxVrl.jpg" alt="March Madness">
-        </div>
-        <div class="news-card-body">
-          <span class="tag tag-college">College</span>
-          <p class="news-card-title">March Madness 2026: Arizona's First Final Four in 25 Years and the Bracket Nobody Predicted</p>
-          <span class="news-card-meta"><i class="far fa-calendar-alt"></i> Mar 31, 2026</span>
-        </div>
-      </a>
-
-      <a href="#" class="news-card" data-article="article-gen1">
-        <div class="news-card-thumb">
-          <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/hlDKCtfhoKyNwVAB.jpg" alt="American Sports 2026">
-        </div>
-        <div class="news-card-body">
-          <span class="tag" style="background:var(--yellow);color:var(--black);margin-bottom:5px;">General</span>
-          <p class="news-card-title">The Golden Age of American Sports: Why 2026 Is the Greatest Year to Be a Fan</p>
-          <span class="news-card-meta"><i class="far fa-calendar-alt"></i> Apr 5, 2026</span>
-        </div>
-      </a>
-
       <a href="#" onclick="showPage('all-articles');return false;" style="display:block;text-align:center;padding:12px;margin-top:0.5rem;border:1.5px solid rgba(245,197,24,0.3);border-radius:8px;color:var(--yellow);font-weight:700;font-size:0.85rem;text-decoration:none;">
-        View All 21 Articles <i class="fa fa-arrow-right"></i>
+        View All Articles <i class="fa fa-arrow-right"></i>
       </a>
 
     </div>
@@ -2208,6 +2797,64 @@ document.querySelectorAll('.prod-filter').forEach(btn => {
 </section>
 
 <!-- YOUTUBE -->
+
+<!-- ═══ FAN POLLS ═══ -->
+<section style="background:var(--black2);padding:5rem 4rem;">
+  <div class="section-header">
+    <div><span class="section-eyebrow">Have Your Say</span><h2 class="section-title">Fan Polls</h2></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;">
+    <div style="background:var(--black3);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:1.4rem;">
+      <span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;margin-bottom:8px;">NBA Playoffs</span>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:1rem;">Who wins the Eastern Conference?</h3>
+      <div id="skpoll1" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+        <button onclick="skVote('skpoll1',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Boston Celtics <strong style="color:var(--yellow);">48%</strong></button>
+        <button onclick="skVote('skpoll1',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Cleveland Cavaliers <strong style="color:var(--yellow);">22%</strong></button>
+        <button onclick="skVote('skpoll1',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">New York Knicks <strong style="color:var(--yellow);">18%</strong></button>
+        <button onclick="skVote('skpoll1',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Milwaukee Bucks <strong style="color:var(--yellow);">12%</strong></button>
+      </div>
+      <span style="font-size:0.75rem;color:var(--gray);">1,847 votes</span>
+    </div>
+    <div style="background:var(--black3);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:1.4rem;">
+      <span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;margin-bottom:8px;">NHL Playoffs</span>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:1rem;">Who lifts the Stanley Cup?</h3>
+      <div id="skpoll2" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+        <button onclick="skVote('skpoll2',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Florida Panthers <strong style="color:var(--yellow);">35%</strong></button>
+        <button onclick="skVote('skpoll2',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Colorado Avalanche <strong style="color:var(--yellow);">28%</strong></button>
+        <button onclick="skVote('skpoll2',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Toronto Maple Leafs <strong style="color:var(--yellow);">24%</strong></button>
+        <button onclick="skVote('skpoll2',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Vancouver Canucks <strong style="color:var(--yellow);">13%</strong></button>
+      </div>
+      <span style="font-size:0.75rem;color:var(--gray);">2,341 votes</span>
+    </div>
+    <div style="background:var(--black3);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:1.4rem;">
+      <span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;margin-bottom:8px;">NFL Draft</span>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:1rem;">Best pick of the 2025 draft?</h3>
+      <div id="skpoll3" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+        <button onclick="skVote('skpoll3',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Cam Ward — QB <strong style="color:var(--yellow);">41%</strong></button>
+        <button onclick="skVote('skpoll3',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Travis Hunter — WR <strong style="color:var(--yellow);">33%</strong></button>
+        <button onclick="skVote('skpoll3',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Abdul Carter — LB <strong style="color:var(--yellow);">15%</strong></button>
+        <button onclick="skVote('skpoll3',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:9px 12px;color:rgba(255,255,255,0.75);font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;">Ashton Jeanty — RB <strong style="color:var(--yellow);">11%</strong></button>
+      </div>
+      <span style="font-size:0.75rem;color:var(--gray);">987 votes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ODDS & PREDICTIONS ═══ -->
+<section style="background:var(--black3);padding:3rem 4rem;">
+  <div class="section-header" style="margin-bottom:1.2rem;">
+    <div><span class="section-eyebrow">Tonight's Games</span><h2 class="section-title">Odds & Predictions</h2></div>
+    <span style="font-size:0.75rem;color:var(--gray);font-style:italic;">For entertainment only · 18+</span>
+  </div>
+  <div style="display:flex;gap:1rem;overflow-x:auto;padding-bottom:0.5rem;">
+    <div style="background:var(--black2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem 1.2rem;min-width:160px;flex-shrink:0;"><span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;">🏀 NBA</span><span style="font-size:0.95rem;font-weight:700;color:var(--white);display:block;margin:4px 0;">BOS vs NYK</span><span style="font-size:1.1rem;font-weight:800;color:var(--white);display:block;">BOS -210</span><span style="font-size:0.78rem;color:var(--gray);">O/U 218.5</span></div>
+    <div style="background:var(--black2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem 1.2rem;min-width:160px;flex-shrink:0;"><span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;">🏀 NBA</span><span style="font-size:0.95rem;font-weight:700;color:var(--white);display:block;margin:4px 0;">LAL vs DEN</span><span style="font-size:1.1rem;font-weight:800;color:var(--white);display:block;">DEN -155</span><span style="font-size:0.78rem;color:var(--gray);">O/U 225.5</span></div>
+    <div style="background:var(--black2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem 1.2rem;min-width:160px;flex-shrink:0;"><span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;">🏒 NHL</span><span style="font-size:0.95rem;font-weight:700;color:var(--white);display:block;margin:4px 0;">TOR vs FLA</span><span style="font-size:1.1rem;font-weight:800;color:var(--white);display:block;">FLA -130</span><span style="font-size:0.78rem;color:var(--gray);">O/U 6.0</span></div>
+    <div style="background:var(--black2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem 1.2rem;min-width:160px;flex-shrink:0;"><span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;">🏒 NHL</span><span style="font-size:0.95rem;font-weight:700;color:var(--white);display:block;margin:4px 0;">COL vs DAL</span><span style="font-size:1.1rem;font-weight:800;color:var(--white);display:block;">COL -115</span><span style="font-size:0.78rem;color:var(--gray);">O/U 5.5</span></div>
+    <div style="background:var(--black2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem 1.2rem;min-width:160px;flex-shrink:0;"><span style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);display:block;">⚾ MLB</span><span style="font-size:0.95rem;font-weight:700;color:var(--white);display:block;margin:4px 0;">NYY vs BOS</span><span style="font-size:1.1rem;font-weight:800;color:var(--white);display:block;">NYY -145</span><span style="font-size:0.78rem;color:var(--gray);">O/U 8.5</span></div>
+  </div>
+</section>
+
 <section class="youtube-section">
   <span class="section-eyebrow" style="display:block;margin-bottom:6px;">Watch & Subscribe</span>
   <h2 class="section-title">Our YouTube Channels</h2>
@@ -2235,7 +2882,7 @@ document.querySelectorAll('.prod-filter').forEach(btn => {
           <span class="yt-channel-name">SKsportzNBA</span>
           <span class="yt-channel-desc">Basketball highlights, breaking news &amp; analysis</span>
         </div>
-        <a href="https://www.youtube.com/@NBApulsemedia?sub_confirmation=1" target="_blank" rel="noopener" class="btn-sub">
+        <a href="https://www.youtube.com/@sksportzNBA?sub_confirmation=1" target="_blank" rel="noopener" class="btn-sub">
           <i class="fab fa-youtube"></i> Subscribe
         </a>
       </div>
@@ -2335,38 +2982,28 @@ function handleNlSubmit(e) {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom">
@@ -2510,38 +3147,28 @@ function handleNlSubmit(e) {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom">
@@ -3509,38 +4136,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -3679,38 +4296,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -3794,7 +4401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p style="font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:3px;">Watch the Full Film Breakdown</p>
         <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin:0;">Lakers' new offensive sets broken down on our YouTube channel</p>
       </div>
-      <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;">
+      <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;">
         <i class="fab fa-youtube"></i> Watch Now
       </a>
     </div>
@@ -3825,7 +4432,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="prod-mini-grid">
       <a href="https://www.amazon.com/dp/ASIN_HERE?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
         <div class="prod-mini-img">
-          <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="NBA Bobblehead">
+          <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="NBA Bobblehead">
         </div>
         <div class="prod-mini-info">
           <p class="prod-mini-name">NBA Star Player Bobblehead Collectible</p>
@@ -3865,38 +4472,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -3986,7 +4583,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p style="font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:3px;">More Lakers Coverage</p>
         <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin:0;">NBA highlights, breaking news & analysis on SKsportzNBA</p>
       </div>
-      <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;">
+      <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;">
         <i class="fab fa-youtube"></i> Watch Now
       </a>
     </div>
@@ -4008,7 +4605,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="prod-mini-grid">
       <a href="https://www.amazon.com/dp/ASIN_HERE?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
         <div class="prod-mini-img">
-          <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="NBA Bobblehead">
+          <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="NBA Bobblehead">
         </div>
         <div class="prod-mini-info">
           <p class="prod-mini-name">NBA Star Player Bobblehead Collectible</p>
@@ -4048,38 +4645,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -4171,7 +4758,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p style="font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:3px;">More NBA Coverage</p>
         <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin:0;">NBA highlights, breaking news & analysis on SKsportzNBA</p>
       </div>
-      <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;">
+      <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:var(--black);padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;">
         <i class="fab fa-youtube"></i> Watch Now
       </a>
     </div>
@@ -4193,7 +4780,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="prod-mini-grid">
       <a href="https://www.amazon.com/dp/ASIN_HERE?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
         <div class="prod-mini-img">
-          <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="NBA Bobblehead">
+          <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="NBA Bobblehead">
         </div>
         <div class="prod-mini-info">
           <p class="prod-mini-name">NBA Star Player Bobblehead Collectible</p>
@@ -4233,38 +4820,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -4403,38 +4980,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -4573,38 +5140,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -4745,38 +5302,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -4917,38 +5464,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -5085,38 +5622,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -5251,38 +5778,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -5428,38 +5945,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -5607,38 +6114,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -5777,38 +6274,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
       <div class="footer-social">
-        <a href="https://www.youtube.com/@NBApulsemedia" target="_blank" rel="noopener" class="social-btn"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
       <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">NFL Gear</a></li>
-        <li><a href="#">NBA Gear</a></li>
-        <li><a href="#">MLB Gear</a></li>
-        <li><a href="#">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
         <li><a href="#">College Sports</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Content</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
-        <li><a href="#">NFL</a></li>
-        <li><a href="#">NBA</a></li>
-        <li><a href="#">MLB</a></li>
-        <li><a href="#">NHL</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
+      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Account</h4>
-      <ul>
-        <li><a href="#">My Orders</a></li>
-        <li><a href="#">Shopping Cart</a></li>
-      </ul>
+      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
@@ -5898,7 +6385,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
     </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('home');return false;">All Articles</a></li><li><a href="#">NFL</a></li><li><a href="#">NBA</a></li><li><a href="#">MLB</a></li><li><a href="#">NHL</a></li></ul></div>
+    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
     <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
@@ -5984,7 +6471,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
     </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('home');return false;">All Articles</a></li></ul></div>
+    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
     <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
@@ -6069,7 +6556,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
     </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('home');return false;">All Articles</a></li></ul></div>
+    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
     <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
@@ -6335,7 +6822,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
     </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('home');return false;">Home</a></li><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li></ul></div>
+    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
     <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
@@ -6719,22 +7206,22 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- CATEGORY TILES -->
   <div class="cat-grid" style="margin-bottom:3rem;">
     <a href="#" onclick="filterShopProducts('nfl',event)" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=400&q=80" alt="NFL Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/muyuan-ma--xHZBzv4Naw-unsplash.jpg" alt="NFL Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info"><span class="cat-title">NFL</span></div>
     </a>
     <a href="#" onclick="filterShopProducts('nba',event)" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="NBA Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="NBA Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info"><span class="cat-title">NBA</span></div>
     </a>
     <a href="#" onclick="filterShopProducts('mlb',event)" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?w=400&q=80" alt="MLB Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/josh-hemsley-e-f17L4EBBc-unsplash.jpg" alt="MLB Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info"><span class="cat-title">MLB</span></div>
     </a>
     <a href="#" onclick="filterShopProducts('nhl',event)" class="cat-card">
-      <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80" alt="NHL Gear">
+      <img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/jerry-yu-HRo2pfbVulQ-unsplash.jpg" alt="NHL Gear">
       <div class="cat-overlay"></div>
       <div class="cat-info"><span class="cat-title">NHL</span></div>
     </a>
@@ -6832,11 +7319,11 @@ document.addEventListener('DOMContentLoaded', () => {
     <p>Premium sports merchandise for every fan</p>
     <div class="prod-mini-grid">
       <a href="https://www.amazon.com/dp/B0CX4GZZ9B?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
-        <div class="prod-mini-img"><img src="https://images.unsplash.com/photo-1508098682722-e99c643e7f0b?w=400&q=80" alt="Funko Pop NFL: Patrick Mahomes – Chiefs"></div>
+        <div class="prod-mini-img"><img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/josh-hemsley-e-f17L4EBBc-unsplash.jpg" alt="Funko Pop NFL: Patrick Mahomes – Chiefs"></div>
         <div class="prod-mini-info"><p class="prod-mini-name">Funko Pop NFL: Patrick Mahomes – Chiefs</p><span class="prod-mini-price">Shop Now</span></div>
       </a>
       <a href="https://www.amazon.com/dp/B0D9Y4WZXQ?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
-        <div class="prod-mini-img"><img src="https://images.unsplash.com/photo-1508098682722-e99c643e7f0b?w=400&q=80" alt="2025 Panini Score NFL Blaster Box"></div>
+        <div class="prod-mini-img"><img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/josh-hemsley-e-f17L4EBBc-unsplash.jpg" alt="2025 Panini Score NFL Blaster Box"></div>
         <div class="prod-mini-info"><p class="prod-mini-name">2025 Panini Score NFL Blaster Box</p><span class="prod-mini-price">Shop Now</span></div>
       </a>
       <a href="https://www.amazon.com/dp/B07WGXZ8DT?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
@@ -6918,7 +7405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <p>Premium sports merchandise for every fan</p>
     <div class="prod-mini-grid">
       <a href="https://www.amazon.com/dp/B0CX4HH4HB?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
-        <div class="prod-mini-img"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="Funko Pop NBA: LeBron James – Lakers"></div>
+        <div class="prod-mini-img"><img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="Funko Pop NBA: LeBron James – Lakers"></div>
         <div class="prod-mini-info"><p class="prod-mini-name">Funko Pop NBA: LeBron James – Lakers</p><span class="prod-mini-price">Shop Now</span></div>
       </a>
       <a href="https://www.amazon.com/dp/B0CZQK5QNT?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
@@ -6926,7 +7413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="prod-mini-info"><p class="prod-mini-name">Funko Pop NBA: Luka Doncic – Mavericks</p><span class="prod-mini-price">Shop Now</span></div>
       </a>
       <a href="https://www.amazon.com/dp/B0DHWSBNYQ?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
-        <div class="prod-mini-img"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="2024/25 Panini Hoops NBA Fat Pack"></div>
+        <div class="prod-mini-img"><img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/august-phlieger-CREqtqgBFcU-unsplash.jpg" alt="2024/25 Panini Hoops NBA Fat Pack"></div>
         <div class="prod-mini-info"><p class="prod-mini-name">2024/25 Panini Hoops NBA Fat Pack</p><span class="prod-mini-price">Shop Now</span></div>
       </a>
     </div>
@@ -7004,7 +7491,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <p>Premium sports merchandise for every fan</p>
     <div class="prod-mini-grid">
       <a href="https://www.amazon.com/dp/B07WH8KZ6Q?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">
-        <div class="prod-mini-img"><img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?w=400&q=80" alt="MLB Ballpark Blueprint Framed Print"></div>
+        <div class="prod-mini-img"><img src="https://raw.githubusercontent.com/Antonius7804/sksportz/main/josh-hemsley-e-f17L4EBBc-unsplash.jpg" alt="MLB Ballpark Blueprint Framed Print"></div>
         <div class="prod-mini-info"><p class="prod-mini-name">MLB Ballpark Blueprint Framed Print</p><span class="prod-mini-price">Shop Now</span></div>
       </a>
       <a href="https://www.amazon.com/dp/B0CQWSTJRD?tag=piekonlinesto-20" target="_blank" rel="noopener sponsored" class="prod-mini-card">

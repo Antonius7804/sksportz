@@ -125,11 +125,86 @@ nav {
   min-width: 520px;
 }
 .skdrop-mega-left {
-  padding: 8px 0;
+  padding: 0;
   border-right: 1px solid rgba(255,255,255,0.06);
   flex-shrink: 0;
-  width: 160px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
 }
+.skdrop-buzz {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.skdrop-buzz-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.skdrop-buzz-hdr span:first-child { color: var(--yellow); }
+.skdrop-buzz-sport { color: rgba(255,255,255,0.3); font-size: 0.58rem; }
+.skdrop-buzz-feed {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 280px;
+  padding: 4px 0;
+}
+.skdrop-buzz-feed::-webkit-scrollbar { width: 3px; }
+.skdrop-buzz-feed::-webkit-scrollbar-track { background: transparent; }
+.skdrop-buzz-feed::-webkit-scrollbar-thumb { background: rgba(245,197,24,0.3); border-radius: 2px; }
+.skdrop-buzz-item {
+  display: block;
+  padding: 7px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.skdrop-buzz-item:hover { background: rgba(255,255,255,0.04); }
+.skdrop-buzz-item:last-child { border-bottom: none; }
+.skdrop-buzz-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.35;
+  display: block;
+  margin-bottom: 3px;
+}
+.skdrop-buzz-meta {
+  font-size: 0.63rem;
+  color: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.skdrop-buzz-meta .dot { color: var(--yellow); font-size: 0.5rem; }
+.skdrop-buzz-loading {
+  padding: 16px 12px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+}
+.skdrop-bottom-links {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 4px 0;
+}
+.skdrop-bottom-links a {
+  display: block;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  color: var(--yellow);
+  text-decoration: none;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.skdrop-bottom-links a:hover { color: white; background: rgba(255,255,255,0.05); padding-left: 16px; }
 .skdrop-mega-right {
   padding: 8px 0;
   background: #161616;
@@ -1444,16 +1519,21 @@ body { overflow-x: clip !important; }
     <div class="sktab on" data-s="nfl">NFL
       <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Draft News</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">NFL Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('nfl',event);return false;">Shop NFL</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+                    <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">NFL</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-nfl">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">NFL Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('nfl',event);return false;">Shop NFL</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid">
@@ -1524,16 +1604,21 @@ body { overflow-x: clip !important; }
     <div class="sktab" data-s="nba">NBA
       <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">NBA Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('nba',event);return false;">Shop NBA</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+                              <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">NBA</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-nba">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">NBA Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('nba',event);return false;">Shop NBA</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid">
@@ -1594,16 +1679,21 @@ body { overflow-x: clip !important; }
     <div class="sktab" data-s="mlb">MLB
       <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Roster Moves</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">MLB Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('mlb',event);return false;">Shop MLB</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+                              <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">MLB</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-mlb">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">MLB Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('mlb',event);return false;">Shop MLB</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid">
@@ -1664,16 +1754,21 @@ body { overflow-x: clip !important; }
     <div class="sktab" data-s="nhl">NHL
       <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Waiver Wire</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">NHL Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('nhl',event);return false;">Shop NHL</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+                              <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">NHL</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-nhl">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">NHL Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('nhl',event);return false;">Shop NHL</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid">
@@ -1730,16 +1825,21 @@ body { overflow-x: clip !important; }
     <div class="sktab" data-s="wnba">WNBA
       <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">WNBA Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop WNBA</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+                              <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">WNBA</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-wnba">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">WNBA Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop WNBA</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid" style="grid-template-columns: repeat(2, 1fr);">
@@ -1773,16 +1873,21 @@ body { overflow-x: clip !important; }
     <div class="sktab" data-s="soccer">Soccer
       <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Match Previews</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Managerial News</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+                              <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">Soccer</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-soccer">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid" style="grid-template-columns: repeat(4, 1fr);">
@@ -1839,18 +1944,21 @@ body { overflow-x: clip !important; }
     <div class="sktab" data-s="college">College Sports
       <div class="skdrop skdrop-wide" style="min-width:900px !important;">
         <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Portal</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Coaching Moves</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Basketball</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Portal</a>
-            <a href="#" onclick="showPage('scores');return false;">March Madness</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('scores');return false;">CFP Rankings</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('college',event);return false;">Shop College</a>
+                              <div class="skdrop-mega-left">
+            <div class="skdrop-buzz">
+              <div class="skdrop-buzz-hdr">
+                <span>⚡ BUZZING</span>
+                <span class="skdrop-buzz-sport">College FB</span>
+              </div>
+              <div class="skdrop-buzz-feed" id="buzz-college">
+                <div class="skdrop-buzz-loading">Loading...</div>
+              </div>
+            </div>
+            <div class="skdrop-bottom-links">
+              <a href="#" onclick="showPage('tickets');return false;">College Tickets</a>
+              <a href="#" onclick="showPage('shop');filterShopProducts('college',event);return false;">Shop College FB</a>
+              <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+            </div>
           </div>
           <div class="skdrop-mega-right skdrop-teams-panel">
             <div class="skdrop-conf-grid" style="grid-template-columns: repeat(5, 1fr);">
@@ -1916,7 +2024,7 @@ body { overflow-x: clip !important; }
       </div>
     </div>
 
-    <div style="flex:1;"></div>
+    <div style="width:1px;background:#0d0d0d;margin:8px 0;"></div>
 
     <div class="sktab" data-s="ufc">UFC
       <div class="skdrop">
@@ -2157,6 +2265,59 @@ async function loadStandings(sport, url, elId) {
   }
 }
 
+// ── BUZZING NEWS FEED ──
+const buzzLoaded = {};
+
+async function loadBuzzFeed(sport) {
+  const el = document.getElementById(`buzz-${sport}`);
+  if (!el) return;
+
+  const sportLabels = {
+    nfl: 'NFL football', nba: 'NBA basketball', mlb: 'MLB baseball',
+    nhl: 'NHL hockey', wnba: 'WNBA basketball', soccer: 'soccer football',
+    college: 'college football NCAA'
+  };
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{
+          role: 'user',
+          content: `Search for the 6 most recent breaking news headlines about ${sportLabels[sport]} from today. Return ONLY a JSON array of objects with "title" (headline max 10 words), "source" (outlet name), "time" (e.g. "2h ago"). No markdown, no extra text, just the raw JSON array.`
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const items = JSON.parse(clean);
+    el.innerHTML = items.map(item => `
+      <div class="skdrop-buzz-item" onclick="showPage('all-articles')">
+        <span class="skdrop-buzz-title">${item.title}</span>
+        <span class="skdrop-buzz-meta"><span>${item.source}</span><span class="dot">●</span><span>${item.time}</span></span>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="skdrop-buzz-loading">Check back soon</div>';
+  }
+}
+
+// Load all sports on page load, staggered so they don't all fire at once
+const buzzSports = ['nfl','nba','mlb','nhl','wnba','soccer','college'];
+function loadAllBuzz() {
+  buzzSports.forEach((sport, i) => {
+    setTimeout(() => loadBuzzFeed(sport), i * 1500);
+  });
+}
+// Initial load
+loadAllBuzz();
+// Refresh every 10 minutes
+setInterval(loadAllBuzz, 10 * 60 * 1000);
+
 // Position dropdowns precisely on hover
 document.querySelectorAll('.sktab').forEach(tab => {
   tab.addEventListener('mouseenter', function() {
@@ -2169,6 +2330,8 @@ document.querySelectorAll('.sktab').forEach(tab => {
       loadStandings('mlb','/netlify/functions/espn-proxy?sport=mlb','sk-stand-mlb');
     if (s === 'nhl' && document.getElementById('sk-stand-nhl')?.textContent === 'Loading...')
       loadStandings('nhl','/netlify/functions/espn-proxy?sport=nhl','sk-stand-nhl');
+
+    if (['nfl','nba','mlb','nhl','wnba','soccer','college'].includes(s)) loadBuzzFeed(s);
 
     const drop = this.querySelector('.skdrop');
     if (!drop) return;
@@ -6955,5 +7118,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
     <a href="#" onclick="showPage('admin');return false;" style="font-size:0.6rem;color:rgba(255,255,255,0.08);margin-left:2rem;">admin</a>
   </div>
 </footer>
+<!-- Twitter/X Widget -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

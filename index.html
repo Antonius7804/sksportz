@@ -91,16 +91,24 @@ nav {
   transition: all 0.2s;
   white-space: nowrap;
   position: relative;
+  overflow: visible;
 }
-.sktab i { font-size: 1.5rem; }
+/* Label text inside tab */
+.sktab > span, .sktab > :not(.skdrop) { pointer-events: none; }
+.nav-sports-secondary .sktab {
+  font-size: 0.65rem;
+  padding: 0 12px;
+  letter-spacing: 1px;
+}
 .sktab:hover { color: rgba(255,255,255,0.8); }
 .sktab.on { color: var(--yellow); border-bottom-color: var(--yellow); }
 .sktab .skdrop {
   display: none;
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 0;
   left: 0;
-  min-width: 200px;
+  min-width: 180px;
+  padding: 4px 0;
   background: #1c1c1c;
   border: 1px solid rgba(255,255,255,0.08);
   border-top: 2px solid var(--yellow);
@@ -108,18 +116,24 @@ nav {
   box-shadow: 0 6px 20px rgba(0,0,0,0.8);
   pointer-events: auto;
 }
+.sktab .skdrop-wide {
+  left: 0;
+}
 .skdrop-mega {
-  display: grid;
-  grid-template-columns: 1fr 200px;
+  display: flex;
+  flex-direction: row;
   min-width: 520px;
 }
 .skdrop-mega-left {
   padding: 8px 0;
   border-right: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  width: 160px;
 }
 .skdrop-mega-right {
   padding: 8px 0;
   background: #161616;
+  flex: 1;
 }
 .skdrop-mega-right .skdrop-lbl {
   padding: 6px 12px 4px;
@@ -187,7 +201,7 @@ nav {
   letter-spacing: 0.5px;
 }
 .sktab:hover .skdrop { display: block; }
-.skdrop-sec { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.skdrop-sec { padding: 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .skdrop-sec:last-child { border-bottom: none; }
 .skdrop-lbl {
   font-size: 0.65rem;
@@ -195,12 +209,12 @@ nav {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--yellow);
-  padding: 8px 14px 3px;
+  padding: 2px 14px 2px;
   display: block;
 }
 .skdrop a {
   display: block;
-  padding: 5px 14px;
+  padding: 6px 14px;
   font-size: 0.78rem;
   color: var(--yellow);
   text-decoration: none;
@@ -1713,30 +1727,111 @@ body { overflow-x: clip !important; }
       </div>
     </div>
 
-    <div class="sktab" data-s="ufc">UFC
-      <div class="skdrop">
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Fight Cards</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
-        </div>
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('tickets');return false;">UFC Tickets</a>
-          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop UFC</a>
+    <div class="sktab" data-s="wnba">WNBA
+      <div class="skdrop skdrop-wide">
+        <div class="skdrop-mega">
+          <div class="skdrop-mega-left">
+            <span class="skdrop-lbl">News</span>
+            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
+            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
+            <a href="#" onclick="showPage('tickets');return false;">WNBA Tickets</a>
+            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop WNBA</a>
+            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+          </div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(2, 1fr);">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Eastern Conference</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlanta Dream</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago Sky</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Connecticut Sun</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Indiana Fever</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Liberty</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Toronto Tempo</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Washington Mystics</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Western Conference</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Dallas Wings</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Golden State Valkyries</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Las Vegas Aces</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Los Angeles Sparks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Lynx</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Phoenix Mercury</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Portland Fire</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Seattle Storm</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="sktab" data-s="boxing">Boxing
-      <div class="skdrop">
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Upcoming Fights</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
-        </div>
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('tickets');return false;">Boxing Tickets</a>
-          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Boxing</a>
+    <div class="sktab" data-s="soccer">Soccer
+      <div class="skdrop skdrop-wide">
+        <div class="skdrop-mega">
+          <div class="skdrop-mega-left">
+            <span class="skdrop-lbl">News</span>
+            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Rumours</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Match Previews</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Managerial News</a>
+            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
+            <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
+            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
+            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+          </div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(4, 1fr);">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Competitions</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Premier League</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Champions League</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LALIGA</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Bundesliga</a>
+                <a href="#" onclick="showPage('all-articles');return false;">MLS</a>
+                <a href="#" onclick="showPage('all-articles');return false;">NWSL</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Liga MX</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">England</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Arsenal</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Chelsea</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Liverpool</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Manchester City</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Manchester United</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">USA</span>
+                <a href="#" onclick="showPage('all-articles');return false;">USMNT</a>
+                <a href="#" onclick="showPage('all-articles');return false;">USWNT</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Inter Miami</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Galaxy</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Spain</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Barcelona</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Real Madrid</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlético Madrid</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">Germany</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Bayern Munich</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Bayer Leverkusen</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Borussia Dortmund</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">Mexico</span>
+                <a href="#" onclick="showPage('all-articles');return false;">América</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Guadalajara</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Italy</span>
+                <a href="#" onclick="showPage('all-articles');return false;">AC Milan</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Internazionale</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Juventus</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">France</span>
+                <a href="#" onclick="showPage('all-articles');return false;">PSG</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1821,111 +1916,32 @@ body { overflow-x: clip !important; }
       </div>
     </div>
 
-    <div class="sktab" data-s="soccer">Soccer
-      <div class="skdrop skdrop-wide">
-        <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Match Previews</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Managerial News</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
-          </div>
-          <div class="skdrop-mega-right skdrop-teams-panel">
-            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(4, 1fr);">
-              <div class="skdrop-conf-col">
-                <span class="skdrop-lbl">Competitions</span>
-                <a href="#" onclick="showPage('all-articles');return false;">Premier League</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Champions League</a>
-                <a href="#" onclick="showPage('all-articles');return false;">LALIGA</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Bundesliga</a>
-                <a href="#" onclick="showPage('all-articles');return false;">MLS</a>
-                <a href="#" onclick="showPage('all-articles');return false;">NWSL</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Liga MX</a>
-              </div>
-              <div class="skdrop-conf-col">
-                <span class="skdrop-lbl">England</span>
-                <a href="#" onclick="showPage('all-articles');return false;">Arsenal</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Chelsea</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Liverpool</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Manchester City</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Manchester United</a>
-                <span class="skdrop-lbl" style="margin-top:6px;">USA</span>
-                <a href="#" onclick="showPage('all-articles');return false;">USMNT</a>
-                <a href="#" onclick="showPage('all-articles');return false;">USWNT</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Inter Miami</a>
-                <a href="#" onclick="showPage('all-articles');return false;">LA Galaxy</a>
-              </div>
-              <div class="skdrop-conf-col">
-                <span class="skdrop-lbl">Spain</span>
-                <a href="#" onclick="showPage('all-articles');return false;">Barcelona</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Real Madrid</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Atlético Madrid</a>
-                <span class="skdrop-lbl" style="margin-top:6px;">Germany</span>
-                <a href="#" onclick="showPage('all-articles');return false;">Bayern Munich</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Bayer Leverkusen</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Borussia Dortmund</a>
-                <span class="skdrop-lbl" style="margin-top:6px;">Mexico</span>
-                <a href="#" onclick="showPage('all-articles');return false;">América</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Guadalajara</a>
-              </div>
-              <div class="skdrop-conf-col">
-                <span class="skdrop-lbl">Italy</span>
-                <a href="#" onclick="showPage('all-articles');return false;">AC Milan</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Internazionale</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Juventus</a>
-                <span class="skdrop-lbl" style="margin-top:6px;">France</span>
-                <a href="#" onclick="showPage('all-articles');return false;">PSG</a>
-              </div>
-            </div>
-          </div>
+    <div style="flex:1;"></div>
+
+    <div class="sktab" data-s="ufc">UFC
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Fight Cards</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
+        </div>
+        <div class="skdrop-sec">
+          <a href="#" onclick="showPage('tickets');return false;">UFC Tickets</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop UFC</a>
         </div>
       </div>
     </div>
 
-    <div class="sktab" data-s="wnba">WNBA
-      <div class="skdrop skdrop-wide">
-        <div class="skdrop-mega">
-          <div class="skdrop-mega-left">
-            <span class="skdrop-lbl">News</span>
-            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-            <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
-            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
-            <a href="#" onclick="showPage('tickets');return false;">WNBA Tickets</a>
-            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop WNBA</a>
-            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
-          </div>
-          <div class="skdrop-mega-right skdrop-teams-panel">
-            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(2, 1fr);">
-              <div class="skdrop-conf-col">
-                <span class="skdrop-lbl">Eastern Conference</span>
-                <a href="#" onclick="showPage('all-articles');return false;">Atlanta Dream</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Chicago Sky</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Connecticut Sun</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Indiana Fever</a>
-                <a href="#" onclick="showPage('all-articles');return false;">New York Liberty</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Toronto Tempo</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Washington Mystics</a>
-              </div>
-              <div class="skdrop-conf-col">
-                <span class="skdrop-lbl">Western Conference</span>
-                <a href="#" onclick="showPage('all-articles');return false;">Dallas Wings</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Golden State Valkyries</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Las Vegas Aces</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Los Angeles Sparks</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Lynx</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Phoenix Mercury</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Portland Fire</a>
-                <a href="#" onclick="showPage('all-articles');return false;">Seattle Storm</a>
-              </div>
-            </div>
-          </div>
+    <div class="sktab" data-s="boxing">Boxing
+      <div class="skdrop">
+        <div class="skdrop-sec">
+          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Upcoming Fights</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
+        </div>
+        <div class="skdrop-sec">
+          <a href="#" onclick="showPage('tickets');return false;">Boxing Tickets</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Boxing</a>
         </div>
       </div>
     </div>
@@ -2141,7 +2157,7 @@ async function loadStandings(sport, url, elId) {
   }
 }
 
-// Load all standings on hover
+// Position dropdowns precisely on hover
 document.querySelectorAll('.sktab').forEach(tab => {
   tab.addEventListener('mouseenter', function() {
     const s = this.dataset.s;
@@ -2153,6 +2169,19 @@ document.querySelectorAll('.sktab').forEach(tab => {
       loadStandings('mlb','/netlify/functions/espn-proxy?sport=mlb','sk-stand-mlb');
     if (s === 'nhl' && document.getElementById('sk-stand-nhl')?.textContent === 'Loading...')
       loadStandings('nhl','/netlify/functions/espn-proxy?sport=nhl','sk-stand-nhl');
+
+    const drop = this.querySelector('.skdrop');
+    if (!drop) return;
+    const navBottom = document.querySelector('nav').getBoundingClientRect().bottom;
+    drop.style.top = navBottom + 'px';
+    if (drop.classList.contains('skdrop-wide')) {
+      drop.style.position = 'fixed';
+      drop.style.left = '0';
+    } else {
+      drop.style.position = 'fixed';
+      const tabRect = this.getBoundingClientRect();
+      drop.style.left = tabRect.left + 'px';
+    }
   });
 });
 

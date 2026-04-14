@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SKSPORTZ – Play Like a Champion</title>
+<meta name="description" content="SKSportz - Your one-stop sports destination. Live scores, breaking news, trade rumours, fan gear and tickets across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.">
+<meta name="keywords" content="sports news, NFL, NBA, MLB, NHL, UFC, boxing, soccer, live scores, sports gear, tickets">
+<meta property="og:title" content="SKSportz – Sports News, Scores, Gear & Tickets">
+<meta property="og:description" content="Your one-stop sports destination. Built by fans, not corporations.">
+<meta property="og:url" content="https://sksportz.com">
+<title>SKSportz – Sports News, Scores, Gear & Tickets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -1285,6 +1290,9 @@ footer {
 .nl-wrap.open .nl-drop { display:block !important; }
 .nl-drop input:focus { border-color:var(--yellow) !important; }
 
+/* Prevent dropdown clipping */
+body { overflow-x: clip !important; }
+.nav-sports { overflow: visible !important; }
 </style>
 </head>
 <body>
@@ -1338,7 +1346,7 @@ footer {
   <div class="nav-sports">
 
     <!-- NFL -->
-    <div class="sktab on"><i class="fa fa-football-ball"></i>NFL
+    <div class="sktab on" data-s="nfl"><i class="fa fa-football-ball"></i>NFL
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News & Rumours</span>
@@ -1366,7 +1374,7 @@ footer {
     </div>
 
     <!-- NBA -->
-    <div class="sktab"><i class="fa fa-basketball-ball"></i>NBA
+    <div class="sktab" data-s="nba"><i class="fa fa-basketball-ball"></i>NBA
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News & Rumours</span>
@@ -1394,7 +1402,7 @@ footer {
     </div>
 
     <!-- MLB -->
-    <div class="sktab"><i class="fa fa-baseball-ball"></i>MLB
+    <div class="sktab" data-s="mlb"><i class="fa fa-baseball-ball"></i>MLB
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News & Rumours</span>
@@ -1422,7 +1430,7 @@ footer {
     </div>
 
     <!-- NHL -->
-    <div class="sktab"><i class="fa fa-hockey-puck"></i>NHL
+    <div class="sktab" data-s="nhl"><i class="fa fa-hockey-puck"></i>NHL
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News & Rumours</span>
@@ -1450,7 +1458,7 @@ footer {
     </div>
 
     <!-- UFC -->
-    <div class="sktab"><i class="fa fa-fist-raised"></i>UFC
+    <div class="sktab" data-s="ufc"><i class="fa fa-fist-raised"></i>UFC
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1480,7 +1488,7 @@ footer {
     </div>
 
     <!-- Boxing -->
-    <div class="sktab"><i class="fa fa-hand-rock"></i>Boxing
+    <div class="sktab" data-s="boxing"><i class="fa fa-hand-rock"></i>Boxing
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1509,7 +1517,7 @@ footer {
     </div>
 
     <!-- College FB -->
-    <div class="sktab"><i class="fa fa-football-ball"></i>College FB
+    <div class="sktab" data-s="college-fb"><i class="fa fa-football-ball"></i>College FB
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1540,7 +1548,7 @@ footer {
     </div>
 
     <!-- College BB -->
-    <div class="sktab"><i class="fa fa-basketball-ball"></i>College BB
+    <div class="sktab" data-s="college-bb"><i class="fa fa-basketball-ball"></i>College BB
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1571,7 +1579,7 @@ footer {
     </div>
 
     <!-- Soccer -->
-    <div class="sktab"><i class="fa fa-futbol"></i>Soccer
+    <div class="sktab" data-s="soccer"><i class="fa fa-futbol"></i>Soccer
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News & Rumours</span>
@@ -1602,7 +1610,7 @@ footer {
     </div>
 
     <!-- WWE -->
-    <div class="sktab"><i class="fa fa-fist-raised"></i>WWE
+    <div class="sktab" data-s="wwe"><i class="fa fa-fist-raised"></i>WWE
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1632,7 +1640,7 @@ footer {
     </div>
 
     <!-- Tennis -->
-    <div class="sktab"><i class="fa fa-table-tennis"></i>Tennis
+    <div class="sktab" data-s="tennis"><i class="fa fa-table-tennis"></i>Tennis
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1663,7 +1671,7 @@ footer {
     </div>
 
     <!-- Golf -->
-    <div class="sktab"><i class="fa fa-golf-ball"></i>Golf
+    <div class="sktab" data-s="golf"><i class="fa fa-golf-ball"></i>Golf
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1695,7 +1703,7 @@ footer {
     </div>
 
     <!-- NASCAR -->
-    <div class="sktab"><i class="fa fa-flag-checkered"></i>NASCAR
+    <div class="sktab" data-s="nascar"><i class="fa fa-flag-checkered"></i>NASCAR
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1727,7 +1735,7 @@ footer {
     </div>
 
     <!-- F1 -->
-    <div class="sktab"><i class="fa fa-flag-checkered"></i>F1
+    <div class="sktab" data-s="f1"><i class="fa fa-flag-checkered"></i>F1
       <div class="skdrop">
         <div class="skdrop-sec">
           <span class="skdrop-lbl">News</span>
@@ -1811,16 +1819,16 @@ footer {
 <script>
 async function loadLiveScores() {
   const sports = [
-    { key: 'nfl', url: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard' },
-    { key: 'nba', url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard' },
-    { key: 'mlb', url: 'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard' },
-    { key: 'nhl', url: 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard' },
-    { key: 'ufc', url: 'https://site.api.espn.com/apis/site/v2/sports/mma/ufc/scoreboard' },
-    { key: 'cfb', url: 'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard' },
-    { key: 'cbb', url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard' },
-    { key: 'mls', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard' },
-    { key: 'epl', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard' },
-    { key: 'tennis', url: 'https://site.api.espn.com/apis/site/v2/sports/tennis/scoreboard' }
+    { key: 'nfl', url: '/netlify/functions/espn-proxy?sport=nfl&type=scores' },
+    { key: 'nba', url: '/netlify/functions/espn-proxy?sport=nba&type=scores' },
+    { key: 'mlb', url: '/netlify/functions/espn-proxy?sport=mlb&type=scores' },
+    { key: 'nhl', url: '/netlify/functions/espn-proxy?sport=nhl&type=scores' },
+    { key: 'ufc', url: '/netlify/functions/espn-proxy?sport=ufc&type=scores' },
+    { key: 'cfb', url: '/netlify/functions/espn-proxy?sport=cfb&type=scores' },
+    { key: 'cbb', url: '/netlify/functions/espn-proxy?sport=cbb&type=scores' },
+    { key: 'mls', url: '/netlify/functions/espn-proxy?sport=mls&type=scores' },
+    { key: 'epl', url: '/netlify/functions/espn-proxy?sport=epl&type=scores' },
+    { key: 'tennis', url: '/netlify/functions/espn-proxy?sport=tennis&type=scores' }
   ];
   for (const sport of sports) {
     try {
@@ -1890,13 +1898,13 @@ document.querySelectorAll('.sktab').forEach(tab => {
   tab.addEventListener('mouseenter', function() {
     const s = this.dataset.s;
     if (s === 'nfl' && document.getElementById('sk-stand-nfl')?.textContent === 'Loading...')
-      loadStandings('nfl','https://site.api.espn.com/apis/v2/sports/football/nfl/standings','sk-stand-nfl');
+      loadStandings('nfl','/netlify/functions/espn-proxy?sport=nfl','sk-stand-nfl');
     if (s === 'nba' && document.getElementById('sk-stand-nba')?.textContent === 'Loading...')
-      loadStandings('nba','https://site.api.espn.com/apis/v2/sports/basketball/nba/standings','sk-stand-nba');
+      loadStandings('nba','/netlify/functions/espn-proxy?sport=nba','sk-stand-nba');
     if (s === 'mlb' && document.getElementById('sk-stand-mlb')?.textContent === 'Loading...')
-      loadStandings('mlb','https://site.api.espn.com/apis/v2/sports/baseball/mlb/standings','sk-stand-mlb');
+      loadStandings('mlb','/netlify/functions/espn-proxy?sport=mlb','sk-stand-mlb');
     if (s === 'nhl' && document.getElementById('sk-stand-nhl')?.textContent === 'Loading...')
-      loadStandings('nhl','https://site.api.espn.com/apis/v2/sports/hockey/nhl/standings','sk-stand-nhl');
+      loadStandings('nhl','/netlify/functions/espn-proxy?sport=nhl','sk-stand-nhl');
   });
 });
 
@@ -2980,7 +2988,7 @@ function handleNlSubmit(e) {
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -3018,20 +3026,20 @@ function handleNlSubmit(e) {
 <div id="page-article">
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="sksportz.html">
+  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
     <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="sksportz.html">Home</a></li>
+    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
     <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
     <li><a href="#" class="active">Content</a></li>
     <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
     <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
   </ul>
   <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+    <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+    <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
   </div>
 </nav>
 
@@ -3044,7 +3052,7 @@ function handleNlSubmit(e) {
 <!-- ARTICLE CONTENT -->
 <div class="article-wrap">
 
-  <a href="sksportz.html" class="back-link">
+  <a href="#" onclick="showPage('home');return false;" class="back-link">
     <i class="fa fa-arrow-left"></i> Back to Content
   </a>
 
@@ -3095,9 +3103,9 @@ function handleNlSubmit(e) {
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -3126,11 +3134,11 @@ function handleNlSubmit(e) {
 <footer>
   <div class="footer-grid">
     <div>
-      <a href="sksportz.html" class="footer-brand-logo">
+      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -3274,7 +3282,7 @@ document.addEventListener('click', function(e) {
   });
   if (onArticle) {
     const href = a.getAttribute('href') || '';
-    if (href === 'sksportz.html' || (a.closest('.nav-logo') && !a.closest('#page-home'))) {
+    if (href === '#' && a.closest('.nav-logo') && !a.closest('#page-home')) {
       e.preventDefault();
       showPage('home');
       return;
@@ -3381,10 +3389,10 @@ function filterTickets(sport, btn) {
 
 // ===== SCORES — ESPN Public API (no key needed) =====
 const espnLeagues = {
-  nba: { name:'NBA', url:'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard', color:'#552583', accent:'#FDB927' },
-  nfl: { name:'NFL', url:'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard', color:'#1a3a6e', accent:'#c8a84b' },
-  mlb: { name:'MLB', url:'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard', color:'#1a56db', accent:'white' },
-  nhl: { name:'NHL', url:'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard', color:'#00539b', accent:'white' }
+  nba: { name:'NBA', url:'/netlify/functions/espn-proxy?sport=nba&type=scores', color:'#552583', accent:'#FDB927' },
+  nfl: { name:'NFL', url:'/netlify/functions/espn-proxy?sport=nfl&type=scores', color:'#1a3a6e', accent:'#c8a84b' },
+  mlb: { name:'MLB', url:'/netlify/functions/espn-proxy?sport=mlb&type=scores', color:'#1a56db', accent:'white' },
+  nhl: { name:'NHL', url:'/netlify/functions/espn-proxy?sport=nhl&type=scores', color:'#00539b', accent:'white' }
 };
 let currentScoreLeague = 'nba';
 
@@ -4113,20 +4121,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MLB ARTICLE PAGE -->
 <div id="page-article-mlb">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -4189,9 +4199,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -4245,7 +4255,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -4283,20 +4293,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- NFL ARTICLE PAGE -->
 <div id="page-article-nfl">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -4355,9 +4367,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -4411,7 +4423,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -4449,20 +4461,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- NBA ARTICLE PAGE -->
 <div id="page-article-nba">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -4537,9 +4551,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -4593,7 +4607,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -4631,20 +4645,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- NBA2 ARTICLE PAGE -->
 <div id="page-article-nba2">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -4716,9 +4732,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -4772,7 +4788,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -4810,20 +4826,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- NBA3 ARTICLE PAGE -->
 <div id="page-article-nba3">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -4897,9 +4915,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -4953,7 +4971,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -4991,20 +5009,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MLB2 ARTICLE PAGE -->
 <div id="page-article-mlb2">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -5063,9 +5083,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -5119,7 +5139,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -5157,20 +5177,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MLB3 ARTICLE PAGE -->
 <div id="page-article-mlb3">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -5229,9 +5251,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -5285,7 +5307,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -5323,20 +5345,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MLB4 ARTICLE PAGE -->
 <div id="page-article-mlb4">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -5397,9 +5421,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -5453,7 +5477,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -5491,20 +5515,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MLB4 ARTICLE PAGE -->
 <div id="page-article-mlb4b">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -5565,9 +5591,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -5621,7 +5647,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -5659,20 +5685,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- NHL ARTICLE PAGE -->
 <div id="page-article-nhl">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -5729,9 +5757,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -5785,7 +5813,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -5823,20 +5851,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- COLLEGE2 ARTICLE PAGE -->
 <div id="page-article-college2">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -5891,9 +5921,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -5926,7 +5956,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -5964,20 +5994,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MMA ARTICLE PAGE -->
 <div id="page-article-mma">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -6043,9 +6075,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -6093,7 +6125,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -6131,20 +6163,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- MMA2 ARTICLE PAGE -->
 <div id="page-article-mma2">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -6212,9 +6246,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -6262,7 +6296,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -6300,20 +6334,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- BOXING ARTICLE PAGE -->
 <div id="page-article-boxing">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -6372,9 +6408,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   <!-- SHARE -->
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
 
   <!-- RELATED PRODUCTS -->
@@ -6422,7 +6458,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
       <div class="footer-social">
         <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
         <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -6460,20 +6496,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- GENERAL1 ARTICLE PAGE -->
 <div id="page-article-gen1">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 <div class="article-hero">
@@ -6503,9 +6541,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </div>
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
   <div class="article-products">
     <h3>⚡ Shop Sports Gear</h3>
@@ -6533,7 +6571,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
     </div>
     <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
@@ -6546,20 +6584,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- GENERAL2 ARTICLE PAGE -->
 <div id="page-article-gen2">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 <div class="article-hero">
@@ -6589,9 +6629,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </div>
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
   <div class="article-products">
     <h3>⚡ Shop Sports Gear</h3>
@@ -6619,7 +6659,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
     </div>
     <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
@@ -6632,20 +6672,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- GENERAL3 ARTICLE PAGE -->
 <div id="page-article-gen3">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 <div class="article-hero">
@@ -6674,9 +6716,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </div>
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
   <div class="article-products">
     <h3>⚡ Shop Sports Gear</h3>
@@ -6704,7 +6746,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
     </div>
     <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
@@ -6718,20 +6760,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- VIEW ALL ARTICLES PAGE -->
 <div id="page-all-articles">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -6970,7 +7014,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
         <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
         <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
       </a>
-      <p class="footer-brand-desc">Your ultimate destination for NFL, NBA, MLB, NHL and College Sports gear, content, and highlights.</p>
+      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
     </div>
     <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
   </div>
@@ -6986,20 +7030,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- TICKETS PAGE -->
 <div id="page-tickets">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;" class="active">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;" class="active">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -7154,9 +7200,8 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
   </div>
 
-  <!-- SEATGEEK DISCLAIMER -->
   <p style="margin-top:2.5rem;font-size:0.72rem;color:rgba(255,255,255,0.25);text-align:center;">
-    ⚠️ <strong style="color:rgba(255,255,255,0.5);">Affiliate Setup Needed:</strong> Links go to SeatGeek. To earn commission, sign up at <a href="https://seatgeek.com/affiliate" target="_blank" style="color:var(--yellow);">seatgeek.com/affiliate</a> (via Impact), get your affiliate ID, and add <code style="color:var(--yellow);">?aid=YOUR_ID</code> to each ticket URL. Prices are approximate and set by sellers.
+    Ticket prices are set by sellers and may vary. All purchases are processed securely through SeatGeek.
   </p>
 
 </section>
@@ -7172,20 +7217,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- SCORES PAGE -->
 <div id="page-scores">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;" class="active">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;" class="active">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -7238,20 +7285,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- AI SPORTS AGENT PAGE -->
 <div id="page-ai-agent">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -7329,20 +7378,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- SHOP PAGE -->
 <div id="page-shop">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;" class="active">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 
@@ -7408,20 +7459,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- ARTICLE-NFL-DRAFT ARTICLE PAGE -->
 <div id="page-article-nfl-draft">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 <div class="article-hero">
@@ -7460,9 +7513,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </div>
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
   <div class="article-products">
     <h3>⚡ Shop Fan Gear</h3>
@@ -7494,20 +7547,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- ARTICLE-NBA-PLAYOFFS ARTICLE PAGE -->
 <div id="page-article-nba-playoffs">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 <div class="article-hero">
@@ -7546,9 +7601,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </div>
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
   <div class="article-products">
     <h3>⚡ Shop Fan Gear</h3>
@@ -7580,20 +7635,22 @@ document.addEventListener('DOMContentLoaded', initProducts);
 <!-- ARTICLE-DODGERS ARTICLE PAGE -->
 <div id="page-article-dodgers">
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <i class="fa fa-shopping-cart nav-cart"></i>
-    <a href="#" class="btn-signin">Sign In</a>
+  <div class="nav-top">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
+      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
 </nav>
 <div class="article-hero">
@@ -7632,9 +7689,9 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </div>
   <div class="article-share">
     <span class="share-label">Share</span>
-    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="#" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
+    <a href="https://twitter.com/intent/tweet?text=Check+this+out+on+SKSportz&url=https://sksportz.com" target="_blank" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sksportz.com" target="_blank" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\"fa fa-link\"></i> Copy Link',2000);return false;" class="share-btn"><i class="fa fa-link"></i> Copy Link</a>
   </div>
   <div class="article-products">
     <h3>⚡ Shop Fan Gear</h3>

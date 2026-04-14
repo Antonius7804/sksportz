@@ -44,9 +44,10 @@ body {
 nav {
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 1000;
   background: #0d0d0d;
   border-bottom: 1px solid rgba(255,255,255,0.07);
+  overflow: visible !important;
 }
 .nav-top {
   display: flex;
@@ -68,7 +69,7 @@ nav {
   border-top: 1px solid rgba(255,255,255,0.07);
   background: #0d0d0d;
   position: relative;
-  z-index: 9999;
+  z-index: 1000;
   overflow: visible;
 }
 .sktab {
@@ -103,13 +104,14 @@ nav {
   background: #1c1c1c;
   border: 1px solid rgba(255,255,255,0.08);
   border-top: 2px solid var(--yellow);
-  z-index: 9999;
+  z-index: 99999;
   box-shadow: 0 6px 20px rgba(0,0,0,0.8);
+  pointer-events: auto;
 }
 .skdrop-mega {
   display: grid;
-  grid-template-columns: 1fr 220px;
-  min-width: 480px;
+  grid-template-columns: 1fr 200px;
+  min-width: 520px;
 }
 .skdrop-mega-left {
   padding: 8px 0;
@@ -122,6 +124,30 @@ nav {
 .skdrop-mega-right .skdrop-lbl {
   padding: 6px 12px 4px;
 }
+.skdrop-divisions {
+  display: flex;
+  flex-direction: column;
+}
+.skdrop-conf {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+.skdrop-conf:last-child { border-bottom: none; }
+.skdrop-div-link {
+  display: block !important;
+  padding: 4px 14px !important;
+  font-size: 0.74rem !important;
+  color: rgba(255,255,255,0.7) !important;
+  text-decoration: none;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.skdrop-div-link:hover {
+  color: var(--yellow) !important;
+  background: rgba(255,255,255,0.04) !important;
+  padding-left: 18px !important;
+}
 .skdrop-stand-row {
   display: flex;
   justify-content: space-between;
@@ -131,6 +157,26 @@ nav {
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .skdrop-stand-row:last-child { border-bottom: none; }
+.skdrop-wide { min-width: 780px !important; }
+.skdrop-teams-panel { flex: 1; padding: 8px 4px !important; background: #161616; }
+.skdrop-conf-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+}
+.skdrop-conf-col { padding: 4px 0; border-right: 1px solid rgba(255,255,255,0.05); }
+.skdrop-conf-col:last-child { border-right: none; }
+.skdrop-conf-col .skdrop-lbl { font-size: 0.6rem; padding: 6px 10px 4px; }
+.skdrop-conf-col a {
+  display: block;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.7) !important;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.12s;
+}
+.skdrop-conf-col a:hover { color: var(--yellow) !important; background: rgba(255,255,255,0.04); padding-left: 14px; }
 .skdrop-stand-hdr {
   display: flex;
   justify-content: space-between;
@@ -1382,7 +1428,7 @@ body { overflow-x: clip !important; }
   <div class="nav-sports">
 
     <div class="sktab on" data-s="nfl">NFL
-      <div class="skdrop">
+      <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
           <div class="skdrop-mega-left">
             <span class="skdrop-lbl">News</span>
@@ -1395,17 +1441,74 @@ body { overflow-x: clip !important; }
             <a href="#" onclick="showPage('shop');filterShopProducts('nfl',event);return false;">Shop NFL</a>
             <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
           </div>
-          <div class="skdrop-mega-right">
-            <span class="skdrop-lbl">AFC & NFC</span>
-            <div class="skdrop-stand-hdr"><span>Team</span><span>W-L</span></div>
-            <div id="sk-stand-nfl"><div class="skdrop-stand-row"><span>Loading...</span></div></div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AFC East</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Buffalo Bills</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Miami Dolphins</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New England Patriots</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Jets</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AFC North</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Baltimore Ravens</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Cincinnati Bengals</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Cleveland Browns</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Pittsburgh Steelers</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AFC South</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Houston Texans</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Indianapolis Colts</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Jacksonville Jaguars</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Tennessee Titans</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AFC West</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Denver Broncos</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Kansas City Chiefs</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Las Vegas Raiders</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Chargers</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NFC East</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Dallas Cowboys</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Giants</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Philadelphia Eagles</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Washington Commanders</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NFC North</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago Bears</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Detroit Lions</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Green Bay Packers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Vikings</a>
+              </div>
+            </div>
+            <div class="skdrop-conf-grid" style="border-top:1px solid rgba(255,255,255,0.05);margin-top:4px;padding-top:4px;">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NFC South</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlanta Falcons</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Carolina Panthers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New Orleans Saints</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Tampa Bay Buccaneers</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NFC West</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Arizona Cardinals</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Rams</a>
+                <a href="#" onclick="showPage('all-articles');return false;">San Francisco 49ers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Seattle Seahawks</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="sktab" data-s="nba">NBA
-      <div class="skdrop">
+      <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
           <div class="skdrop-mega-left">
             <span class="skdrop-lbl">News</span>
@@ -1418,17 +1521,64 @@ body { overflow-x: clip !important; }
             <a href="#" onclick="showPage('shop');filterShopProducts('nba',event);return false;">Shop NBA</a>
             <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
           </div>
-          <div class="skdrop-mega-right">
-            <span class="skdrop-lbl">East & West</span>
-            <div class="skdrop-stand-hdr"><span>Team</span><span>W-L</span></div>
-            <div id="sk-stand-nba"><div class="skdrop-stand-row"><span>Loading...</span></div></div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Atlantic</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Boston Celtics</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Brooklyn Nets</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Knicks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Philadelphia 76ers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Toronto Raptors</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Central</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago Bulls</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Cleveland Cavaliers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Detroit Pistons</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Indiana Pacers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Milwaukee Bucks</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Southeast</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlanta Hawks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Charlotte Hornets</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Miami Heat</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Orlando Magic</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Washington Wizards</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Northwest</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Denver Nuggets</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Timberwolves</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Oklahoma City Thunder</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Portland Trail Blazers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Utah Jazz</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Pacific</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Golden State Warriors</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Clippers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Los Angeles Lakers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Phoenix Suns</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Sacramento Kings</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Southwest</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Dallas Mavericks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Houston Rockets</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Memphis Grizzlies</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New Orleans Pelicans</a>
+                <a href="#" onclick="showPage('all-articles');return false;">San Antonio Spurs</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="sktab" data-s="mlb">MLB
-      <div class="skdrop">
+      <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
           <div class="skdrop-mega-left">
             <span class="skdrop-lbl">News</span>
@@ -1441,17 +1591,64 @@ body { overflow-x: clip !important; }
             <a href="#" onclick="showPage('shop');filterShopProducts('mlb',event);return false;">Shop MLB</a>
             <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
           </div>
-          <div class="skdrop-mega-right">
-            <span class="skdrop-lbl">AL & NL</span>
-            <div class="skdrop-stand-hdr"><span>Team</span><span>W-L</span></div>
-            <div id="sk-stand-mlb"><div class="skdrop-stand-row"><span>Loading...</span></div></div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AL East</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Baltimore Orioles</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Boston Red Sox</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Yankees</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Tampa Bay Rays</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Toronto Blue Jays</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AL Central</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago White Sox</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Cleveland Guardians</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Detroit Tigers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Kansas City Royals</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Twins</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">AL West</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Houston Astros</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Angels</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Oakland Athletics</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Seattle Mariners</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Texas Rangers</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NL East</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlanta Braves</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Miami Marlins</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Mets</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Philadelphia Phillies</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Washington Nationals</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NL Central</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago Cubs</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Cincinnati Reds</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Milwaukee Brewers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Pittsburgh Pirates</a>
+                <a href="#" onclick="showPage('all-articles');return false;">St. Louis Cardinals</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">NL West</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Arizona Diamondbacks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Colorado Rockies</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Dodgers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">San Diego Padres</a>
+                <a href="#" onclick="showPage('all-articles');return false;">San Francisco Giants</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="sktab" data-s="nhl">NHL
-      <div class="skdrop">
+      <div class="skdrop skdrop-wide">
         <div class="skdrop-mega">
           <div class="skdrop-mega-left">
             <span class="skdrop-lbl">News</span>
@@ -1464,10 +1661,53 @@ body { overflow-x: clip !important; }
             <a href="#" onclick="showPage('shop');filterShopProducts('nhl',event);return false;">Shop NHL</a>
             <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
           </div>
-          <div class="skdrop-mega-right">
-            <span class="skdrop-lbl">East & West</span>
-            <div class="skdrop-stand-hdr"><span>Team</span><span>W-L</span></div>
-            <div id="sk-stand-nhl"><div class="skdrop-stand-row"><span>Loading...</span></div></div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Atlantic</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Boston Bruins</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Buffalo Sabres</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Detroit Red Wings</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Florida Panthers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Montreal Canadiens</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Ottawa Senators</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Tampa Bay Lightning</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Toronto Maple Leafs</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Metropolitan</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Carolina Hurricanes</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Columbus Blue Jackets</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New Jersey Devils</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Islanders</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Rangers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Philadelphia Flyers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Pittsburgh Penguins</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Washington Capitals</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Central</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago Blackhawks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Colorado Avalanche</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Dallas Stars</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Wild</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Nashville Predators</a>
+                <a href="#" onclick="showPage('all-articles');return false;">St. Louis Blues</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Utah Mammoth</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Winnipeg Jets</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Pacific</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Anaheim Ducks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Calgary Flames</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Edmonton Oilers</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Los Angeles Kings</a>
+                <a href="#" onclick="showPage('all-articles');return false;">San Jose Sharks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Seattle Kraken</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Vancouver Canucks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Vegas Golden Knights</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1502,40 +1742,190 @@ body { overflow-x: clip !important; }
     </div>
 
     <div class="sktab" data-s="college">College Sports
-      <div class="skdrop">
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">Football</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Portal</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
-          <a href="#" onclick="showPage('scores');return false;">CFP Rankings</a>
-        </div>
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">Basketball</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Portal</a>
-          <a href="#" onclick="showPage('scores');return false;">March Madness</a>
-        </div>
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('shop');filterShopProducts('college',event);return false;">Shop College</a>
+      <div class="skdrop skdrop-wide" style="min-width:900px !important;">
+        <div class="skdrop-mega">
+          <div class="skdrop-mega-left">
+            <span class="skdrop-lbl">News</span>
+            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Portal</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Coaching Moves</a>
+            <span class="skdrop-lbl" style="margin-top:4px;">Basketball</span>
+            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Portal</a>
+            <a href="#" onclick="showPage('scores');return false;">March Madness</a>
+            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
+            <a href="#" onclick="showPage('scores');return false;">CFP Rankings</a>
+            <a href="#" onclick="showPage('shop');filterShopProducts('college',event);return false;">Shop College</a>
+          </div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(5, 1fr);">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Power</span>
+                <a href="#" onclick="showPage('all-articles');return false;">SEC</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Big Ten</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Big 12</a>
+                <a href="#" onclick="showPage('all-articles');return false;">ACC</a>
+                <a href="#" onclick="showPage('all-articles');return false;">AAC</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Mountain West</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Sun Belt</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Mid-American</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Conference USA</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">FCS</span>
+                <a href="#" onclick="showPage('all-articles');return false;">CAA Football</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Big Sky</a>
+                <a href="#" onclick="showPage('all-articles');return false;">MEAC</a>
+                <a href="#" onclick="showPage('all-articles');return false;">SWAC</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Missouri Valley</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Southern Conference</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Southland</a>
+                <a href="#" onclick="showPage('all-articles');return false;">OVC-Big South</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Northeast</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Lower Divisions</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Patriot League</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Pioneer Football</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Ivy League</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Division II</a>
+                <a href="#" onclick="showPage('all-articles');return false;">UAC</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Top Programs</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Alabama</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Georgia</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Ohio State</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Michigan</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Texas</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Notre Dame</a>
+                <a href="#" onclick="showPage('all-articles');return false;">USC</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Penn State</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LSU</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">More Programs</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Oregon</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Florida</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Clemson</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Oklahoma</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Tennessee</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Miami (FL)</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Florida State</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Texas A&M</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Auburn</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="sktab" data-s="soccer">Soccer
-      <div class="skdrop">
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Rumours</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+      <div class="skdrop skdrop-wide">
+        <div class="skdrop-mega">
+          <div class="skdrop-mega-left">
+            <span class="skdrop-lbl">News</span>
+            <a href="#" onclick="showPage('all-articles');return false;">🔥 Transfer Rumours</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Match Previews</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Managerial News</a>
+            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
+            <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
+            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
+            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+          </div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(4, 1fr);">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Competitions</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Premier League</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Champions League</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LALIGA</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Bundesliga</a>
+                <a href="#" onclick="showPage('all-articles');return false;">MLS</a>
+                <a href="#" onclick="showPage('all-articles');return false;">NWSL</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Liga MX</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">England</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Arsenal</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Chelsea</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Liverpool</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Manchester City</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Manchester United</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">USA</span>
+                <a href="#" onclick="showPage('all-articles');return false;">USMNT</a>
+                <a href="#" onclick="showPage('all-articles');return false;">USWNT</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Inter Miami</a>
+                <a href="#" onclick="showPage('all-articles');return false;">LA Galaxy</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Spain</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Barcelona</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Real Madrid</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlético Madrid</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">Germany</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Bayern Munich</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Bayer Leverkusen</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Borussia Dortmund</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">Mexico</span>
+                <a href="#" onclick="showPage('all-articles');return false;">América</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Guadalajara</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Italy</span>
+                <a href="#" onclick="showPage('all-articles');return false;">AC Milan</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Internazionale</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Juventus</a>
+                <span class="skdrop-lbl" style="margin-top:6px;">France</span>
+                <a href="#" onclick="showPage('all-articles');return false;">PSG</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">Leagues</span>
-          <a href="#" onclick="showPage('scores');return false;">MLS Standings</a>
-          <a href="#" onclick="showPage('scores');return false;">Premier League</a>
-          <a href="#" onclick="showPage('scores');return false;">Champions League</a>
-        </div>
-        <div class="skdrop-sec">
-          <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
-          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
+      </div>
+    </div>
+
+    <div class="sktab" data-s="wnba">WNBA
+      <div class="skdrop skdrop-wide">
+        <div class="skdrop-mega">
+          <div class="skdrop-mega-left">
+            <span class="skdrop-lbl">News</span>
+            <a href="#" onclick="showPage('all-articles');return false;">🔥 Breaking News</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Trade Rumours</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
+            <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
+            <span class="skdrop-lbl" style="margin-top:4px;">Quick Links</span>
+            <a href="#" onclick="showPage('tickets');return false;">WNBA Tickets</a>
+            <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop WNBA</a>
+            <a href="#" onclick="showPage('scores');return false;">Full Standings →</a>
+          </div>
+          <div class="skdrop-mega-right skdrop-teams-panel">
+            <div class="skdrop-conf-grid" style="grid-template-columns: repeat(2, 1fr);">
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Eastern Conference</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Atlanta Dream</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Chicago Sky</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Connecticut Sun</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Indiana Fever</a>
+                <a href="#" onclick="showPage('all-articles');return false;">New York Liberty</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Toronto Tempo</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Washington Mystics</a>
+              </div>
+              <div class="skdrop-conf-col">
+                <span class="skdrop-lbl">Western Conference</span>
+                <a href="#" onclick="showPage('all-articles');return false;">Dallas Wings</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Golden State Valkyries</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Las Vegas Aces</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Los Angeles Sparks</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Minnesota Lynx</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Phoenix Mercury</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Portland Fire</a>
+                <a href="#" onclick="showPage('all-articles');return false;">Seattle Storm</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

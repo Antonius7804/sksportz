@@ -44,7 +44,7 @@ body {
 nav {
   position: sticky;
   top: 0;
-  z-index: 500;
+  z-index: 9999;
   background: #0d0d0d;
   border-bottom: 1px solid rgba(255,255,255,0.07);
 }
@@ -64,6 +64,7 @@ nav {
 .nav-sports {
   display: flex;
   padding: 0 2rem;
+  height: 38px;
   border-top: 1px solid rgba(255,255,255,0.07);
   background: #0d0d0d;
   position: relative;
@@ -72,15 +73,16 @@ nav {
 }
 .sktab {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
-  padding: 10px 18px;
-  font-size: 0.7rem;
+  gap: 0;
+  padding: 0 16px;
+  height: 100%;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.55);
   cursor: pointer;
   border: none;
   background: none;
@@ -89,7 +91,7 @@ nav {
   white-space: nowrap;
   position: relative;
 }
-.sktab i { font-size: 1.2rem; }
+.sktab i { font-size: 1.5rem; }
 .sktab:hover { color: rgba(255,255,255,0.8); }
 .sktab.on { color: var(--yellow); border-bottom-color: var(--yellow); }
 .sktab .skdrop {
@@ -97,37 +99,40 @@ nav {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 220px;
+  min-width: 200px;
   max-height: 80vh;
   overflow-y: auto;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.1);
+  background: #1c1c1c;
+  border: 1px solid rgba(255,255,255,0.08);
   border-top: 2px solid var(--yellow);
-  z-index: 600;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+  z-index: 9999;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.8);
 }
 .sktab:hover .skdrop { display: block; }
-.skdrop-sec { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.skdrop-sec { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .skdrop-sec:last-child { border-bottom: none; }
 .skdrop-lbl {
   font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--yellow);
-  padding: 8px 16px 4px;
+  padding: 8px 14px 3px;
   display: block;
 }
 .skdrop a {
   display: block;
-  padding: 8px 16px;
-  font-size: 0.88rem;
-  color: rgba(255,255,255,0.7);
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  color: var(--yellow);
   text-decoration: none;
-  transition: all 0.15s;
+  transition: all 0.12s;
   font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0;
 }
-.skdrop a:hover { color: white; background: rgba(255,255,255,0.05); padding-left: 20px; }
+.skdrop a:hover { color: white; background: rgba(255,255,255,0.06); padding-left: 18px; }
 .skdrop a.hot { color: var(--red); }
 .skdrop a.hot::after { content: ' 🔥'; font-size: 0.75rem; }
 
@@ -1297,8 +1302,7 @@ body { overflow-x: clip !important; }
 </head>
 <body>
 
-<div id="page-home">
-<!-- NAV -->
+<!-- SHARED NAV -->
 <nav>
   <div class="nav-top">
     <a class="nav-logo" href="#">
@@ -1346,126 +1350,86 @@ body { overflow-x: clip !important; }
   <div class="nav-sports">
 
     <!-- NFL -->
-    <div class="sktab on" data-s="nfl"><i class="fa fa-football-ball"></i>NFL
+    <div class="sktab on" data-s="nfl">NFL
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News & Rumours</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
-          <a href="#" onclick="showPage('all-articles');return false;">📰 Breaking News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Draft News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Standings</span>
-          <div id="sk-stand-nfl" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+          <div id="sk-stand-nfl" style="padding:4px 16px 8px;font-size:0.78rem;color:#f5c518;">Loading...</div>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">NFL Games Near You</a>
-          <a href="#" onclick="showPage('tickets');return false;">NFL Draft Experience</a>
+          <a href="#" onclick="showPage('tickets');return false;">NFL Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop NFL</span>
-          <a href="https://www.amazon.com/s?k=nfl+jersey&tag=piekonlinesto-20" target="_blank">NFL Jerseys</a>
-          <a href="https://www.amazon.com/s?k=nfl+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
-          <a href="https://www.amazon.com/s?k=nfl+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('nfl',event);return false;">Shop NFL</a>
         </div>
       </div>
     </div>
 
     <!-- NBA -->
-    <div class="sktab" data-s="nba"><i class="fa fa-basketball-ball"></i>NBA
+    <div class="sktab" data-s="nba">NBA
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News & Rumours</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
-          <a href="#" onclick="showPage('all-articles');return false;">📰 Breaking News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Free Agency</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Standings & Playoffs</span>
-          <div id="sk-stand-nba" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+          <div id="sk-stand-nba" style="padding:4px 16px 8px;font-size:0.78rem;color:#f5c518;">Loading...</div>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">NBA Playoff Games</a>
-          <a href="#" onclick="showPage('tickets');return false;">Find NBA Seats</a>
+          <a href="#" onclick="showPage('tickets');return false;">NBA Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop NBA</span>
-          <a href="https://www.amazon.com/s?k=nba+jersey&tag=piekonlinesto-20" target="_blank">NBA Jerseys</a>
-          <a href="https://www.amazon.com/s?k=nba+collectibles&tag=piekonlinesto-20" target="_blank">Collectibles</a>
-          <a href="https://www.amazon.com/s?k=nba+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('nba',event);return false;">Shop NBA</a>
         </div>
       </div>
     </div>
 
     <!-- MLB -->
-    <div class="sktab" data-s="mlb"><i class="fa fa-baseball-ball"></i>MLB
+    <div class="sktab" data-s="mlb">MLB
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News & Rumours</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
-          <a href="#" onclick="showPage('all-articles');return false;">📰 Breaking News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Roster Moves</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Standings</span>
-          <div id="sk-stand-mlb" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+          <div id="sk-stand-mlb" style="padding:4px 16px 8px;font-size:0.78rem;color:#f5c518;">Loading...</div>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">MLB Games Near You</a>
-          <a href="#" onclick="showPage('tickets');return false;">Opening Series Tickets</a>
+          <a href="#" onclick="showPage('tickets');return false;">MLB Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop MLB</span>
-          <a href="https://www.amazon.com/s?k=mlb+jersey&tag=piekonlinesto-20" target="_blank">MLB Jerseys</a>
-          <a href="https://www.amazon.com/s?k=baseball+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
-          <a href="https://www.amazon.com/s?k=mlb+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('mlb',event);return false;">Shop MLB</a>
         </div>
       </div>
     </div>
 
     <!-- NHL -->
-    <div class="sktab" data-s="nhl"><i class="fa fa-hockey-puck"></i>NHL
+    <div class="sktab" data-s="nhl">NHL
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News & Rumours</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Trade Rumours</a>
-          <a href="#" onclick="showPage('all-articles');return false;">📰 Breaking News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Waiver Wire</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Playoffs</span>
-          <div id="sk-stand-nhl" style="padding:4px 16px 8px;font-size:0.8rem;color:rgba(255,255,255,0.6);">Loading...</div>
+          <div id="sk-stand-nhl" style="padding:4px 16px 8px;font-size:0.78rem;color:#f5c518;">Loading...</div>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">NHL Playoff Tickets</a>
-          <a href="#" onclick="showPage('tickets');return false;">Stanley Cup Finals</a>
+          <a href="#" onclick="showPage('tickets');return false;">NHL Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop NHL</span>
-          <a href="https://www.amazon.com/s?k=nhl+jersey&tag=piekonlinesto-20" target="_blank">NHL Jerseys</a>
-          <a href="https://www.amazon.com/s?k=hockey+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
-          <a href="https://www.amazon.com/s?k=nhl+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('nhl',event);return false;">Shop NHL</a>
         </div>
       </div>
     </div>
 
     <!-- UFC -->
-    <div class="sktab" data-s="ufc"><i class="fa fa-fist-raised"></i>UFC
+    <div class="sktab" data-s="ufc">UFC
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Fight Cards</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Weigh-Ins</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Current Champions</span>
@@ -1475,27 +1439,19 @@ body { overflow-x: clip !important; }
           <a href="#" onclick="showPage('all-articles');return false;">Lightweight: Islam Makhachev</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">Upcoming UFC Events</a>
+          <a href="#" onclick="showPage('tickets');return false;">UFC Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop UFC</span>
-          <a href="https://www.amazon.com/s?k=ufc+gear&tag=piekonlinesto-20" target="_blank">UFC Gear</a>
-          <a href="https://www.amazon.com/s?k=mma+gloves&tag=piekonlinesto-20" target="_blank">MMA Gloves</a>
-          <a href="https://www.amazon.com/s?k=ufc+collectibles&tag=piekonlinesto-20" target="_blank">Collectibles</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop UFC</a>
         </div>
       </div>
     </div>
 
     <!-- Boxing -->
-    <div class="sktab" data-s="boxing"><i class="fa fa-hand-rock"></i>Boxing
+    <div class="sktab" data-s="boxing">Boxing
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Upcoming Fights</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Weigh-Ins</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Current Champions</span>
@@ -1504,89 +1460,62 @@ body { overflow-x: clip !important; }
           <a href="#" onclick="showPage('all-articles');return false;">Super Welterweight: Canelo Alvarez</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">Upcoming Boxing Events</a>
+          <a href="#" onclick="showPage('tickets');return false;">Boxing Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop Boxing</span>
-          <a href="https://www.amazon.com/s?k=boxing+gloves&tag=piekonlinesto-20" target="_blank">Boxing Gloves</a>
-          <a href="https://www.amazon.com/s?k=boxing+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
-          <a href="https://www.amazon.com/s?k=boxing+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Boxing</a>
         </div>
       </div>
     </div>
 
-    <!-- College FB -->
-    <div class="sktab" data-s="college-fb"><i class="fa fa-football-ball"></i>College FB
+    <!-- COLLEGE SPORTS -->
+    <div class="sktab" data-s="college">College Sports
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
+          <span class="skdrop-lbl">College Football</span>
           <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Portal</a>
           <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
           <a href="#" onclick="showPage('all-articles');return false;">Spring Game News</a>
           <a href="#" onclick="showPage('all-articles');return false;">NFL Draft Prospects</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Rankings</span>
+          <span class="skdrop-lbl">CFB Rankings</span>
           <a href="#" onclick="showPage('scores');return false;">AP Top 25</a>
           <a href="#" onclick="showPage('scores');return false;">CFP Rankings</a>
           <a href="#" onclick="showPage('scores');return false;">Conference Standings</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Top Programs</span>
-          <a href="#" onclick="showPage('all-articles');return false;">Alabama Crimson Tide</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Georgia Bulldogs</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Ohio State Buckeyes</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Texas Longhorns</a>
-        </div>
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop College FB</span>
-          <a href="https://www.amazon.com/s?k=college+football+jersey&tag=piekonlinesto-20" target="_blank">College Jerseys</a>
-          <a href="https://www.amazon.com/s?k=college+football+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- College BB -->
-    <div class="sktab" data-s="college-bb"><i class="fa fa-basketball-ball"></i>College BB
-      <div class="skdrop">
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
+          <span class="skdrop-lbl">College Basketball</span>
           <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Portal</a>
           <a href="#" onclick="showPage('all-articles');return false;">Recruiting</a>
           <a href="#" onclick="showPage('all-articles');return false;">NBA Draft Prospects</a>
           <a href="#" onclick="showPage('all-articles');return false;">Rankings</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tournaments</span>
+          <span class="skdrop-lbl">CBB Rankings</span>
           <a href="#" onclick="showPage('scores');return false;">March Madness Bracket</a>
           <a href="#" onclick="showPage('scores');return false;">AP Top 25</a>
           <a href="#" onclick="showPage('scores');return false;">Conference Standings</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Top Programs</span>
-          <a href="#" onclick="showPage('all-articles');return false;">Kansas Jayhawks</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Alabama Crimson Tide</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Ohio State Buckeyes</a>
           <a href="#" onclick="showPage('all-articles');return false;">Duke Blue Devils</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Kentucky Wildcats</a>
-          <a href="#" onclick="showPage('all-articles');return false;">UConn Huskies</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Kansas Jayhawks</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop College BB</span>
-          <a href="https://www.amazon.com/s?k=college+basketball+jersey&tag=piekonlinesto-20" target="_blank">College Jerseys</a>
-          <a href="https://www.amazon.com/s?k=march+madness+gear&tag=piekonlinesto-20" target="_blank">March Madness Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('college',event);return false;">Shop College Sports</a>
         </div>
       </div>
     </div>
 
+
     <!-- Soccer -->
-    <div class="sktab" data-s="soccer"><i class="fa fa-futbol"></i>Soccer
+    <div class="sktab" data-s="soccer">Soccer
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News & Rumours</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Transfer Rumours</a>
-          <a href="#" onclick="showPage('all-articles');return false;">📰 Breaking News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Injury Report</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Manager News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Leagues</span>
@@ -1596,28 +1525,19 @@ body { overflow-x: clip !important; }
           <a href="#" onclick="showPage('scores');return false;">La Liga</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Tickets</span>
-          <a href="#" onclick="showPage('tickets');return false;">MLS Tickets</a>
-          <a href="#" onclick="showPage('tickets');return false;">Soccer Events Near You</a>
+          <a href="#" onclick="showPage('tickets');return false;">Soccer Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop Soccer</span>
-          <a href="https://www.amazon.com/s?k=soccer+jersey&tag=piekonlinesto-20" target="_blank">Soccer Jerseys</a>
-          <a href="https://www.amazon.com/s?k=soccer+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
-          <a href="https://www.amazon.com/s?k=soccer+cleats&tag=piekonlinesto-20" target="_blank">Cleats & Boots</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Soccer</a>
         </div>
       </div>
     </div>
 
     <!-- WWE -->
-    <div class="sktab" data-s="wwe"><i class="fa fa-fist-raised"></i>WWE
+    <div class="sktab" data-s="wwe">WWE
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Storylines</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Results</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Pay-Per-View</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Superstar News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Current Champions</span>
@@ -1626,28 +1546,19 @@ body { overflow-x: clip !important; }
           <a href="#" onclick="showPage('all-articles');return false;">Women's: Rhea Ripley</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Upcoming Events</span>
-          <a href="#" onclick="showPage('tickets');return false;">WWE Live Events</a>
-          <a href="#" onclick="showPage('tickets');return false;">WrestleMania Tickets</a>
+          <a href="#" onclick="showPage('tickets');return false;">WWE Tickets</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop WWE</span>
-          <a href="https://www.amazon.com/s?k=wwe+championship+belt&tag=piekonlinesto-20" target="_blank">Championship Belts</a>
-          <a href="https://www.amazon.com/s?k=wwe+action+figures&tag=piekonlinesto-20" target="_blank">Action Figures</a>
-          <a href="https://www.amazon.com/s?k=wwe+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop WWE</a>
         </div>
       </div>
     </div>
 
     <!-- Tennis -->
-    <div class="sktab" data-s="tennis"><i class="fa fa-table-tennis"></i>Tennis
+    <div class="sktab" data-s="tennis">Tennis
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Grand Slam News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">ATP Tour</a>
-          <a href="#" onclick="showPage('all-articles');return false;">WTA Tour</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Player News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Rankings</span>
@@ -1663,22 +1574,16 @@ body { overflow-x: clip !important; }
           <a href="#" onclick="showPage('all-articles');return false;">Iga Swiatek</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop Tennis</span>
-          <a href="https://www.amazon.com/s?k=tennis+racket&tag=piekonlinesto-20" target="_blank">Tennis Rackets</a>
-          <a href="https://www.amazon.com/s?k=tennis+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Tennis</a>
         </div>
       </div>
     </div>
 
     <!-- Golf -->
-    <div class="sktab" data-s="golf"><i class="fa fa-golf-ball"></i>Golf
+    <div class="sktab" data-s="golf">Golf
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
-          <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 PGA Tour</a>
-          <a href="#" onclick="showPage('all-articles');return false;">LIV Golf</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Major Championships</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Player News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Breaking News</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Rankings & Schedule</span>
@@ -1694,80 +1599,53 @@ body { overflow-x: clip !important; }
           <a href="#" onclick="showPage('all-articles');return false;">Tiger Woods</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop Golf</span>
-          <a href="https://www.amazon.com/s?k=golf+clubs&tag=piekonlinesto-20" target="_blank">Golf Clubs</a>
-          <a href="https://www.amazon.com/s?k=golf+fan+gear&tag=piekonlinesto-20" target="_blank">Fan Gear</a>
-          <a href="https://www.amazon.com/s?k=golf+accessories&tag=piekonlinesto-20" target="_blank">Accessories</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Golf</a>
         </div>
       </div>
     </div>
 
-    <!-- NASCAR -->
-    <div class="sktab" data-s="nascar"><i class="fa fa-flag-checkered"></i>NASCAR
+    <!-- MOTORSPORT -->
+    <div class="sktab" data-s="motorsport">Motorsport
       <div class="skdrop">
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
+          <span class="skdrop-lbl">NASCAR</span>
           <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Race Results</a>
           <a href="#" onclick="showPage('all-articles');return false;">Driver News</a>
           <a href="#" onclick="showPage('all-articles');return false;">Race Schedule</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Team News</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Standings</span>
+          <span class="skdrop-lbl">NASCAR Standings</span>
           <a href="#" onclick="showPage('scores');return false;">Cup Series Standings</a>
-          <a href="#" onclick="showPage('scores');return false;">Xfinity Series</a>
           <a href="#" onclick="showPage('scores');return false;">Playoff Picture</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Top Drivers</span>
-          <a href="#" onclick="showPage('all-articles');return false;">Kyle Larson</a>
-          <a href="#" onclick="showPage('all-articles');return false;">William Byron</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Denny Hamlin</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Chase Elliott</a>
-        </div>
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop NASCAR</span>
-          <a href="https://www.amazon.com/s?k=nascar+fan+gear&tag=piekonlinesto-20" target="_blank">NASCAR Fan Gear</a>
-          <a href="https://www.amazon.com/s?k=nascar+diecast&tag=piekonlinesto-20" target="_blank">Diecast Cars</a>
-          <a href="https://www.amazon.com/s?k=nascar+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- F1 -->
-    <div class="sktab" data-s="f1"><i class="fa fa-flag-checkered"></i>F1
-      <div class="skdrop">
-        <div class="skdrop-sec">
-          <span class="skdrop-lbl">News</span>
+          <span class="skdrop-lbl">Formula 1</span>
           <a href="#" onclick="showPage('all-articles');return false;" class="hot">🔥 Race Results</a>
           <a href="#" onclick="showPage('all-articles');return false;">Driver News</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Race Schedule</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Team News</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Race Calendar</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Standings</span>
+          <span class="skdrop-lbl">F1 Standings</span>
           <a href="#" onclick="showPage('scores');return false;">Driver Championship</a>
           <a href="#" onclick="showPage('scores');return false;">Constructor Championship</a>
-          <a href="#" onclick="showPage('scores');return false;">Race Calendar</a>
         </div>
         <div class="skdrop-sec">
           <span class="skdrop-lbl">Top Drivers</span>
           <a href="#" onclick="showPage('all-articles');return false;">Max Verstappen</a>
+          <a href="#" onclick="showPage('all-articles');return false;">Kyle Larson</a>
           <a href="#" onclick="showPage('all-articles');return false;">Lewis Hamilton</a>
-          <a href="#" onclick="showPage('all-articles');return false;">Charles Leclerc</a>
           <a href="#" onclick="showPage('all-articles');return false;">Lando Norris</a>
         </div>
         <div class="skdrop-sec">
-          <span class="skdrop-lbl">Shop F1</span>
-          <a href="https://www.amazon.com/s?k=f1+fan+gear&tag=piekonlinesto-20" target="_blank">F1 Fan Gear</a>
-          <a href="https://www.amazon.com/s?k=formula+1+model+car&tag=piekonlinesto-20" target="_blank">Model Cars</a>
-          <a href="https://www.amazon.com/s?k=f1+memorabilia&tag=piekonlinesto-20" target="_blank">Memorabilia</a>
+          <a href="#" onclick="showPage('shop');filterShopProducts('all',event);return false;">Shop Motorsport</a>
         </div>
       </div>
     </div>
 
   </div>
 </nav>
+<div id="page-home">
+
 
 <!-- MOBILE MENU -->
 <div id="mobile-menu" style="display:none;position:fixed;top:62px;left:0;right:0;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,0.1);z-index:199;padding:1rem;">
@@ -1880,16 +1758,16 @@ async function loadStandings(sport, url, elId, nameKey) {
     const el = document.getElementById(elId);
     if (!el) return;
     const entries = d.children ? d.children.flatMap(c => c.standings?.entries || []) : (d.standings?.entries || []);
-    if (!entries.length) { el.innerHTML = '<a href="#" onclick="showPage(\'scores\');return false;" style="display:block;padding:4px 0;color:rgba(255,255,255,0.6);">View Full Standings →</a>'; return; }
+    if (!entries.length) { return; }
     const top5 = entries.slice(0, 5);
     el.innerHTML = top5.map(e => {
       const w = e.stats?.find(s => s.name === 'wins')?.value || 0;
       const l = e.stats?.find(s => s.name === 'losses')?.value || 0;
-      return `<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span>${e.team?.shortDisplayName || e.team?.name}</span><span style="color:var(--yellow);font-weight:700;">${w}-${l}</span></div>`;
-    }).join('') + '<a href="#" onclick="showPage(\'scores\');return false;" style="display:block;padding:4px 0;margin-top:4px;color:rgba(255,255,255,0.4);font-size:0.75rem;">View all →</a>';
+      return `<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);color:#f5c518;"><span>${e.team?.shortDisplayName || e.team?.name}</span><span style="font-weight:700;">${w}-${l}</span></div>`;
+    }).join('');
   } catch(e) {
     const el = document.getElementById(elId);
-    if (el) el.innerHTML = '<a href="#" onclick="showPage(\'scores\');return false;" style="display:block;padding:4px 0;color:rgba(255,255,255,0.5);">View Standings →</a>';
+    if (el) el.innerHTML = '';
   }
 }
 
@@ -2981,67 +2859,11 @@ function handleNlSubmit(e) {
 </script>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <a href="#" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-    <a href="#" onclick="showPage('admin');return false;" style="font-size:0.6rem;color:rgba(255,255,255,0.08);margin-left:2rem;">admin</a>
-  </div>
-</footer>
+
 </div><!-- end #page-home -->
 
 <!-- ARTICLE PAGE -->
 <div id="page-article">
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" class="active">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-    <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-  </div>
-</nav>
 
 <!-- HERO IMAGE -->
 <div class="article-hero">
@@ -3131,44 +2953,7 @@ function handleNlSubmit(e) {
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div><!-- end #page-article -->
 
 <script>
@@ -3197,59 +2982,31 @@ function showPage(page) {
       a.classList.add('active');
     }
   });
-  // Always highlight Home when on home
   if (page === 'home') {
     document.querySelectorAll('.nav-links a').forEach(a => {
       if((a.getAttribute('onclick')||'').includes("showPage('home')")) a.classList.add('active');
       else a.classList.remove('active');
     });
   }
-  document.getElementById('page-home').style.display = page === 'home' ? 'block' : 'none';
-  document.getElementById('page-article').style.display = page === 'article' ? 'block' : 'none';
-  document.getElementById('page-article-mlb').style.display = page === 'article-mlb' ? 'block' : 'none';
-  document.getElementById('page-article-nfl').style.display = page === 'article-nfl' ? 'block' : 'none';
-  document.getElementById('page-article-nba').style.display = page === 'article-nba' ? 'block' : 'none';
-  document.getElementById('page-article-nba2').style.display = page === 'article-nba2' ? 'block' : 'none';
-  document.getElementById('page-article-nba3').style.display = page === 'article-nba3' ? 'block' : 'none';
-  document.getElementById('page-article-mlb2').style.display = page === 'article-mlb2' ? 'block' : 'none';
-  document.getElementById('page-article-mlb3').style.display = page === 'article-mlb3' ? 'block' : 'none';
-  document.getElementById('page-article-mlb4').style.display = page === 'article-mlb4' ? 'block' : 'none';
-  document.getElementById('page-article-mlb4b').style.display = 'none';
-  document.getElementById('page-article-nhl').style.display = page === 'article-nhl' ? 'block' : 'none';
-  document.getElementById('page-article-college2').style.display = page === 'article-college2' ? 'block' : 'none';
-  document.getElementById('page-article-mma').style.display = page === 'article-mma' ? 'block' : 'none';
-  document.getElementById('page-article-mma2').style.display = page === 'article-mma2' ? 'block' : 'none';
-  document.getElementById('page-article-boxing').style.display = page === 'article-boxing' ? 'block' : 'none';
-  document.getElementById('page-article-gen1').style.display = page === 'article-gen1' ? 'block' : 'none';
-  document.getElementById('page-article-gen2').style.display = page === 'article-gen2' ? 'block' : 'none';
-  document.getElementById('page-article-gen3').style.display = page === 'article-gen3' ? 'block' : 'none';
-  document.getElementById('page-all-articles').style.display = page === 'all-articles' ? 'block' : 'none';
-  document.getElementById('page-tickets').style.display = page === 'tickets' ? 'block' : 'none';
-  document.getElementById('page-shop').style.display = page === 'shop' ? 'block' : 'none';
-  document.getElementById('page-admin').style.display = page === 'admin' ? 'block' : 'none';
-  document.getElementById('page-article-nfl-draft').style.display = page === 'article-nfl-draft' ? 'block' : 'none';
-  document.getElementById('page-article-nba-playoffs').style.display = page === 'article-nba-playoffs' ? 'block' : 'none';
-  document.getElementById('page-article-dodgers').style.display = page === 'article-dodgers' ? 'block' : 'none';
-  document.getElementById('page-scores').style.display = page === 'scores' ? 'block' : 'none';
-  document.getElementById('page-ai-agent').style.display = page === 'ai-agent' ? 'block' : 'none';
-  document.getElementById('page-article-mlb4').style.display = page === 'article-mlb4' ? 'block' : 'none';
-  document.getElementById('page-article-nhl').style.display = page === 'article-nhl' ? 'block' : 'none';
-  document.getElementById('page-article-college2').style.display = page === 'article-college2' ? 'block' : 'none';
-  document.getElementById('page-article-mma').style.display = page === 'article-mma' ? 'block' : 'none';
-  document.getElementById('page-article-mma2').style.display = page === 'article-mma2' ? 'block' : 'none';
-  document.getElementById('page-article-boxing').style.display = page === 'article-boxing' ? 'block' : 'none';
-  document.getElementById('page-article-gen1').style.display = page === 'article-gen1' ? 'block' : 'none';
-  document.getElementById('page-article-gen2').style.display = page === 'article-gen2' ? 'block' : 'none';
-  document.getElementById('page-article-gen3').style.display = page === 'article-gen3' ? 'block' : 'none';
-  document.getElementById('page-all-articles').style.display = page === 'all-articles' ? 'block' : 'none';
-  document.getElementById('page-tickets').style.display = page === 'tickets' ? 'block' : 'none';
-  document.getElementById('page-shop').style.display = page === 'shop' ? 'block' : 'none';
-  document.getElementById('page-admin').style.display = page === 'admin' ? 'block' : 'none';
-  document.getElementById('page-article-nfl-draft').style.display = page === 'article-nfl-draft' ? 'block' : 'none';
-  document.getElementById('page-article-nba-playoffs').style.display = page === 'article-nba-playoffs' ? 'block' : 'none';
-  document.getElementById('page-article-dodgers').style.display = page === 'article-dodgers' ? 'block' : 'none';
-  document.getElementById('page-scores').style.display = page === 'scores' ? 'block' : 'none';
-  document.getElementById('page-ai-agent').style.display = page === 'ai-agent' ? 'block' : 'none';
+
+  // All pages to hide/show
+  const pages = [
+    'page-home','page-article','page-article-mlb','page-article-nfl',
+    'page-article-nba','page-article-nba2','page-article-nba3',
+    'page-article-mlb2','page-article-mlb3','page-article-mlb4',
+    'page-article-nhl','page-article-college2','page-article-mma',
+    'page-article-mma2','page-article-boxing','page-article-gen1',
+    'page-article-gen2','page-article-gen3','page-all-articles',
+    'page-tickets','page-shop','page-admin','page-article-nfl-draft',
+    'page-article-nba-playoffs','page-article-dodgers','page-scores',
+    'page-ai-agent','page-article-mlb4b', 'page-motorsport'
+  ];
+
+  pages.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === 'page-' + page) ? 'block' : 'none';
+  });
+
   window.scrollTo(0, 0);
 }
 
@@ -4120,25 +3877,6 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
 <!-- MLB ARTICLE PAGE -->
 <div id="page-article-mlb">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/jSDtFmvttAmKlhpv.jpg" alt="MLB Baseball">
@@ -4248,69 +3986,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mlb -->
 
 
 <!-- NFL ARTICLE PAGE -->
 <div id="page-article-nfl">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/KMJvUFiPDfaVCyKl.jpg" alt="Super Bowl LX">
@@ -4416,69 +4098,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-nfl -->
 
 
 <!-- NBA ARTICLE PAGE -->
 <div id="page-article-nba">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://images.unsplash.com/photo-1519861531473-9200262188bf?w=800&q=80" alt="Lakers LeBron Luka">
@@ -4600,69 +4226,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-nba -->
 
 
 <!-- NBA2 ARTICLE PAGE -->
 <div id="page-article-nba2">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/BQrxeIoisXdTsGnh.jpg" alt="Lakers LeBron Luka">
@@ -4781,69 +4351,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-nba2 -->
 
 
 <!-- NBA3 ARTICLE PAGE -->
 <div id="page-article-nba3">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/abZizqPiquhsblwR.jpg" alt="NBA MVP Race">
@@ -4964,69 +4478,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-nba3 -->
 
 
 <!-- MLB2 ARTICLE PAGE -->
 <div id="page-article-mlb2">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/letyGgJuzOGXZxbK.jpg" alt="World Baseball Classic Venezuela">
@@ -5132,69 +4590,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mlb2 -->
 
 
 <!-- MLB3 ARTICLE PAGE -->
 <div id="page-article-mlb3">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/FUsnyuVtvzhGMlHw.jpg" alt="Dodgers Three-Peat">
@@ -5300,69 +4702,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mlb3 -->
 
 
 <!-- MLB4 ARTICLE PAGE -->
 <div id="page-article-mlb4">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/OEcjgGUkXusBeDTo.jpg" alt="MLB Lockout">
@@ -5470,69 +4816,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mlb4 -->
 
 
 <!-- MLB4 ARTICLE PAGE -->
 <div id="page-article-mlb4b">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/OEcjgGUkXusBeDTo.jpg" alt="MLB Lockout CBA">
@@ -5640,69 +4930,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mlb4 -->
 
 
 <!-- NHL ARTICLE PAGE -->
 <div id="page-article-nhl">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/jxPvFIEwiPKfCtOO.jpg" alt="Ilya Sorokin NHL Goaltender">
@@ -5806,69 +5040,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-nhl -->
 
 
 <!-- COLLEGE2 ARTICLE PAGE -->
 <div id="page-article-college2">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/ykUMaJYydCGTxVrl.jpg" alt="March Madness 2026 Arizona">
@@ -5949,69 +5127,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-college2 -->
 
 
 <!-- MMA ARTICLE PAGE -->
 <div id="page-article-mma">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/ZybAOJKfmBGJOhsJ.jpg" alt="UFC 327 Prochazka vs Ulberg">
@@ -6118,69 +5240,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mma -->
 
 
 <!-- MMA2 ARTICLE PAGE -->
 <div id="page-article-mma2">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/uMWnEEBdWxwuPAgF.jpg" alt="Israel Adesanya UFC">
@@ -6289,69 +5355,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-mma2 -->
 
 
 <!-- BOXING ARTICLE PAGE -->
 <div id="page-article-boxing">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/CwZcMxYzzbDbkVDj.jpg" alt="Mayweather vs Pacquiao 2">
@@ -6451,69 +5461,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-      <div class="footer-social">
-        <a href="https://x.com/sksportsteam" target="_blank" rel="noopener" class="social-btn" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://instagram.com/sksportzteam" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@sksportzNBA" target="_blank" rel="noopener" class="social-btn" title="SKSportzNBA"><i class="fab fa-youtube"></i></a>
-        <a href="https://youtube.com/@touchdownreel" target="_blank" rel="noopener" class="social-btn" title="Touchdown Reel"><i class="fab fa-youtube" style="opacity:0.7;"></i></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
-        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
-        <li><a href="#">College Sports</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4><ul><li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li><li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li><li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li><li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li><li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-article-boxing -->
 
 
 <!-- GENERAL1 ARTICLE PAGE -->
 <div id="page-article-gen1">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/hlDKCtfhoKyNwVAB.jpg" alt="American Sports">
   <div class="article-hero-overlay"></div>
@@ -6564,44 +5518,11 @@ document.addEventListener('DOMContentLoaded', initProducts);
     </div>
   </div>
 </div>
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-    </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-  </div>
-</footer>
+
 </div>
 
 <!-- GENERAL2 ARTICLE PAGE -->
 <div id="page-article-gen2">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/caAUeYpmFJzOKBzb.jpg" alt="Sports Analytics">
   <div class="article-hero-overlay"></div>
@@ -6652,44 +5573,11 @@ document.addEventListener('DOMContentLoaded', initProducts);
     </div>
   </div>
 </div>
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-    </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-  </div>
-</footer>
+
 </div>
 
 <!-- GENERAL3 ARTICLE PAGE -->
 <div id="page-article-gen3">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/tilRJildyJMdpZKx.jpg" alt="Sports Gambling">
   <div class="article-hero-overlay"></div>
@@ -6739,45 +5627,12 @@ document.addEventListener('DOMContentLoaded', initProducts);
     </div>
   </div>
 </div>
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-    </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-  </div>
-</footer>
+
 </div>
 
 
 <!-- VIEW ALL ARTICLES PAGE -->
 <div id="page-all-articles">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <section style="padding:3rem 0 5rem;max-width:1200px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
 
@@ -7007,47 +5862,13 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
 </section>
 
-<footer>
-  <div class="footer-grid" style="max-width:1200px;margin:0 auto 3rem;">
-    <div>
-      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
-        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-      </a>
-      <p class="footer-brand-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
-    </div>
-    <div class="footer-col"><h4>Content</h4><ul><li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li><li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li><li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li><li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li></ul></div>
-  </div>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 
 </div><!-- end #page-all-articles -->
 
 
 <!-- TICKETS PAGE -->
 <div id="page-tickets">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;" class="active">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <section style="padding:4rem 1.5rem 6rem;max-width:1200px;margin:0 auto;">
 
@@ -7206,35 +6027,11 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
 </section>
 
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div>
 
 <!-- SCORES PAGE -->
 <div id="page-scores">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;" class="active">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <section style="padding:4rem 1.5rem 2rem;max-width:1200px;margin:0 auto;">
   <div style="margin-bottom:0.5rem;">
@@ -7274,35 +6071,11 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
 </section>
 
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div>
 
 <!-- AI SPORTS AGENT PAGE -->
 <div id="page-ai-agent">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <section style="padding:3rem 1.5rem 6rem;max-width:860px;margin:0 auto;">
 
@@ -7357,11 +6130,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
 </section>
 
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;padding:1.5rem;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-  </div>
-</footer>
+
 </div>
 
 
@@ -7377,25 +6146,6 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
 <!-- SHOP PAGE -->
 <div id="page-shop">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 
 <section style="padding:4rem 1.5rem 6rem;max-width:1200px;margin:0 auto;">
   <div style="margin-bottom:0.5rem;">
@@ -7447,36 +6197,12 @@ document.addEventListener('DOMContentLoaded', initProducts);
   </p>
 </section>
 
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;padding:1.5rem;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div>
 
 
 <!-- ARTICLE-NFL-DRAFT ARTICLE PAGE -->
 <div id="page-article-nfl-draft">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/GBsEOGorByIoEvBu.jpg" alt="NFL Draft 2026">
   <div class="article-hero-overlay"></div>
@@ -7536,35 +6262,11 @@ document.addEventListener('DOMContentLoaded', initProducts);
     </div>
   </div>
 </div>
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;padding:1.5rem;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div>
 
 <!-- ARTICLE-NBA-PLAYOFFS ARTICLE PAGE -->
 <div id="page-article-nba-playoffs">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/iNgMeiaJatYKnyoE.jpg" alt="NBA Playoffs 2026">
   <div class="article-hero-overlay"></div>
@@ -7624,35 +6326,11 @@ document.addEventListener('DOMContentLoaded', initProducts);
     </div>
   </div>
 </div>
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;padding:1.5rem;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div>
 
 <!-- ARTICLE-DODGERS ARTICLE PAGE -->
 <div id="page-article-dodgers">
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-      <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-      <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-      <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-      <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-      <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://x.com/sksportsteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/sksportzteam" target="_blank" style="color:rgba(255,255,255,0.6);font-size:1.1rem;text-decoration:none;padding:6px;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </div>
-</nav>
 <div class="article-hero">
   <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663491167634/gwBPIIghiRkCECUs.jpg" alt="Dodgers Three-Peat">
   <div class="article-hero-overlay"></div>
@@ -7712,33 +6390,12 @@ document.addEventListener('DOMContentLoaded', initProducts);
     </div>
   </div>
 </div>
-<footer>
-  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;padding:1.5rem;">
-    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
-    <span class="footer-tag">Premium sports gear & content</span>
-  </div>
-</footer>
+
 </div>
 
 
 <!-- ADMIN PAGE -->
 <div id="page-admin">
-<nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
-    <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
-    <li><a href="#" onclick="showPage('shop');return false;">Shop</a></li>
-    <li><a href="#" onclick="showPage('all-articles');return false;">Content</a></li>
-    <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
-    <li><a href="#" onclick="showPage('scores');return false;">Scores</a></li>
-  </ul>
-  <div class="nav-right">
-    <a href="#" class="btn-signin" onclick="showPage('home');return false;">← Back to Site</a>
-  </div>
-</nav>
 
 <div class="admin-wrap">
 
@@ -7844,5 +6501,60 @@ document.addEventListener('DOMContentLoaded', initProducts);
 </div>
 </div>
 
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a href="#" onclick="showPage('home');return false;" class="footer-brand-logo">
+        <div class="nav-logo-icon"><i class="fa fa-bolt"></i></div>
+        <span class="nav-logo-text"><span class="sk">SK</span><span class="sportz">SPORTZ</span></span>
+      </a>
+      <p class="footer-desc">Your one-stop sports destination. News, scores, gear and takes across NFL, NBA, MLB, NHL, UFC, Boxing, Soccer and more.</p>
+      <div class="footer-socials">
+        <a href="https://x.com/sksportsteam" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/sksportzteam" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@sksportzNBA" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://youtube.com/@touchdownreel" target="_blank"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('shop');return false;">All Products</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NFL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NBA Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">MLB Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">NHL Gear</a></li>
+        <li><a href="#" onclick="showPage('shop');return false;">College Sports</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Content</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('all-articles');return false;">All Articles</a></li>
+        <li><a href="#" onclick="showPage('all-articles');return false;">NFL</a></li>
+        <li><a href="#" onclick="showPage('all-articles');return false;">NBA</a></li>
+        <li><a href="#" onclick="showPage('all-articles');return false;">MLB</a></li>
+        <li><a href="#" onclick="showPage('all-articles');return false;">NHL</a></li>
+        <li><a href="#" onclick="showPage('all-articles');return false;">College Sports</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('scores');return false;">Live Scores</a></li>
+        <li><a href="#" onclick="showPage('tickets');return false;">Tickets</a></li>
+        <li><a href="#" onclick="showPage('ai-agent');return false;">⚡ Ask AI</a></li>
+        <li><a href="https://x.com/sksportsteam" target="_blank">Follow on X</a></li>
+        <li><a href="https://instagram.com/sksportzteam" target="_blank">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 SK Sportz. All rights reserved.</span>
+    <span class="footer-tag">Premium sports gear & content</span>
+    <a href="#" onclick="showPage('admin');return false;" style="font-size:0.6rem;color:rgba(255,255,255,0.08);margin-left:2rem;">admin</a>
+  </div>
+</footer>
 </body>
 </html>

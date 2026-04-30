@@ -4,6 +4,11 @@
 [functions]
   node_bundler = "esbuild"
 
+# Auto-scout runs every Monday at 9am UTC
+# Finds trending sports products and auto-publishes to products.json
+[functions."trending-scout"]
+  schedule = "0 9 * * 1"
+
 [[headers]]
   for = "/*"
   [headers.values]

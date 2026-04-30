@@ -2436,7 +2436,7 @@ setInterval(loadLiveScores, 60000);
   <!-- FILTER TABS -->
   <p style="color:rgba(255,255,255,0.5);font-size:0.95rem;margin-bottom:1.5rem;max-width:600px;">Collectibles, trading cards, wall art and fan gifts — everything a real sports fan actually wants.</p>
   <div class="prod-filters">
-    <button class="prod-filter active" data-filter="all">All</button>
+    <button class="prod-filter active" data-filter="trending">🔥 Trending</button>
     <button class="prod-filter" data-filter="nfl">NFL</button>
     <button class="prod-filter" data-filter="nba">NBA</button>
     <button class="prod-filter" data-filter="mlb">MLB</button>
@@ -3100,14 +3100,29 @@ function getSportEmoji(cat) {
 function renderProducts(filter) {
   const grid = document.getElementById('product-grid');
   const collectibles = ['Funko','Bleacher','Teenymates','Panini','WNBA'];
-  const list = PRODUCTS
-    .filter(p => {
-      if (filter === 'all') return true;
-      if (filter === 'collectibles') return collectibles.some(c => p.name.includes(c));
-      return p.category === filter;
-    })
-    .sort((a, b) => a.priority - b.priority)
-    .slice(0, 8);
+  let list;
+  if (filter === 'trending' || filter === 'all') {
+    // Shuffle for variety - mix across categories AND subcategories so users see diverse products
+    const seen = { jerseys: 0, drinkware: 0, decor: 0, tailgating: 0, cards: 0, collectibles: 0, apparel: 0, kids: 0 };
+    const pool = [...PRODUCTS].sort(() => Math.random() - 0.5);
+    list = [];
+    for (const p of pool) {
+      const sub = p.subcategory || 'other';
+      // Cap each subcategory at 2 to force variety
+      if (seen[sub] !== undefined && seen[sub] >= 2) continue;
+      list.push(p);
+      seen[sub] = (seen[sub] || 0) + 1;
+      if (list.length >= 8) break;
+    }
+    // Fallback: if we didn't get 8 (small catalog), just take first 8
+    if (list.length < 8) list = pool.slice(0, 8);
+  } else if (filter === 'collectibles') {
+    list = PRODUCTS.filter(p => collectibles.some(c => p.name.includes(c)) || p.subcategory === 'collectibles')
+      .sort((a, b) => a.priority - b.priority).slice(0, 8);
+  } else {
+    list = PRODUCTS.filter(p => p.category === filter)
+      .sort((a, b) => a.priority - b.priority).slice(0, 8);
+  }
 
   grid.innerHTML = list.map(p => {
 
@@ -3146,7 +3161,7 @@ document.querySelectorAll('.prod-filter').forEach(btn => {
   });
 });
 
-renderProducts('all');
+renderProducts('trending');
 
 // Show product count
 function updateProductCount(filter) {
@@ -3825,11 +3840,17 @@ function filterShopProducts(filter, e) {
   if(activeBtn) activeBtn.classList.add('active');
   // Render products into shop grid
   const collectibles = ['Funko','Bleacher','Teenymates','Panini','WNBA'];
-  const list = PRODUCTS.filter(p => {
-    if(filter === 'all') return true;
-    if(filter === 'collectibles') return collectibles.some(c => p.name.includes(c));
-    return p.category === filter;
-  }).sort((a,b) => a.priority - b.priority);
+  let list;
+  if (filter === 'trending' || filter === 'all') {
+    // Shuffle and interleave across subcategories for variety
+    list = [...PRODUCTS].sort(() => Math.random() - 0.5);
+  } else if (filter === 'collectibles') {
+    list = PRODUCTS.filter(p => collectibles.some(c => p.name.includes(c)) || p.subcategory === 'collectibles')
+      .sort((a,b) => a.priority - b.priority);
+  } else {
+    list = PRODUCTS.filter(p => p.category === filter)
+      .sort((a,b) => a.priority - b.priority);
+  }
   const grid = document.getElementById('shop-product-grid');
   const count = document.getElementById('shop-product-count');
   if(count) count.textContent = list.length + ' products';
@@ -3866,7 +3887,7 @@ function filterShopProducts(filter, e) {
 const shopObserver = new MutationObserver(() => {
   const shopPage = document.getElementById('page-shop');
   if(shopPage && shopPage.style.display !== 'none') {
-    filterShopProducts('all', null);
+    filterShopProducts('trending', null);
   }
 });
 document.addEventListener('DOMContentLoaded', async () => {
@@ -3884,6 +3905,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: p.id || PRODUCTS.length + 100,
             name: p.name,
             category: p.category || 'nba',
+            subcategory: p.subcategory || 'other',
             priceCurrent: p.price || 14.99,
             priceOriginal: p.price ? p.price * 1.2 : 17.99,
             affiliateUrl: p.affiliateUrl || '#',
@@ -3987,10 +4009,10 @@ async function initTrendingProducts() {
     const shopGrid = document.getElementById('shop-product-grid');
     const homeGrid = document.querySelector('.product-grid');
     if (shopGrid && document.getElementById('page-shop').style.display !== 'none') {
-      filterShopProducts('all', null);
+      filterShopProducts('trending', null);
     }
     if (homeGrid) {
-      renderProducts('all');
+      renderProducts('trending');
     }
   }
 }
@@ -6742,7 +6764,7 @@ document.addEventListener('DOMContentLoaded', initProducts);
 
   <!-- FILTER TABS -->
   <div class="prod-filters" id="shop-filters">
-    <button class="prod-filter active" data-filter="all" onclick="filterShopProducts('all',event)">All</button>
+    <button class="prod-filter active" data-filter="trending" onclick="filterShopProducts('trending',event)">🔥 Trending</button>
     <button class="prod-filter" data-filter="nfl" onclick="filterShopProducts('nfl',event)">NFL</button>
     <button class="prod-filter" data-filter="nba" onclick="filterShopProducts('nba',event)">NBA</button>
     <button class="prod-filter" data-filter="mlb" onclick="filterShopProducts('mlb',event)">MLB</button>

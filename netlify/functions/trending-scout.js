@@ -1,25 +1,15 @@
 /**
- * SKSportz AI Scout - Auto Product Discovery & Publishing
+ * SKSportz AI Scout - Fast version (no web search) for Netlify free tier
  *
- * What it does:
- * 1. Uses Claude with web search to find real, trending sports products on Amazon
- * 2. Extracts real product names, prices, and Amazon CDN image URLs
- * 3. Optionally auto-publishes products to products.json on GitHub
- *
- * Modes:
- * - Manual scout (called from admin.html with password): returns products to review
- * - Auto-publish: commits found products straight to products.json
+ * Skips web search to fit within the 10-second function timeout.
+ * Uses Claude's training data to suggest currently-trending products.
+ * Less real-time accuracy but works on the free Netlify plan.
  *
  * Required env vars in Netlify:
  *   ANTHROPIC_API_KEY      (from console.anthropic.com)
- *   GITHUB_TOKEN           (existing, used by Make.com pipeline)
+ *   GITHUB_TOKEN           (used to auto-publish to products.json)
  *   ADMIN_PASSWORD         (defaults to 'Sportz2026!')
  *   AMAZON_AFFILIATE_TAG   (defaults to 'piekonlinesto-20')
- *
- * Cron trigger (set in netlify.toml):
- *   [[scheduled-functions]]
- *   path = "/.netlify/functions/trending-scout"
- *   schedule = "0 9 * * 1"   # every Monday 9am UTC
  */
 
 const AFFILIATE_TAG = process.env.AMAZON_AFFILIATE_TAG || 'piekonlinesto-20';
@@ -35,45 +25,33 @@ const PRODUCT_SUBCATEGORIES = [
 ];
 const SPORT_CATEGORIES = ['nfl', 'nba', 'mlb', 'nhl', 'college', 'soccer', 'general'];
 
-/* -------------------------------------------------------------- */
-/*  Find trending products via Claude + web search                */
-/* -------------------------------------------------------------- */
+/* ------------- Find products via Claude (no web search) ------------- */
 async function findTrendingProducts(apiKey, sport, subcategory, count) {
   const month = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   const sportLabel = sport === 'all' ? 'NFL, NBA, MLB, NHL, College and Soccer' : sport.toUpperCase();
 
   const categoryGuidance = subcategory === 'mixed'
-    ? `Mix products across: jerseys, apparel, drinkware (YETI/Stanley/tumblers), tailgating (cornhole/coolers/seats), decor (wall art/neon signs/blankets), electronics, trading cards, collectibles, kids gear, auto accessories, stickers, gifts, World Cup 2026 gear.\n\nCRITICAL: Do NOT recommend only Funko Pops, jerseys, and trading cards. Vary product types substantially. Aim for at least 5 distinct subcategories.`
+    ? `Mix products across these categories: jerseys, apparel, drinkware (YETI/Stanley/tumblers), tailgating (cornhole/coolers/seats), decor (wall art/neon signs/blankets), electronics, trading cards, collectibles, kids gear, auto accessories, stickers, gifts, World Cup 2026 gear. CRITICAL: Vary across at least 5 distinct subcategories.`
     : `Focus on: ${subcategory}`;
 
-  const prompt = `You are a sports merchandising expert with web search access. Find ${count} REAL ${sportLabel} fan products people are actively buying on Amazon RIGHT NOW (${month}).
-
-Use web_search to find current Amazon Best Sellers in the Sports Fan Shop category. Focus on items with:
-- 1000+ reviews
-- 4.3+ stars
-- Top 1000 in Best Sellers Rank
-- Price between $10 and $300
+  const prompt = `You are a sports merchandising expert. Suggest ${count} trending ${sportLabel} fan products people commonly buy on Amazon in ${month}.
 
 ${categoryGuidance}
 
-For each product, find:
-- Real product name (as listed on Amazon)
-- Real Amazon ASIN if findable (the 10-character product ID like B0CX4HH4HB)
-- Real Amazon CDN image URL (m.media-amazon.com/images/I/...)
-- Real current price
-- Why it is trending (current event, season, player news, holiday)
+For each product, use your knowledge of best-selling Amazon items in that category. Suggest products with:
+- Wide brand recognition (YETI, Stanley, Wilson, Funko, 47 Brand, Junk Food, etc.)
+- Realistic Amazon pricing $10-$300
+- Specific fan appeal (player name, team, current event tie-in)
 
 Return ONLY a JSON array, no markdown, no explanation:
 [
   {
-    "name": "exact product name",
+    "name": "specific product name with brand and team/player",
     "category": "nfl|nba|mlb|nhl|college|soccer|general",
     "subcategory": "jerseys|apparel|drinkware|tailgating|decor|electronics|cards|collectibles|kids|auto|stickers|office|gifts|world-cup-2026",
-    "asin": "B0XXXXXXXX or null if unknown",
-    "imageUrl": "https://m.media-amazon.com/images/... or empty string",
     "estimatedPrice": 29.99,
-    "reason": "why trending right now",
-    "searchTerms": "fallback amazon search keywords"
+    "reason": "why fans buy this",
+    "searchTerms": "amazon search keywords"
   }
 ]`;
 
@@ -85,9 +63,8 @@ Return ONLY a JSON array, no markdown, no explanation:
       'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
-      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
+      model: 'claude-haiku-4-5-20251001',  // Faster model to fit 10s timeout
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }]
     })
   });
@@ -103,16 +80,14 @@ Return ONLY a JSON array, no markdown, no explanation:
     .join('');
 
   const match = text.match(/\[[\s\S]*\]/);
-  if (!match) throw new Error('Could not parse JSON from Claude: ' + text.substring(0, 300));
+  if (!match) throw new Error('Could not parse JSON from Claude');
 
   const found = JSON.parse(match[0]);
 
   return found
     .filter(p => p.name && p.category && p.estimatedPrice)
     .map((p, i) => {
-      const affiliateUrl = p.asin
-        ? `https://www.amazon.com/dp/${p.asin}?tag=${AFFILIATE_TAG}`
-        : `https://www.amazon.com/s?k=${encodeURIComponent(p.searchTerms || p.name)}&tag=${AFFILIATE_TAG}`;
+      const affiliateUrl = `https://www.amazon.com/s?k=${encodeURIComponent(p.searchTerms || p.name)}&tag=${AFFILIATE_TAG}`;
 
       return {
         id: `scout-${Date.now()}-${i}`,
@@ -120,7 +95,7 @@ Return ONLY a JSON array, no markdown, no explanation:
         category: SPORT_CATEGORIES.includes(p.category) ? p.category : 'general',
         subcategory: PRODUCT_SUBCATEGORIES.includes(p.subcategory) ? p.subcategory : 'collectibles',
         price: parseFloat(p.estimatedPrice) || 19.99,
-        image: p.imageUrl || '',
+        image: '',
         affiliateUrl,
         amazonSearchUrl: affiliateUrl,
         reason: p.reason || '',
@@ -129,9 +104,7 @@ Return ONLY a JSON array, no markdown, no explanation:
     });
 }
 
-/* -------------------------------------------------------------- */
-/*  Publish to GitHub products.json                               */
-/* -------------------------------------------------------------- */
+/* ------------- Publish to GitHub ------------- */
 async function publishToGitHub(token, newProducts) {
   const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/products.json`;
 
@@ -156,7 +129,6 @@ async function publishToGitHub(token, newProducts) {
     }
   }
 
-  // Drop stale auto-added products, keep all hand-curated
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - FRESHNESS_DAYS);
   const cutoffStr = cutoffDate.toISOString().split('T')[0];
@@ -195,7 +167,7 @@ async function publishToGitHub(token, newProducts) {
 
   if (!putRes.ok) {
     const err = await putRes.text();
-    throw new Error('GitHub PUT failed: ' + putRes.status + ' ' + err.substring(0, 200));
+    throw new Error('GitHub PUT failed: ' + putRes.status);
   }
 
   return {
@@ -205,9 +177,7 @@ async function publishToGitHub(token, newProducts) {
   };
 }
 
-/* -------------------------------------------------------------- */
-/*  Handler                                                       */
-/* -------------------------------------------------------------- */
+/* ------------- Handler ------------- */
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -228,19 +198,17 @@ exports.handler = async (event, context) => {
       })};
     }
 
-    // Scheduled invocation has no body (it's just a cron trigger)
     const isScheduled = !event.body;
     let body = {};
     try { body = JSON.parse(event.body || '{}'); } catch (e) {}
 
-    // Manual mode requires password
     if (!isScheduled && body.password !== ADMIN_PASSWORD) {
       return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' })};
     }
 
     const sport = body.sport || 'all';
     const subcategory = body.subcategory || 'mixed';
-    const count = parseInt(body.count) || 8;
+    const count = parseInt(body.count) || 6;  // Reduced from 8 to fit timeout
     const autoPublish = isScheduled || body.autoPublish === true;
 
     const products = await findTrendingProducts(apiKey, sport, subcategory, count);
@@ -249,7 +217,7 @@ exports.handler = async (event, context) => {
       return { statusCode: 200, headers, body: JSON.stringify({
         success: true,
         products: [],
-        message: 'No products found this run'
+        message: 'No products found'
       })};
     }
 
@@ -258,7 +226,7 @@ exports.handler = async (event, context) => {
       if (!ghToken) {
         return { statusCode: 500, headers, body: JSON.stringify({
           success: false,
-          error: 'GITHUB_TOKEN not set - cannot auto-publish',
+          error: 'GITHUB_TOKEN not set',
           products
         })};
       }

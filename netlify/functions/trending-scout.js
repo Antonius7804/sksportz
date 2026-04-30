@@ -1,1289 +1,286 @@
+/**
+ * SKSportz AI Scout - Auto Product Discovery & Publishing
+ *
+ * What it does:
+ * 1. Uses Claude with web search to find real, trending sports products on Amazon
+ * 2. Extracts real product names, prices, and Amazon CDN image URLs
+ * 3. Optionally auto-publishes products to products.json on GitHub
+ *
+ * Modes:
+ * - Manual scout (called from admin.html with password): returns products to review
+ * - Auto-publish: commits found products straight to products.json
+ *
+ * Required env vars in Netlify:
+ *   ANTHROPIC_API_KEY      (from console.anthropic.com)
+ *   GITHUB_TOKEN           (existing, used by Make.com pipeline)
+ *   ADMIN_PASSWORD         (defaults to 'Sportz2026!')
+ *   AMAZON_AFFILIATE_TAG   (defaults to 'piekonlinesto-20')
+ *
+ * Cron trigger (set in netlify.toml):
+ *   [[scheduled-functions]]
+ *   path = "/.netlify/functions/trending-scout"
+ *   schedule = "0 9 * * 1"   # every Monday 9am UTC
+ */
+
+const AFFILIATE_TAG = process.env.AMAZON_AFFILIATE_TAG || 'piekonlinesto-20';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Sportz2026!';
+const GITHUB_REPO = 'Antonius7804/sksportz';
+const PRODUCT_LIMIT = 200;
+const FRESHNESS_DAYS = 90;
+
+const PRODUCT_SUBCATEGORIES = [
+  'jerseys', 'apparel', 'drinkware', 'tailgating', 'decor',
+  'electronics', 'cards', 'collectibles', 'kids', 'auto',
+  'stickers', 'office', 'gifts', 'world-cup-2026'
+];
+const SPORT_CATEGORIES = ['nfl', 'nba', 'mlb', 'nhl', 'college', 'soccer', 'general'];
+
+/* -------------------------------------------------------------- */
+/*  Find trending products via Claude + web search                */
+/* -------------------------------------------------------------- */
+async function findTrendingProducts(apiKey, sport, subcategory, count) {
+  const month = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const sportLabel = sport === 'all' ? 'NFL, NBA, MLB, NHL, College and Soccer' : sport.toUpperCase();
+
+  const categoryGuidance = subcategory === 'mixed'
+    ? `Mix products across: jerseys, apparel, drinkware (YETI/Stanley/tumblers), tailgating (cornhole/coolers/seats), decor (wall art/neon signs/blankets), electronics, trading cards, collectibles, kids gear, auto accessories, stickers, gifts, World Cup 2026 gear.\n\nCRITICAL: Do NOT recommend only Funko Pops, jerseys, and trading cards. Vary product types substantially. Aim for at least 5 distinct subcategories.`
+    : `Focus on: ${subcategory}`;
+
+  const prompt = `You are a sports merchandising expert with web search access. Find ${count} REAL ${sportLabel} fan products people are actively buying on Amazon RIGHT NOW (${month}).
+
+Use web_search to find current Amazon Best Sellers in the Sports Fan Shop category. Focus on items with:
+- 1000+ reviews
+- 4.3+ stars
+- Top 1000 in Best Sellers Rank
+- Price between $10 and $300
+
+${categoryGuidance}
+
+For each product, find:
+- Real product name (as listed on Amazon)
+- Real Amazon ASIN if findable (the 10-character product ID like B0CX4HH4HB)
+- Real Amazon CDN image URL (m.media-amazon.com/images/I/...)
+- Real current price
+- Why it is trending (current event, season, player news, holiday)
+
+Return ONLY a JSON array, no markdown, no explanation:
 [
   {
-    "id": "sk_001",
-    "name": "NFL Patrick Mahomes Chiefs Jersey",
-    "category": "nfl",
-    "subcategory": "jerseys",
-    "price": 129.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=patrick+mahomes+jersey&tag=piekonlinesto-20",
-    "reason": "Mahomes is the most-searched NFL player. Jerseys are the #1 sports apparel category and average $130 AOV.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_002",
-    "name": "NFL Josh Allen Bills Jersey",
-    "category": "nfl",
-    "subcategory": "jerseys",
-    "price": 129.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=josh+allen+bills+jersey&tag=piekonlinesto-20",
-    "reason": "Buffalo Bills have the most rabid fanbase. Allen jerseys sell year-round.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_003",
-    "name": "NFL Caleb Williams Bears Jersey",
-    "category": "nfl",
-    "subcategory": "jerseys",
-    "price": 129.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=caleb+williams+bears+jersey&tag=piekonlinesto-20",
-    "reason": "Top draft pick QB - rookie jersey demand spikes in first 2 seasons.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_004",
-    "name": "NFL Jayden Daniels Commanders Jersey",
-    "category": "nfl",
-    "subcategory": "jerseys",
-    "price": 129.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=jayden+daniels+commanders+jersey&tag=piekonlinesto-20",
-    "reason": "Hot rookie QB - demand outpaces supply.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_005",
-    "name": "NFL Jalen Hurts Eagles Jersey",
-    "category": "nfl",
-    "subcategory": "jerseys",
-    "price": 129.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=jalen+hurts+eagles+jersey&tag=piekonlinesto-20",
-    "reason": "Eagles fans are passionate. Hurts is a top 5 fantasy QB.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_006",
-    "name": "NFL Custom Team Jersey - Pick Your Team",
-    "category": "nfl",
-    "subcategory": "jerseys",
-    "price": 89.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+jersey&tag=piekonlinesto-20",
-    "reason": "Generic team jerseys for cost-conscious fans. High volume.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_007",
-    "name": "NBA LeBron James Lakers Jersey",
-    "category": "nba",
-    "subcategory": "jerseys",
-    "price": 119.99,
-    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=lebron+james+lakers+jersey&tag=piekonlinesto-20",
-    "reason": "LeBron is the most popular NBA player. Lakers jerseys outsell every other team 2:1.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_008",
-    "name": "NBA Luka Doncic Lakers Jersey",
-    "category": "nba",
-    "subcategory": "jerseys",
-    "price": 119.99,
-    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=luka+doncic+lakers+jersey&tag=piekonlinesto-20",
-    "reason": "Luka trade to Lakers made his jersey the #1 NBA seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_009",
-    "name": "NBA Stephen Curry Warriors Jersey",
-    "category": "nba",
-    "subcategory": "jerseys",
-    "price": 119.99,
-    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=stephen+curry+warriors+jersey&tag=piekonlinesto-20",
-    "reason": "Curry remains a top 3 NBA jersey seller every year.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_010",
-    "name": "NBA Victor Wembanyama Spurs Jersey",
-    "category": "nba",
-    "subcategory": "jerseys",
-    "price": 119.99,
-    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=victor+wembanyama+spurs+jersey&tag=piekonlinesto-20",
-    "reason": "Wemby is the future face of the NBA. Jersey sales spike with every highlight.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_011",
-    "name": "NBA Caitlin Clark Fever Jersey (WNBA)",
-    "category": "nba",
-    "subcategory": "jerseys",
-    "price": 109.99,
-    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=caitlin+clark+fever+jersey&tag=piekonlinesto-20",
-    "reason": "WNBA jersey #1 seller. Caitlin Clark made the WNBA mainstream.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_012",
-    "name": "NBA Jayson Tatum Celtics Jersey",
-    "category": "nba",
-    "subcategory": "jerseys",
-    "price": 119.99,
-    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=jayson+tatum+celtics+jersey&tag=piekonlinesto-20",
-    "reason": "Defending champion Celtics. Tatum is #1 selling Boston player.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_013",
-    "name": "MLB Shohei Ohtani Dodgers Jersey",
-    "category": "mlb",
-    "subcategory": "jerseys",
-    "price": 139.99,
-    "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=shohei+ohtani+dodgers+jersey&tag=piekonlinesto-20",
-    "reason": "Ohtani is the highest-selling MLB jersey globally. Massive Japanese market too.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_014",
-    "name": "MLB Aaron Judge Yankees Jersey",
-    "category": "mlb",
-    "subcategory": "jerseys",
-    "price": 139.99,
-    "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=aaron+judge+yankees+jersey&tag=piekonlinesto-20",
-    "reason": "Judge is the most popular Yankee. NYY merchandise is a juggernaut.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_015",
-    "name": "MLB Juan Soto Mets Jersey",
-    "category": "mlb",
-    "subcategory": "jerseys",
-    "price": 139.99,
-    "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=juan+soto+mets+jersey&tag=piekonlinesto-20",
-    "reason": "$765M Mets contract. Hot jersey for 2026.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_016",
-    "name": "MLB Mookie Betts Dodgers Jersey",
-    "category": "mlb",
-    "subcategory": "jerseys",
-    "price": 139.99,
-    "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=mookie+betts+dodgers+jersey&tag=piekonlinesto-20",
-    "reason": "Three-peat hopeful Dodgers. Betts is a perennial top seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_017",
-    "name": "NHL Connor McDavid Oilers Jersey",
-    "category": "nhl",
-    "subcategory": "jerseys",
-    "price": 149.99,
-    "image": "https://images.unsplash.com/photo-1515703407324-5f753afd8be8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=connor+mcdavid+oilers+jersey&tag=piekonlinesto-20",
-    "reason": "McDavid is the best player on the planet. NHL's #1 jersey.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_018",
-    "name": "NHL Sidney Crosby Penguins Jersey",
-    "category": "nhl",
-    "subcategory": "jerseys",
-    "price": 149.99,
-    "image": "https://images.unsplash.com/photo-1515703407324-5f753afd8be8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sidney+crosby+penguins+jersey&tag=piekonlinesto-20",
-    "reason": "Crosby's last seasons - jersey sales rise on retirement rumors.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_019",
-    "name": "NHL Auston Matthews Maple Leafs Jersey",
-    "category": "nhl",
-    "subcategory": "jerseys",
-    "price": 149.99,
-    "image": "https://images.unsplash.com/photo-1515703407324-5f753afd8be8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=auston+matthews+maple+leafs+jersey&tag=piekonlinesto-20",
-    "reason": "Toronto fanbase + NHL goal-scoring leader.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_020",
-    "name": "Inter Miami Lionel Messi Jersey",
-    "category": "soccer",
-    "subcategory": "jerseys",
-    "price": 109.99,
-    "image": "https://images.unsplash.com/photo-1577223625816-7546c5147a06?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=messi+inter+miami+jersey&tag=piekonlinesto-20",
-    "reason": "Best-selling soccer jersey globally. Messi merchandise is a category killer.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_021",
-    "name": "USA World Cup 2026 Jersey",
-    "category": "soccer",
-    "subcategory": "jerseys",
-    "price": 89.99,
-    "image": "https://images.unsplash.com/photo-1577223625816-7546c5147a06?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=usa+world+cup+2026+jersey&tag=piekonlinesto-20",
-    "reason": "World Cup hosted in USA = peak demand for USMNT jersey.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_022",
-    "name": "Real Madrid Home Jersey 2026",
-    "category": "soccer",
-    "subcategory": "jerseys",
-    "price": 99.99,
-    "image": "https://images.unsplash.com/photo-1577223625816-7546c5147a06?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=real+madrid+jersey+2026&tag=piekonlinesto-20",
-    "reason": "Real Madrid is the highest revenue club globally. International fanbase.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_023",
-    "name": "NFL Team Logo T-Shirt - Junk Food Brand",
-    "category": "nfl",
-    "subcategory": "apparel",
-    "price": 34.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=junk+food+nfl+shirt&tag=piekonlinesto-20",
-    "reason": "Junk Food NFL tees are #1 fan tee on Amazon. Repeat purchase product.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_024",
-    "name": "NBA Game 7 Officially Licensed T-Shirt",
-    "category": "nba",
-    "subcategory": "apparel",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=game+7+nba+shirt&tag=piekonlinesto-20",
-    "reason": "Best-selling NBA tee. $30 price point sells 10x more units than jerseys.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_025",
-    "name": "NCAA College Football Gameday T-Shirt",
-    "category": "college",
-    "subcategory": "apparel",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=ncaa+college+football+shirt&tag=piekonlinesto-20",
-    "reason": "College fans buy 3-4 tees per season for tailgating.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_026",
-    "name": "Champion Sports Team Shorts",
-    "category": "general",
-    "subcategory": "apparel",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=champion+sports+shorts&tag=piekonlinesto-20",
-    "reason": "Best-selling sports shorts on Amazon. Year-round sales.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_027",
-    "name": "47 Brand MLB Adjustable Cap",
-    "category": "mlb",
-    "subcategory": "apparel",
-    "price": 27.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=47+brand+mlb+cap&tag=piekonlinesto-20",
-    "reason": "47 Brand MLB caps are a top 10 Amazon sports seller every month.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_028",
-    "name": "New Era NFL 9FORTY Adjustable Hat",
-    "category": "nfl",
-    "subcategory": "apparel",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=new+era+nfl+9forty+hat&tag=piekonlinesto-20",
-    "reason": "Official NFL on-field cap. Sells 100k+ units monthly across all teams.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_029",
-    "name": "NBA Snapback Hat - Mitchell & Ness",
-    "category": "nba",
-    "subcategory": "apparel",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=mitchell+ness+nba+snapback&tag=piekonlinesto-20",
-    "reason": "Throwback NBA snapbacks are trending in 2026 streetwear.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_030",
-    "name": "YETI Tumbler 30oz - Custom Team Logo",
-    "category": "general",
-    "subcategory": "drinkware",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=yeti+tumbler&tag=piekonlinesto-20",
-    "reason": "YETI tumblers are an Amazon top 50 product overall. Repeat-purchase, gifted constantly.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_031",
-    "name": "Stanley Quencher Sports Team 40oz",
-    "category": "general",
-    "subcategory": "drinkware",
-    "price": 44.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=stanley+quencher+40oz&tag=piekonlinesto-20",
-    "reason": "Stanley Quencher is the viral drinkware of the decade. Team logos sold out repeatedly.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_032",
-    "name": "Tervis NFL Insulated Tumbler 24oz",
-    "category": "nfl",
-    "subcategory": "drinkware",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=tervis+nfl+tumbler&tag=piekonlinesto-20",
-    "reason": "Tervis is the official drinkware partner of MLB and NFL. Strong category.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_033",
-    "name": "Hydrapeak NCAA Insulated Water Bottle 32oz",
-    "category": "college",
-    "subcategory": "drinkware",
-    "price": 32.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=hydrapeak+college+water+bottle&tag=piekonlinesto-20",
-    "reason": "Officially licensed college water bottles - #1 college drinkware seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_034",
-    "name": "Top Cup NFL 20oz Reusable Aluminum Cups (20-pack)",
-    "category": "nfl",
-    "subcategory": "drinkware",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=top+cup+nfl+aluminum+cups&tag=piekonlinesto-20",
-    "reason": "Bulk reusable cups for tailgating. Repeat purchase every season.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_035",
-    "name": "NFL Team Color-Changing Coffee Mug",
-    "category": "nfl",
-    "subcategory": "drinkware",
-    "price": 18.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+color+changing+mug&tag=piekonlinesto-20",
-    "reason": "Cold-to-hot changing mugs are top sellers. Great gift item.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_036",
-    "name": "Whiskey Decanter Set - Sports Theme",
-    "category": "general",
-    "subcategory": "drinkware",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+whiskey+decanter+set&tag=piekonlinesto-20",
-    "reason": "Premium man-cave gift item. High AOV, low returns.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_037",
-    "name": "Beer Stein Glass NFL Team Logo",
-    "category": "nfl",
-    "subcategory": "drinkware",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+beer+stein+glass&tag=piekonlinesto-20",
-    "reason": "Glass steins are gifted heavily during football season.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_038",
-    "name": "MLB Team Pint Glass Set (4-pack)",
-    "category": "mlb",
-    "subcategory": "drinkware",
-    "price": 34.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=mlb+pint+glass+set&tag=piekonlinesto-20",
-    "reason": "Pint glass sets - high gifting volume for opening day & playoffs.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_039",
-    "name": "Bottle Opener Wall Mount - Sports Team",
-    "category": "general",
-    "subcategory": "drinkware",
-    "price": 22.99,
-    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+bottle+opener+wall+mount&tag=piekonlinesto-20",
-    "reason": "Bar/man cave bottle openers - viral on TikTok in 2025.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_040",
-    "name": "YETI Tundra 45 Cooler - Team Logo",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 299.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=yeti+tundra+cooler&tag=piekonlinesto-20",
-    "reason": "YETI Tundra is the gold standard tailgating cooler. $300 AOV. Year-round demand.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_041",
-    "name": "Coleman Steel Belted Cooler 54-Quart",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 199.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=coleman+steel+belted+cooler&tag=piekonlinesto-20",
-    "reason": "Best-selling premium cooler under $250 on Amazon.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_042",
-    "name": "Maelstrom 40-Can Soft Cooler Bag",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=maelstrom+soft+cooler+40+can&tag=piekonlinesto-20",
-    "reason": "Top 10 Amazon cooler. Tailgating essential.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_043",
-    "name": "Wild Sports NFL Cornhole Set - Travel Bag Toss",
-    "category": "nfl",
-    "subcategory": "tailgating",
-    "price": 79.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=wild+sports+nfl+cornhole+set&tag=piekonlinesto-20",
-    "reason": "Cornhole is the #1 tailgating game. Wild Sports NFL set is best seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_044",
-    "name": "Cornhole Boards Regulation Size with Bags",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 149.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=cornhole+boards+regulation&tag=piekonlinesto-20",
-    "reason": "Premium cornhole boards - $150+ AOV, fans buy team-customized versions.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_045",
-    "name": "GoSports Inflataman Football Toss Game",
-    "category": "nfl",
-    "subcategory": "tailgating",
-    "price": 59.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=gosports+inflataman+football&tag=piekonlinesto-20",
-    "reason": "Inflatable target toss is #1 tailgating toy. Viral on Instagram.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_046",
-    "name": "Stadium Seats with Back Support",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=stadium+seats+with+back+support&tag=piekonlinesto-20",
-    "reason": "Bleacher seats are top 5 fan shop product on Amazon. Cushion + back support.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_047",
-    "name": "Bleacher Cushion Padded Seat",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=bleacher+cushion+padded&tag=piekonlinesto-20",
-    "reason": "Cheap bleacher cushion - high volume seasonal seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_048",
-    "name": "NFL Tailgate Apron with Bottle Opener",
-    "category": "nfl",
-    "subcategory": "tailgating",
-    "price": 34.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+tailgate+apron+bottle+opener&tag=piekonlinesto-20",
-    "reason": "Team Sports America apron - top 10 grilling accessory.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_049",
-    "name": "YouTheFan NFL 3-Piece BBQ Grilling Tool Set",
-    "category": "nfl",
-    "subcategory": "tailgating",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=youthefan+nfl+bbq+set&tag=piekonlinesto-20",
-    "reason": "Currently #1 best seller in tailgating gear on Amazon.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_050",
-    "name": "Pop-Up Canopy Tent 10x10 - Team Color",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 129.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=pop+up+canopy+10x10+tailgating&tag=piekonlinesto-20",
-    "reason": "Pop-up canopies are a tailgating must-have. $130+ AOV.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_051",
-    "name": "NFL Heat Resistant Oven Mitt for Grill",
-    "category": "nfl",
-    "subcategory": "tailgating",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+oven+mitt+grill&tag=piekonlinesto-20",
-    "reason": "YouTheFan NFL oven mitt - best selling grilling fan accessory.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_052",
-    "name": "Clear Stadium Tote Bag - Stadium Approved 12x6x12",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 18.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=clear+stadium+tote+bag&tag=piekonlinesto-20",
-    "reason": "MUST-HAVE - stadiums require clear bags. 1k+ bought monthly.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_053",
-    "name": "Rally Towel Custom Logo (5-pack)",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=rally+towel+sports&tag=piekonlinesto-20",
-    "reason": "Rally towels - bulk tailgating buy.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_054",
-    "name": "Stadium Noisemaker Air Horn",
-    "category": "general",
-    "subcategory": "tailgating",
-    "price": 12.99,
-    "image": "https://images.unsplash.com/photo-1568033431207-3f44d3aa1be1?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=stadium+air+horn+noisemaker&tag=piekonlinesto-20",
-    "reason": "Cheap impulse buy for game day.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_055",
-    "name": "NFL Stadium Blueprint Framed Print",
-    "category": "nfl",
-    "subcategory": "decor",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+stadium+blueprint+framed&tag=piekonlinesto-20",
-    "reason": "Premium man cave wall art. $50+ AOV. Fanatics-style premium item.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_056",
-    "name": "MLB Ballpark Blueprint Wall Print",
-    "category": "mlb",
-    "subcategory": "decor",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=mlb+ballpark+blueprint+print&tag=piekonlinesto-20",
-    "reason": "Same as NFL - blueprint art is a high-margin niche.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_057",
-    "name": "NFL Neon LED Helmet Sign Wall Decor",
-    "category": "nfl",
-    "subcategory": "decor",
-    "price": 79.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+neon+helmet+sign&tag=piekonlinesto-20",
-    "reason": "LED neon signs went viral on TikTok 2024-25. Premium man cave item.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_058",
-    "name": "Sports Team Pool Table Light Hanging Lamp",
-    "category": "general",
-    "subcategory": "decor",
-    "price": 199.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+pool+table+light&tag=piekonlinesto-20",
-    "reason": "$200+ AOV - premium man cave lighting. Essential basement bar item.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_059",
-    "name": "NCAA Felt Pennant Banner 12x30 - Rico Industries",
-    "category": "college",
-    "subcategory": "decor",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=rico+ncaa+pennant+banner&tag=piekonlinesto-20",
-    "reason": "Best-selling NCAA decor on Amazon. $15 impulse buy.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_060",
-    "name": "Framed Jersey Display Case with UV Glass",
-    "category": "general",
-    "subcategory": "decor",
-    "price": 99.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=framed+jersey+display+case+uv&tag=piekonlinesto-20",
-    "reason": "Display case for collectors who own a real jersey. $100 AOV.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_061",
-    "name": "Football Helmet Acrylic Display Case",
-    "category": "nfl",
-    "subcategory": "decor",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=football+helmet+acrylic+case&tag=piekonlinesto-20",
-    "reason": "Top seller for collectors. Pairs with helmet purchases.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_062",
-    "name": "Baseball Display Case Cube UV Protected",
-    "category": "mlb",
-    "subcategory": "decor",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=baseball+display+case+cube&tag=piekonlinesto-20",
-    "reason": "Cube case for autographed balls.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_063",
-    "name": "Sports Team Throw Blanket 60x50",
-    "category": "general",
-    "subcategory": "decor",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+throw+blanket&tag=piekonlinesto-20",
-    "reason": "Throw blankets - high volume, gifted constantly.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_064",
-    "name": "NFL Team Wall Clock with Logo",
-    "category": "nfl",
-    "subcategory": "decor",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+team+wall+clock&tag=piekonlinesto-20",
-    "reason": "Wall clocks are evergreen man cave decor.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_065",
-    "name": "Vintage Sports Metal Tin Sign 12x8",
-    "category": "general",
-    "subcategory": "decor",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=vintage+sports+metal+tin+sign&tag=piekonlinesto-20",
-    "reason": "Cheap, high-volume wall decor. Tin signs sell in bulk.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_066",
-    "name": "Sports Team Welcome Doormat",
-    "category": "general",
-    "subcategory": "decor",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+welcome+doormat&tag=piekonlinesto-20",
-    "reason": "Doormats - peak demand during football season.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_067",
-    "name": "LED Sports Team Logo Lamp",
-    "category": "general",
-    "subcategory": "decor",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=led+sports+team+logo+lamp&tag=piekonlinesto-20",
-    "reason": "USB-powered LED lamps are TikTok viral.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_068",
-    "name": "Sports Team Bluetooth Speaker Portable",
-    "category": "general",
-    "subcategory": "electronics",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1606220838315-056192d5e927?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+bluetooth+speaker&tag=piekonlinesto-20",
-    "reason": "Team-branded Bluetooth speakers are TikTok viral.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_069",
-    "name": "NFL Team Wireless Charging Pad",
-    "category": "nfl",
-    "subcategory": "electronics",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1606220838315-056192d5e927?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+wireless+charging+pad&tag=piekonlinesto-20",
-    "reason": "Phone charging pad with team logo - tech + fan combo.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_070",
-    "name": "Sports Team Gaming Headset",
-    "category": "general",
-    "subcategory": "electronics",
-    "price": 79.99,
-    "image": "https://images.unsplash.com/photo-1606220838315-056192d5e927?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+gaming+headset&tag=piekonlinesto-20",
-    "reason": "Madden/NBA 2K gamers buy team-themed headsets.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_071",
-    "name": "2026 Topps Baseball Series 1 Blaster Box",
-    "category": "mlb",
-    "subcategory": "cards",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=2026+topps+series+1+blaster&tag=piekonlinesto-20",
-    "reason": "MLB Series 1 is THE most-purchased sports card product annually.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_072",
-    "name": "2025 Panini Score NFL Football Blaster Box",
-    "category": "nfl",
-    "subcategory": "cards",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=2025+panini+score+nfl+blaster&tag=piekonlinesto-20",
-    "reason": "NFL blaster boxes - #1 NFL card product. Great for casual collectors.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_073",
-    "name": "2024-25 Panini Prizm NFL Hobby Box",
-    "category": "nfl",
-    "subcategory": "cards",
-    "price": 449.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=panini+prizm+nfl+hobby+box&tag=piekonlinesto-20",
-    "reason": "Prizm Hobby - the premium NFL card product. Investors buy these.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_074",
-    "name": "2025-26 Panini Hoops NBA Fat Pack",
-    "category": "nba",
-    "subcategory": "cards",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=panini+hoops+nba+fat+pack&tag=piekonlinesto-20",
-    "reason": "Hoops Fat Packs are NBA's best entry-level card product.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_075",
-    "name": "2026 Panini FIFA World Cup Sticker Album",
-    "category": "soccer",
-    "subcategory": "cards",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=panini+world+cup+2026+sticker+album&tag=piekonlinesto-20",
-    "reason": "Panini World Cup stickers - global phenomenon. World Cup year = 10x demand.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_076",
-    "name": "Topps NHL Hockey Hobby Box",
-    "category": "nhl",
-    "subcategory": "cards",
-    "price": 199.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=topps+nhl+hockey+hobby+box&tag=piekonlinesto-20",
-    "reason": "NHL premium hobby boxes for serious collectors.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_077",
-    "name": "Card Binder 400 Pockets - Trading Card Album",
-    "category": "general",
-    "subcategory": "cards",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=card+binder+400+pockets&tag=piekonlinesto-20",
-    "reason": "Storage product - every card collector needs one. Repeat buyer.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_078",
-    "name": "Card Sleeves 500 Pack - Penny Sleeves",
-    "category": "general",
-    "subcategory": "cards",
-    "price": 9.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=card+sleeves+500+pack&tag=piekonlinesto-20",
-    "reason": "Cheap consumable. Card collectors buy 1000s.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_079",
-    "name": "Top Loader Card Holders 35pt 100-pack",
-    "category": "general",
-    "subcategory": "cards",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=card+top+loaders+35pt+100+pack&tag=piekonlinesto-20",
-    "reason": "Card protection - high-volume consumable.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_080",
-    "name": "PSA Submission Boxes for Card Grading",
-    "category": "general",
-    "subcategory": "cards",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1591267990532-e5bdb1b0ceb8?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=psa+card+grading+box&tag=piekonlinesto-20",
-    "reason": "Card grading is huge. PSA accessories sell well.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_081",
-    "name": "Funko Pop NFL Patrick Mahomes Chiefs",
-    "category": "nfl",
-    "subcategory": "collectibles",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=funko+pop+mahomes+chiefs&tag=piekonlinesto-20",
-    "reason": "Funko Pops are the #1 sports collectible toy. Mahomes is top selling.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_082",
-    "name": "Funko Pop NBA LeBron James Lakers",
-    "category": "nba",
-    "subcategory": "collectibles",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=funko+pop+lebron+lakers&tag=piekonlinesto-20",
-    "reason": "LeBron Funko - perennial top seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_083",
-    "name": "Funko Pop MLB Shohei Ohtani Dodgers",
-    "category": "mlb",
-    "subcategory": "collectibles",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=funko+pop+ohtani+dodgers&tag=piekonlinesto-20",
-    "reason": "Ohtani Funko sells out repeatedly.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_084",
-    "name": "Bobblehead - Various Sports Team Stars",
-    "category": "general",
-    "subcategory": "collectibles",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+bobblehead+figure&tag=piekonlinesto-20",
-    "reason": "Bobbleheads - classic gift. Search-volume evergreen.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_085",
-    "name": "WWE Elite Action Figure (Cody Rhodes/Roman Reigns)",
-    "category": "general",
-    "subcategory": "collectibles",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=wwe+elite+action+figure&tag=piekonlinesto-20",
-    "reason": "WWE Elite figures are massive on Amazon. WWE has crossover with sports fans.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_086",
-    "name": "Mini Football Helmet - Riddell Speed",
-    "category": "nfl",
-    "subcategory": "collectibles",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=mini+football+helmet+riddell&tag=piekonlinesto-20",
-    "reason": "Mini helmets for autograph collecting.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_087",
-    "name": "Authentic Autographed Football Display",
-    "category": "nfl",
-    "subcategory": "collectibles",
-    "price": 199.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=autographed+football+display&tag=piekonlinesto-20",
-    "reason": "Premium memorabilia segment. $200+ AOV.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_088",
-    "name": "Teenymates NFL Series 8 Blind Pack",
-    "category": "nfl",
-    "subcategory": "collectibles",
-    "price": 4.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=teenymates+nfl+blind+pack&tag=piekonlinesto-20",
-    "reason": "Cheap impulse buy. Kids and adult collectors.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_089",
-    "name": "2026 World Cup Schedule Wall Chart Poster",
-    "category": "soccer",
-    "subcategory": "world-cup-2026",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=2026+world+cup+wall+chart+poster&tag=piekonlinesto-20",
-    "reason": "World Cup wall charts are #1 World Cup product. Every fan has one.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_090",
-    "name": "World Cup 2026 Bracket Predictor Poster",
-    "category": "soccer",
-    "subcategory": "world-cup-2026",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=world+cup+2026+bracket+poster&tag=piekonlinesto-20",
-    "reason": "Bracket-style predictors with reusable stickers - viral.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_091",
-    "name": "World Cup 2026 Country Flag Bunting Banner 50pc",
-    "category": "soccer",
-    "subcategory": "world-cup-2026",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=world+cup+2026+flag+banner&tag=piekonlinesto-20",
-    "reason": "Decorations for watch parties. June 2026 peak demand.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_092",
-    "name": "FIFA World Cup 2026 Trophy Beer Cup Replica",
-    "category": "soccer",
-    "subcategory": "world-cup-2026",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=world+cup+trophy+beer+cup&tag=piekonlinesto-20",
-    "reason": "Novelty trophy mug. Goes viral every World Cup.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_093",
-    "name": "USA World Cup 2026 Bald Eagle Mascot Plush",
-    "category": "soccer",
-    "subcategory": "world-cup-2026",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=world+cup+2026+bald+eagle+plush&tag=piekonlinesto-20",
-    "reason": "Official USA mascot Clutch the Bald Eagle.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_094",
-    "name": "World Cup 2026 Throw Pillow 18x18",
-    "category": "soccer",
-    "subcategory": "world-cup-2026",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=world+cup+2026+throw+pillow&tag=piekonlinesto-20",
-    "reason": "Decor for World Cup watch parties.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_095",
-    "name": "Franklin Sports NFL Mini Football Set",
-    "category": "nfl",
-    "subcategory": "kids",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=franklin+sports+nfl+mini+football&tag=piekonlinesto-20",
-    "reason": "Kids' #1 NFL toy. Holiday and birthday gift.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_096",
-    "name": "Franklin Sports Youth Football Receiver Gloves",
-    "category": "nfl",
-    "subcategory": "kids",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=franklin+youth+football+gloves&tag=piekonlinesto-20",
-    "reason": "Top selling youth football gloves on Amazon.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_097",
-    "name": "Wilson NCAA Final Four Basketball",
-    "category": "college",
-    "subcategory": "kids",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=wilson+ncaa+final+four+basketball&tag=piekonlinesto-20",
-    "reason": "Currently #1 best seller in fan shop sports equipment.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_098",
-    "name": "Adidas FIFA World Cup 26 Trionda Soccer Ball",
-    "category": "soccer",
-    "subcategory": "kids",
-    "price": 159.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=adidas+fifa+world+cup+trionda+ball&tag=piekonlinesto-20",
-    "reason": "Official 2026 World Cup match ball. #2 sports equipment seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_099",
-    "name": "Wilson NBA DRV Basketball",
-    "category": "nba",
-    "subcategory": "kids",
-    "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=wilson+nba+drv+basketball&tag=piekonlinesto-20",
-    "reason": "Top 5 fan shop ball seller.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_100",
-    "name": "Rawlings 2026 MLB Official Team Logo Baseball",
-    "category": "mlb",
-    "subcategory": "kids",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=rawlings+mlb+official+team+baseball&tag=piekonlinesto-20",
-    "reason": "Official MLB ball with team logos.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_101",
-    "name": "Franklin NHL Street Hockey Stick Set",
-    "category": "nhl",
-    "subcategory": "kids",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=franklin+nhl+street+hockey+set&tag=piekonlinesto-20",
-    "reason": "Top kids hockey starter set.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_102",
-    "name": "Champion Sports Rubber Football",
-    "category": "nfl",
-    "subcategory": "kids",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=champion+rubber+football&tag=piekonlinesto-20",
-    "reason": "All-weather durable football for backyard play.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_103",
-    "name": "AND1 Streetball Basketball Size 7",
-    "category": "nba",
-    "subcategory": "kids",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=and1+streetball+basketball&tag=piekonlinesto-20",
-    "reason": "Top selling outdoor basketball.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_104",
-    "name": "Sports Team Car Floor Mats Set of 4",
-    "category": "general",
-    "subcategory": "auto",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+car+floor+mats&tag=piekonlinesto-20",
-    "reason": "Car accessories - underrated category. Strong year-round.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_105",
-    "name": "NFL Team License Plate Frame",
-    "category": "nfl",
-    "subcategory": "auto",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+team+license+plate+frame&tag=piekonlinesto-20",
-    "reason": "Cheap impulse buy. Gift for new car owners.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_106",
-    "name": "Team Logo Steering Wheel Cover",
-    "category": "general",
-    "subcategory": "auto",
-    "price": 24.99,
-    "image": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+steering+wheel+cover&tag=piekonlinesto-20",
-    "reason": "Cars + sports = winning combo.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_107",
-    "name": "UGA Bulldogs Sticker Set (College Stickers)",
-    "category": "college",
-    "subcategory": "stickers",
-    "price": 12.99,
-    "image": "https://images.unsplash.com/photo-1607706189992-eae578626c86?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=uga+bulldogs+sticker+set&tag=piekonlinesto-20",
-    "reason": "College stickers are TOP SELLER on Amazon every fall.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_108",
-    "name": "NFL Team Vinyl Stickers Decal Pack",
-    "category": "nfl",
-    "subcategory": "stickers",
-    "price": 9.99,
-    "image": "https://images.unsplash.com/photo-1607706189992-eae578626c86?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+team+vinyl+stickers&tag=piekonlinesto-20",
-    "reason": "Cheap impulse - laptop, water bottle, car.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_109",
-    "name": "Team Logo Mouse Pad XL",
-    "category": "general",
-    "subcategory": "office",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=team+logo+mouse+pad+xl&tag=piekonlinesto-20",
-    "reason": "Desk gear for fans who work from home.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_110",
-    "name": "NFL Team Office Chair Mat",
-    "category": "nfl",
-    "subcategory": "office",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nfl+team+office+chair+mat&tag=piekonlinesto-20",
-    "reason": "Premium office accessory. Fans personalize their workspace.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_111",
-    "name": "Sports Team Beach Towel Oversized",
-    "category": "general",
-    "subcategory": "summer",
-    "price": 29.99,
-    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+team+beach+towel+oversized&tag=piekonlinesto-20",
-    "reason": "Summer/beach seasonal seller. June-Aug peak.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_112",
-    "name": "Funko Bitty Pop NFL 4-Pack",
-    "category": "nfl",
-    "subcategory": "collectibles",
-    "price": 14.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=funko+bitty+pop+nfl&tag=piekonlinesto-20",
-    "reason": "Mini Funko - new product line, trending.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_113",
-    "name": "Hasbro NBA Starting Lineup Joel Embiid Action Figure",
-    "category": "nba",
-    "subcategory": "collectibles",
-    "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=hasbro+nba+starting+lineup&tag=piekonlinesto-20",
-    "reason": "Hasbro Starting Lineup - relaunched line, trending.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_114",
-    "name": "Fanatics NFL Gift Box Mystery Pack",
-    "category": "nfl",
-    "subcategory": "gifts",
-    "price": 99.99,
-    "image": "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=fanatics+nfl+gift+box&tag=piekonlinesto-20",
-    "reason": "Mystery box gifting trend. $100 AOV.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_115",
-    "name": "MLB Team Mystery Pack 6 Items",
-    "category": "mlb",
-    "subcategory": "gifts",
-    "price": 49.99,
-    "image": "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=mlb+team+mystery+box&tag=piekonlinesto-20",
-    "reason": "Mystery pack format is hot for gifting.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_116",
-    "name": "NBA Birthday Gift Bundle for Fans",
-    "category": "nba",
-    "subcategory": "gifts",
-    "price": 79.99,
-    "image": "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=nba+birthday+gift+bundle&tag=piekonlinesto-20",
-    "reason": "Birthday gift bundle - $80 AOV.",
-    "addedDate": "2026-04-30"
-  },
-  {
-    "id": "sk_117",
-    "name": "Sports Father's Day Gift Set Premium",
-    "category": "general",
-    "subcategory": "gifts",
-    "price": 89.99,
-    "image": "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800&q=80",
-    "affiliateUrl": "https://www.amazon.com/s?k=sports+fathers+day+gift+set&tag=piekonlinesto-20",
-    "reason": "Father's Day spike June. Gift bundles peak.",
-    "addedDate": "2026-04-30"
+    "name": "exact product name",
+    "category": "nfl|nba|mlb|nhl|college|soccer|general",
+    "subcategory": "jerseys|apparel|drinkware|tailgating|decor|electronics|cards|collectibles|kids|auto|stickers|office|gifts|world-cup-2026",
+    "asin": "B0XXXXXXXX or null if unknown",
+    "imageUrl": "https://m.media-amazon.com/images/... or empty string",
+    "estimatedPrice": 29.99,
+    "reason": "why trending right now",
+    "searchTerms": "fallback amazon search keywords"
   }
-]
+]`;
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error('Claude API: ' + (data.error?.message || response.status));
+  }
+
+  const text = (data.content || [])
+    .filter(b => b.type === 'text')
+    .map(b => b.text)
+    .join('');
+
+  const match = text.match(/\[[\s\S]*\]/);
+  if (!match) throw new Error('Could not parse JSON from Claude: ' + text.substring(0, 300));
+
+  const found = JSON.parse(match[0]);
+
+  return found
+    .filter(p => p.name && p.category && p.estimatedPrice)
+    .map((p, i) => {
+      const affiliateUrl = p.asin
+        ? `https://www.amazon.com/dp/${p.asin}?tag=${AFFILIATE_TAG}`
+        : `https://www.amazon.com/s?k=${encodeURIComponent(p.searchTerms || p.name)}&tag=${AFFILIATE_TAG}`;
+
+      return {
+        id: `scout-${Date.now()}-${i}`,
+        name: p.name,
+        category: SPORT_CATEGORIES.includes(p.category) ? p.category : 'general',
+        subcategory: PRODUCT_SUBCATEGORIES.includes(p.subcategory) ? p.subcategory : 'collectibles',
+        price: parseFloat(p.estimatedPrice) || 19.99,
+        image: p.imageUrl || '',
+        affiliateUrl,
+        amazonSearchUrl: affiliateUrl,
+        reason: p.reason || '',
+        addedDate: new Date().toISOString().split('T')[0]
+      };
+    });
+}
+
+/* -------------------------------------------------------------- */
+/*  Publish to GitHub products.json                               */
+/* -------------------------------------------------------------- */
+async function publishToGitHub(token, newProducts) {
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/products.json`;
+
+  let existing = [];
+  let sha = '';
+
+  const getRes = await fetch(url, {
+    headers: {
+      'Authorization': `token ${token}`,
+      'User-Agent': 'sksportz-scout',
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  });
+
+  if (getRes.ok) {
+    const data = await getRes.json();
+    sha = data.sha;
+    try {
+      existing = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'));
+    } catch (e) {
+      existing = [];
+    }
+  }
+
+  // Drop stale auto-added products, keep all hand-curated
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - FRESHNESS_DAYS);
+  const cutoffStr = cutoffDate.toISOString().split('T')[0];
+
+  const kept = existing.filter(p => {
+    const isAuto = String(p.id || '').startsWith('scout-');
+    if (!isAuto) return true;
+    if (!p.addedDate) return true;
+    return p.addedDate >= cutoffStr;
+  });
+
+  const merged = [...kept];
+  for (const np of newProducts) {
+    const dupe = merged.find(e => e.name.toLowerCase() === np.name.toLowerCase());
+    if (!dupe) merged.push(np);
+  }
+
+  const final = merged.slice(0, PRODUCT_LIMIT);
+
+  const content = Buffer.from(JSON.stringify(final, null, 2)).toString('base64');
+  const body = {
+    message: `Auto-update: +${newProducts.length} trending products (${final.length} total)`,
+    content
+  };
+  if (sha) body.sha = sha;
+
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${token}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'sksportz-scout'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!putRes.ok) {
+    const err = await putRes.text();
+    throw new Error('GitHub PUT failed: ' + putRes.status + ' ' + err.substring(0, 200));
+  }
+
+  return {
+    added: newProducts.length,
+    total: final.length,
+    removed: existing.length - kept.length
+  };
+}
+
+/* -------------------------------------------------------------- */
+/*  Handler                                                       */
+/* -------------------------------------------------------------- */
+exports.handler = async (event, context) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
+  try {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      return { statusCode: 500, headers, body: JSON.stringify({
+        success: false,
+        error: 'ANTHROPIC_API_KEY not set in Netlify env vars'
+      })};
+    }
+
+    // Scheduled invocation has no body (it's just a cron trigger)
+    const isScheduled = !event.body;
+    let body = {};
+    try { body = JSON.parse(event.body || '{}'); } catch (e) {}
+
+    // Manual mode requires password
+    if (!isScheduled && body.password !== ADMIN_PASSWORD) {
+      return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' })};
+    }
+
+    const sport = body.sport || 'all';
+    const subcategory = body.subcategory || 'mixed';
+    const count = parseInt(body.count) || 8;
+    const autoPublish = isScheduled || body.autoPublish === true;
+
+    const products = await findTrendingProducts(apiKey, sport, subcategory, count);
+
+    if (products.length === 0) {
+      return { statusCode: 200, headers, body: JSON.stringify({
+        success: true,
+        products: [],
+        message: 'No products found this run'
+      })};
+    }
+
+    if (autoPublish) {
+      const ghToken = process.env.GITHUB_TOKEN;
+      if (!ghToken) {
+        return { statusCode: 500, headers, body: JSON.stringify({
+          success: false,
+          error: 'GITHUB_TOKEN not set - cannot auto-publish',
+          products
+        })};
+      }
+
+      const result = await publishToGitHub(ghToken, products);
+      return { statusCode: 200, headers, body: JSON.stringify({
+        success: true,
+        autoPublished: true,
+        ...result,
+        products
+      })};
+    }
+
+    return { statusCode: 200, headers, body: JSON.stringify({
+      success: true,
+      products
+    })};
+
+  } catch (error) {
+    return { statusCode: 500, headers, body: JSON.stringify({
+      success: false,
+      error: error.message
+    })};
+  }
+};
